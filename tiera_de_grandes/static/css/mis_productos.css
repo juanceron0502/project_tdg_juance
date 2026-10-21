@@ -1,0 +1,101 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   mis_productos.css
+   Complementa index.css (tarjetas) y productos.css (cuadrícula)
+============================================================ */
+
+.list-page {
+    padding: 50px 0 80px;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(102, 187, 106, .14), transparent 30%),
+        var(--cream);
+}
+
+
+/* ============================================================
+   ENCABEZADO DE LA PÁGINA
+============================================================ */
+
+.list-header {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.list-header h1 {
+    margin: 8px 0;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(30px, 4vw, 38px);
+    font-weight: 800;
+}
+
+.list-header p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+
+/* ============================================================
+   FECHA DE PUBLICACIÓN
+============================================================ */
+
+.product-date {
+    display: block;
+    color: var(--text-light);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   BOTÓN "VER"
+============================================================ */
+
+.btn-view-product {
+    flex-shrink: 0;
+    padding: 9px 15px;
+    background: var(--green);
+    border-radius: 7px;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    transition: background-color .25s, transform .25s;
+}
+
+.btn-view-product:hover {
+    background: var(--green-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-view-product:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-view-product {
+        transition: none;
+    }
+
+    .btn-view-product:hover {
+        transform: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .list-page {
+        padding: 30px 0 60px;
+    }
+
+    .list-header {
+        margin-bottom: 25px;
+    }
+}

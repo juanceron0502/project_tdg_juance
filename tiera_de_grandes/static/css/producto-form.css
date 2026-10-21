@@ -1,0 +1,279 @@
+
+/* =====================================
+   TIERRA DE GRANDES - FORMULARIO
+   ===================================== */
+
+.tdg-product-section {
+    background: #f7f5ec;
+    min-height: 75vh;
+    padding: 65px 0 45px;
+    color: #26382c;
+}
+
+/* Encabezado */
+
+.tdg-page-heading {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.tdg-eyebrow {
+    display: inline-block;
+    color: #28743b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.tdg-page-heading h1 {
+    color: #195b2b;
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.tdg-page-heading p {
+    color: #657267;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+/* Tarjeta */
+
+.tdg-form-card {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 35px 40px;
+    background: #ffffff;
+    border: 1px solid #e7eadf;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(25, 91, 43, 0.09);
+}
+
+.tdg-form-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tdg-form-icon {
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e8f3e7;
+    border-radius: 14px;
+    font-size: 27px;
+}
+
+.tdg-form-header h2 {
+    margin: 0 0 5px;
+    color: #195b2b;
+    font-size: 24px;
+    font-weight: 750;
+}
+
+.tdg-form-header p {
+    color: #7b847c;
+    font-size: 14px;
+    margin: 0;
+}
+
+.tdg-divider {
+    border: 0;
+    border-top: 1px solid #e8ece5;
+    margin: 25px 0;
+}
+
+/* Distribución de campos */
+
+.tdg-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 24px;
+}
+
+.tdg-field {
+    min-width: 0;
+}
+
+.tdg-field-full {
+    grid-column: 1 / -1;
+}
+
+.tdg-field label {
+    display: block;
+    color: #34483a;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.tdg-required {
+    color: #e39a16;
+}
+
+.tdg-field input:not([type="checkbox"]):not([type="radio"]),
+.tdg-field select,
+.tdg-field textarea {
+    display: block;
+    width: 100%;
+    min-height: 45px;
+    padding: 11px 13px;
+    color: #34483a;
+    background: #fff;
+    border: 1px solid #dce3d8;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tdg-field textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.tdg-field input[type="file"] {
+    padding: 9px;
+    background: #f9fbf7;
+}
+
+.tdg-field input:focus,
+.tdg-field select:focus,
+.tdg-field textarea:focus {
+    outline: none;
+    border-color: #28743b;
+    box-shadow: 0 0 0 3px rgba(40, 116, 59, 0.12);
+}
+
+.tdg-help {
+    display: block;
+    margin-top: 6px;
+    color: #778176;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.tdg-error {
+    display: block;
+    color: #c0392b;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.tdg-alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #fff0ed;
+    color: #a93226;
+}
+
+/* Botones */
+
+.tdg-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid #edf0e9;
+}
+
+.tdg-btn-cancel,
+.tdg-btn-save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 11px 22px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.tdg-btn-cancel {
+    color: #435346;
+    background: #fff;
+    border: 1px solid #dce3d8;
+}
+
+.tdg-btn-cancel:hover {
+    color: #195b2b;
+    background: #f4f7f1;
+    text-decoration: none;
+}
+
+.tdg-btn-save {
+    color: #19351e;
+    background: #f6ae2d;
+    border: 1px solid #f6ae2d;
+}
+
+.tdg-btn-save:hover {
+    background: #e99b13;
+    border-color: #e99b13;
+    transform: translateY(-1px);
+}
+
+.tdg-footer-note {
+    margin-top: 25px;
+    text-align: center;
+    color: #758174;
+    font-size: 13px;
+}
+
+/* Diseño adaptable */
+
+@media (max-width: 767px) {
+    .tdg-product-section {
+        padding: 35px 0;
+    }
+
+    .tdg-page-heading h1 {
+        font-size: 28px;
+    }
+
+    .tdg-page-heading p {
+        padding: 0 12px;
+        font-size: 14px;
+    }
+
+    .tdg-form-card {
+        padding: 24px 18px;
+        border-radius: 13px;
+    }
+
+    .tdg-form-header h2 {
+        font-size: 20px;
+    }
+
+    .tdg-form-grid {
+        grid-template-columns: 1fr;
+        gap: 19px;
+    }
+
+    .tdg-field-full {
+        grid-column: auto;
+    }
+
+    .tdg-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .tdg-btn-cancel,
+    .tdg-btn-save {
+        width: 100%;
+    }
+}

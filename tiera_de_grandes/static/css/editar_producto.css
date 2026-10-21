@@ -1,0 +1,184 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   editar_producto.css
+   Estilos para los campos generados por crispy-forms.
+   La tarjeta, el encabezado y los botones vienen de editar_perfil.css
+   (.edit-page, .edit-card, .edit-header, .edit-actions, .btn-edit-*).
+============================================================ */
+
+.product-edit {
+    max-width: 720px;
+}
+
+
+/* ============================================================
+   CAMPOS
+============================================================ */
+
+.product-edit .form-group,
+.product-edit .mb-3 {
+    margin-bottom: 18px;
+}
+
+.product-edit label,
+.product-edit .col-form-label,
+.product-edit .form-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.product-edit .asteriskField {
+    margin-left: 2px;
+    color: #C62828;
+}
+
+.product-edit .form-control,
+.product-edit .form-select,
+.product-edit select,
+.product-edit textarea {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 11px 14px;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.product-edit textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.product-edit .form-control:focus,
+.product-edit .form-select:focus,
+.product-edit select:focus,
+.product-edit textarea:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, .28);
+}
+
+
+/* Ayuda debajo de un campo */
+
+.product-edit .form-text,
+.product-edit small.text-muted,
+.product-edit .help-block {
+    display: block;
+    margin-top: 5px;
+    color: var(--text-light) !important;
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   ARCHIVO / IMAGEN
+============================================================ */
+
+.product-edit input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    background: var(--cream);
+    border: 1px dashed var(--green-light);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.product-edit input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 14px;
+    background: var(--green);
+    border: none;
+    border-radius: 6px;
+    color: var(--white);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.product-edit input[type="file"]::file-selector-button:hover {
+    background: var(--green-dark);
+}
+
+/* "Actualmente: enlace  [ ] Limpiar" que agrega Django al ImageField */
+
+.product-edit a {
+    color: var(--green);
+    font-weight: 600;
+    word-break: break-all;
+}
+
+.product-edit a:hover {
+    color: var(--green-dark);
+}
+
+.product-edit .btn-edit-save,
+.product-edit .btn-edit-cancel {
+    word-break: normal;
+}
+
+.product-edit .btn-edit-cancel,
+.product-edit .btn-edit-cancel:hover {
+    color: var(--green-dark);
+    font-weight: 700;
+}
+
+.product-edit input[type="checkbox"],
+.product-edit input[type="radio"] {
+    accent-color: var(--green);
+}
+
+
+/* ============================================================
+   ERRORES DE VALIDACIÓN
+============================================================ */
+
+.product-edit .is-invalid {
+    border-color: #C62828 !important;
+}
+
+.product-edit .invalid-feedback,
+.product-edit .help-block strong {
+    display: block;
+    margin-top: 6px;
+    color: #C62828;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.product-edit .alert {
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .product-edit .form-control,
+    .product-edit select,
+    .product-edit textarea,
+    .product-edit input[type="file"]::file-selector-button {
+        transition: none;
+    }
+}

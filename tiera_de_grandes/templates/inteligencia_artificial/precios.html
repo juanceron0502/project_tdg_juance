@@ -1,0 +1,106 @@
+
+{% extends 'index.html' %}
+{% load static %}
+
+{% block titulo %}
+Predicción de precios | Tierra de Grandes
+{% endblock titulo %}
+
+{% block content %}
+<link rel="stylesheet"
+      href="{% static 'css/ia-precios.css' %}">
+
+<main class="ia-container">
+    <header class="ia-header">
+        <span class="ia-eyebrow">INTELIGENCIA ARTIFICIAL</span>
+
+        <h1>Predicción de precios agrícolas</h1>
+
+        <p>
+            Herramientas para apoyar decisiones de comercialización
+            y promover precios justos para el campo colombiano.
+        </p>
+    </header>
+
+    <section class="ia-status">
+        <div class="ia-status-icon">
+            {% if modelo_disponible %}
+                <span>✓</span>
+            {% else %}
+                <span>!</span>
+            {% endif %}
+        </div>
+
+        <div>
+            <h2>
+                {% if modelo_disponible %}
+                    Modelo disponible
+                {% else %}
+                    Fase de preparación de datos
+                {% endif %}
+            </h2>
+
+            <p>{{ estado_modelo }}</p>
+        </div>
+
+        <span class="ia-badge
+            {% if modelo_disponible %}
+                ia-badge-ready
+            {% else %}
+                ia-badge-pending
+            {% endif %}">
+            {% if modelo_disponible %}
+                Disponible
+            {% else %}
+                En preparación
+            {% endif %}
+        </span>
+    </section>
+
+    <section class="ia-grid">
+        <article class="ia-card">
+            <div class="ia-card-icon">01</div>
+            <h3>Recopilación de datos</h3>
+            <p>
+                Reunir precios históricos, fechas, productos,
+                regiones y unidades de comercialización.
+            </p>
+            <span class="ia-tag">Etapa inicial</span>
+        </article>
+
+        <article class="ia-card">
+            <div class="ia-card-icon">02</div>
+            <h3>Evaluación de algoritmos</h3>
+            <p>
+                Comparar modelos con datos de entrenamiento
+                y prueba, usando métricas de error.
+            </p>
+            <span class="ia-tag">Pendiente de datos</span>
+        </article>
+
+        <article class="ia-card">
+            <div class="ia-card-icon">03</div>
+            <h3>Estimación del precio</h3>
+            <p>
+                Consultar el precio estimado cuando exista
+                un modelo validado y apropiado para el producto.
+            </p>
+            <span class="ia-tag">Sujeto a validación</span>
+        </article>
+    </section>
+
+    <section class="ia-notice">
+        <h2>¿Por qué todavía no mostramos un precio?</h2>
+
+        <p>
+            Una predicción fiable necesita datos históricos suficientes
+            y una evaluación objetiva. Tierra de Grandes no presentará
+            precios estimados como precios reales del mercado.
+        </p>
+    </section>
+
+    <a class="ia-back" href="{% url 'inicio' %}">
+        ← Volver a Tierra de Grandes
+    </a>
+</main>
+{% endblock content %}

@@ -1,0 +1,98 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block titulo %}Mis cosechas | Tierra de Grandes{% endblock titulo %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/productos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mis_productos.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<main class="list-page">
+    <div class="container">
+
+        <header class="list-header">
+            <span class="section-tag">🌱 Comercio justo</span>
+            <h1>Mis cosechas</h1>
+            <p>
+                <strong>{{ producto|length }}</strong>
+                {% if producto|length == 1 %}producto publicado{% else %}productos publicados{% endif %}
+            </p>
+        </header>
+
+        <section class="catalog">
+
+            <div class="catalog-grid">
+
+                {% for item in producto %}
+
+                    <article class="product-card">
+
+                        <a href="{% url 'verproducto_usuario' item.pk %}" class="product-image-link">
+
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}"
+                                     alt="{{ item.nombre }}"
+                                     class="product-image"
+                                     loading="lazy">
+                            {% else %}
+                                <img src="{% static 'images/image_5.jpg' %}"
+                                     alt="Imagen no disponible"
+                                     class="product-image"
+                                     loading="lazy">
+                            {% endif %}
+
+                            <span class="product-label">Fresco</span>
+
+                        </a>
+
+                        <div class="product-info">
+
+                            <time class="product-date"
+                                  datetime="{{ item.timestamp|date:'c' }}">
+                                🕒 {{ item.timestamp|naturaltime }}
+                            </time>
+
+                            <h3>
+                                <a href="{% url 'verproducto_usuario' item.pk %}">{{ item.nombre }}</a>
+                            </h3>
+
+                            <div class="product-footer">
+                                <div>
+                                    <span class="price-label">Precio</span>
+                                    <span class="product-price">${{ item.precio|intcomma }}</span>
+                                </div>
+
+                                <a href="{% url 'verproducto_usuario' item.pk %}"
+                                   class="btn-view-product"
+                                   aria-label="Ver detalle de {{ item.nombre }}">
+                                    Ver →
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <div class="empty-products">
+                        <div class="empty-icon" aria-hidden="true">🌾</div>
+                        <h3>Aún no hay cosechas</h3>
+                        <p>Cuando se publiquen productos aparecerán aquí.</p>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </div>
+</main>
+
+{% endblock content %}

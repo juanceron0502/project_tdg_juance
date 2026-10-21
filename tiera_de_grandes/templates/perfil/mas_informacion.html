@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block titulo %}Información del productor | Tierra de Grandes{% endblock titulo %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/informacion_productor.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<main class="producer-page">
+    <div class="container">
+
+        <div class="producer-card">
+
+            <!-- ENCABEZADO -->
+            <header class="producer-header">
+                <div class="producer-header-overlay"></div>
+
+                <div class="producer-header-content">
+                    <span class="producer-tag">🌾 PRODUCTOR</span>
+                    <h1>Información del productor</h1>
+                    <p class="producer-name">{{ user.full_nombre|capfirst }}</p>
+                </div>
+            </header>
+
+
+            <!-- TABLA -->
+            <section class="producer-body">
+
+                <div class="producer-table-wrapper">
+
+                    <table class="producer-table">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Apellidos</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Otra dirección</th>
+                                <th scope="col">Departamento</th>
+                                <th scope="col">Ciudad</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for users in user_form %}
+                                <tr>
+                                    <td data-label="Nombres">{{ users.userperfil.user.nombres|title }}</td>
+                                    <td data-label="Apellidos">{{ users.userperfil.user.apellidos|title }}</td>
+                                    <td data-label="Teléfono">
+                                        <a href="tel:{{ users.userperfil.user.numero_telefono }}">
+                                            {{ users.userperfil.user.numero_telefono }}
+                                        </a>
+                                    </td>
+                                    <td data-label="Dirección">{{ users.userperfil.direccion_linea_1|title|default:"—" }}</td>
+                                    <td data-label="Otra dirección">{{ users.userperfil.direccion_linea_2|title|default:"—" }}</td>
+                                    <td data-label="Departamento">{{ users.userperfil.departamento|title|default:"—" }}</td>
+                                    <td data-label="Ciudad">{{ users.userperfil.ciudad|title|default:"—" }}</td>
+                                </tr>
+
+                            {% empty %}
+                                <tr class="producer-empty-row">
+                                    <td colspan="7">
+                                        <div class="producer-empty">
+                                            <span aria-hidden="true">🌾</span>
+                                            <p>No hay información disponible para este productor.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="producer-actions">
+                    <a href="{% url 'verproducto' %}" class="btn-producer-back">
+                        ← Volver a las cosechas
+                    </a>
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+</main>
+
+{% endblock content %}

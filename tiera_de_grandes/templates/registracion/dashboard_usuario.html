@@ -1,0 +1,265 @@
+
+{% extends 'index.html' %}
+{% load static %}
+
+{% block titulo %}Panel de control | Tierra de Grandes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard-bi.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="bi-dashboard">
+    <div class="container-fluid bi-container">
+
+        <!-- Encabezado -->
+        <header class="bi-welcome">
+            <div>
+                <span class="bi-eyebrow">TIERRA DE GRANDES / PANEL BI</span>
+                <h1>Panel de control</h1>
+                <p>
+                    Hola, {{ request.user.first_name|default:request.user.nombreusuario }}.
+                    Consulta el estado de tu actividad agrícola.
+                </p>
+            </div>
+
+            <a href="{% url 'agregar_producto' %}" class="bi-primary-btn">
+                <span>＋</span> Publicar cosecha
+            </a>
+        </header>
+
+        <div class="row">
+
+            <!-- Menú lateral -->
+            <aside class="col-lg-3 col-xl-2 mb-4">
+                <div class="bi-sidebar">
+                    <div class="bi-profile">
+                        <div class="bi-avatar"><img src="{{ user.userperfil.image_perfil.url }}" alt=""></div>
+                        <h3>{{ request.user.first_name|default:request.user.nombreusuario }}</h3>
+                        <span>Productor agrícola</span>
+                    </div>
+
+                    <span class="bi-menu-title">MI ESPACIO</span>
+
+                    <a class="bi-menu-link active"
+                       href="{% url 'perfil' %}">
+                        <span>▦</span> Resumen
+                    </a>
+
+                    <a class="bi-menu-link"
+                       href="{% url 'mis_ordenes' %}">
+                        <span>▤</span> Mis pedidos
+                    </a>
+
+                    <a class="bi-menu-link"
+                       href="{% url 'mis_productos' %}">
+                        <span>🌾</span> Mis cosechas
+                    </a>
+
+                    <a class="bi-menu-link"
+                       href="{% url 'agregar_producto' %}">
+                        <span>＋</span> Agregar producto
+                    </a>
+
+                    <a class="bi-menu-link"
+                       href="{% url 'edit_perfil' %}">
+                        <span>⚙</span> Editar perfil
+                    </a>
+
+                    <div class="bi-sidebar-bottom">
+                        <a class="bi-logout" href="{% url 'logout' %}">
+                            ↪ Cerrar sesión
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Contenido BI -->
+            <main class="col-lg-9 col-xl-10">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="bi-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Indicadores -->
+                <div class="bi-section-heading">
+                    <div>
+                        <h2>Resumen de actividad</h2>
+                        <p>Indicadores de tu negocio agrícola</p>
+                    </div>
+                    <span class="bi-live-label">
+                        <span></span> Tu actividad
+                    </span>
+                </div>
+
+                <div class="row bi-kpi-row">
+
+                    <div class="col-sm-6 col-xl-3 mb-3">
+                        <article class="bi-kpi-card">
+                            <div class="bi-kpi-top">
+                                <span>Pedidos</span>
+                                <div class="bi-kpi-icon green">▤</div>
+                            </div>
+                            <strong>{{ total_ordenes|default:0 }}</strong>
+                            <small>Pedidos registrados</small>
+                        </article>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3 mb-3">
+                        <article class="bi-kpi-card">
+                            <div class="bi-kpi-top">
+                                <span>Ventas</span>
+                                <div class="bi-kpi-icon orange">$</div>
+                            </div>
+                            <strong>
+                                ${{ total_ventas|default:0|floatformat:0 }}
+                            </strong>
+                            <small>Valor acumulado de ventas</small>
+                        </article>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3 mb-3">
+                        <article class="bi-kpi-card">
+                            <div class="bi-kpi-top">
+                                <span>Productos</span>
+                                <div class="bi-kpi-icon lime">🌱</div>
+                            </div>
+                            <strong>{{ total_productos|default:0 }}</strong>
+                            <small>Cosechas publicadas</small>
+                        </article>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3 mb-3">
+                        <article class="bi-kpi-card">
+                            <div class="bi-kpi-top">
+                                <span>Inventario bajo</span>
+                                <div class="bi-kpi-icon red">!</div>
+                            </div>
+                            <strong>{{ productos_bajo_stock|default:0 }}</strong>
+                            <small>Productos por revisar</small>
+                        </article>
+                    </div>
+
+                </div>
+
+                <!-- Paneles de información -->
+                <div class="row">
+
+                    <div class="col-xl-7 mb-4">
+                        <section class="bi-panel">
+                            <div class="bi-panel-heading">
+                                <div>
+                                    <h3>Últimos pedidos</h3>
+                                    <p>Seguimiento de tus ventas</p>
+                                </div>
+                                <a href="{% url 'mis_ordenes' %}">
+                                    Ver todos →
+                                </a>
+                            </div>
+
+                            {% if ordenes_recientes %}
+                                <div class="table-responsive">
+                                    <table class="bi-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Pedido</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for orden in ordenes_recientes %}
+                                                <tr>
+                                                    <td>
+                                                        #{{ orden.id }}
+                                                    </td>
+                                                    <td>
+                                                        {{ orden.fecha|date:"d/m/Y" }}
+                                                    </td>
+                                                    <td>
+                                                        <span class="bi-status">
+                                                            {{ orden.estado|default:"Registrado" }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        ${{ orden.total|floatformat:0 }}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="bi-empty">
+                                    <span>🌾</span>
+                                    <h4>Aún no hay pedidos para mostrar</h4>
+                                    <p>
+                                        Cuando existan pedidos asociados
+                                        a tus productos, aparecerán aquí.
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </section>
+                    </div>
+
+                    <div class="col-xl-5 mb-4">
+                        <section class="bi-panel bi-actions-panel">
+                            <div class="bi-panel-heading">
+                                <div>
+                                    <h3>Acciones rápidas</h3>
+                                    <p>Gestiona tu actividad</p>
+                                </div>
+                            </div>
+
+                            <a class="bi-action" href="{% url 'agregar_producto' %}">
+                                <span class="bi-action-icon">＋</span>
+                                <span>
+                                    <strong>Publicar una cosecha</strong>
+                                    <small>Ofrece un nuevo producto</small>
+                                </span>
+                                <b>→</b>
+                            </a>
+
+                            <a class="bi-action" href="{% url 'mis_productos' %}">
+                                <span class="bi-action-icon">🌽</span>
+                                <span>
+                                    <strong>Administrar productos</strong>
+                                    <small>Consulta tus cosechas</small>
+                                </span>
+                                <b>→</b>
+                            </a>
+
+                            <a class="bi-action" href="{% url 'mis_ordenes' %}">
+                                <span class="bi-action-icon">📦</span>
+                                <span>
+                                    <strong>Consultar pedidos</strong>
+                                    <small>Revisa las compras</small>
+                                </span>
+                                <b>→</b>
+                            </a>
+                        </section>
+                    </div>
+
+                </div>
+
+                <div class="bi-bottom-note">
+                    <span>🌱</span>
+                    <div>
+                        <strong>Impulsando el campo colombiano</strong>
+                        <p>
+                            Tierra de Grandes conecta a productores y
+                            consumidores mediante el comercio justo.
+                        </p>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+</section>
+{% endblock content %}

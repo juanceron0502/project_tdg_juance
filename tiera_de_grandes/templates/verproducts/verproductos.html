@@ -1,0 +1,471 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ single_producto.nombre }} | Tierra de Grandes</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- Iconos -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS propio -->
+   
+</head>
+
+ <link rel="stylesheet"
+          href="{% static 'css/single_product.css' %}">
+<body>
+
+<!-- =========================================================
+     BARRA SUPERIOR
+========================================================= -->
+
+
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+
+
+
+<!-- =========================================================
+     MIGAS DE PAN
+========================================================= -->
+
+
+
+
+<!-- =========================================================
+     DETALLE DEL PRODUCTO
+========================================================= -->
+
+<section class="product-detail-section">
+
+    <div class="container">
+
+        <div class="product-detail-card">
+
+            <!-- IMAGEN -->
+
+            <div class="product-image-container">
+
+                <div class="product-image">
+
+                    {% if single_producto.image %}
+
+                        <img
+                            src="{{ single_producto.image.url }}"
+                            alt="{{ single_producto.nombre }}">
+
+                    {% else %}
+
+                        <div class="no-image">
+
+                            <i class="fas fa-image"></i>
+
+                            <p>
+                                Imagen no disponible
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="product-information">
+
+                <span class="product-category">
+
+                    <i class="fas fa-leaf"></i>
+
+                    Producto agrícola
+
+                </span>
+
+
+                <h1>
+                    {{ single_producto.nombre }}
+                </h1>
+
+
+                <div class="product-price">
+
+                    ${{ single_producto.precio }}
+
+                </div>
+
+
+                <div class="separator"></div>
+
+
+                <h3>
+                    Descripción
+                </h3>
+
+
+                <p class="product-description">
+
+                    {{ single_producto.descripcion }}
+
+                </p>
+
+
+                <!-- INFORMACIÓN -->
+
+                <div class="product-features">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <i class="fas fa-tractor"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Producto del campo
+                            </strong>
+
+                            <span>
+                                Directamente de nuestros agricultores
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <i class="fas fa-leaf"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Fresco y natural
+                            </strong>
+
+                            <span>
+                                Productos seleccionados
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <i class="fas fa-handshake"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Comercio justo
+                            </strong>
+
+                            <span>
+                                Compra directamente al agricultor
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTONES -->
+
+                <div class="product-actions">
+
+                    {% if in_carrito %}
+
+                        <a href="{% url 'carrito' %}"
+                           class="btn-cart added">
+
+                            <i class="fas fa-check"></i>
+
+                            Ver carrito
+
+                        </a>
+
+                    {% else %}
+
+                        <a href="{% url 'add_carrito' single_producto.pk %}"
+                           class="btn-cart">
+
+                            <i class="fas fa-cart-plus"></i>
+
+                            Agregar al carrito
+
+                        </a>
+
+                    {% endif %}
+
+
+                    <a href="{% url 'verproducto' %}"
+                       class="btn-back">
+
+                        <i class="fas fa-arrow-left"></i>
+
+                        Seguir comprando
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BENEFICIOS
+========================================================= -->
+
+<section class="benefits-section">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <span>
+                Tierra de Grandes
+            </span>
+
+            <h2>
+                Compra directamente al campo
+            </h2>
+
+            <p>
+                Conectamos productores y consumidores
+                para construir un comercio agrícola más justo.
+            </p>
+
+        </div>
+
+
+        <div class="benefits-grid">
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fas fa-hand-holding-dollar"></i>
+
+                </div>
+
+                <h3>
+                    Precio justo
+                </h3>
+
+                <p>
+                    Buscamos reducir la intermediación
+                    y favorecer al productor.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fas fa-seedling"></i>
+
+                </div>
+
+                <h3>
+                    Productos frescos
+                </h3>
+
+                <p>
+                    Encuentra productos agrícolas
+                    cultivados por nuestros productores.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fas fa-users"></i>
+
+                </div>
+
+                <h3>
+                    Conexión directa
+                </h3>
+
+                <p>
+                    Facilitamos la conexión entre
+                    agricultores y consumidores.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     COMENTARIOS
+========================================================= -->
+
+<section class="reviews-section">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <span>
+                Opiniones
+            </span>
+
+            <h2>
+                Lo que dicen nuestros clientes
+            </h2>
+
+        </div>
+
+
+        {% if comentarios %}
+
+            <div class="reviews-grid">
+
+                {% for comentario in comentarios %}
+
+                    <div class="review-card">
+
+                        <div class="review-header">
+
+                            <div class="review-avatar">
+
+                                <i class="fas fa-user"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ comentario.user }}
+                                </strong>
+
+                                <div class="stars">
+
+                                    {% if comentario.calificacion >= 1 %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+
+                                    {% if comentario.calificacion >= 2 %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+
+                                    {% if comentario.calificacion >= 3 %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+
+                                    {% if comentario.calificacion >= 4 %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+
+                                    {% if comentario.calificacion >= 5 %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="review-subject">
+                            {{ comentario.Sujeto }}
+                        </p>
+
+
+                        <p class="review-text">
+
+                            "{{ comentario.comentario }}"
+
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="no-reviews">
+
+                <i class="far fa-comment-dots"></i>
+
+                <h3>
+                    Aún no hay comentarios
+                </h3>
+
+                <p>
+                    Sé el primero en compartir tu experiencia
+                    con este producto.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+{% endblock %}
+
+
+</body>
+</html>

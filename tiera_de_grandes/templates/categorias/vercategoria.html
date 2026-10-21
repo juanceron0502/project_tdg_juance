@@ -1,0 +1,213 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/store.css' %}">
+<section class="store-page">
+
+    <!-- Banner -->
+    <header class="store-hero">
+        <div class="store-container">
+            <div class="store-hero-content">
+                <div>
+                    <span class="store-badge">🌱 Mercado Agrícola</span>
+                    <h1>Nuestra Tienda</h1>
+                    <p>Compra directamente a productores colombianos sin intermediarios.</p>
+                </div>
+
+                <div class="store-counter">
+                    <strong>{{ producto_count }}</strong>
+                    <span>Productos encontrados</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido -->
+    <div class="store-container store-layout">
+
+        <!-- Categorías -->
+        <aside class="store-sidebar">
+            <div class="store-panel">
+                <h2 class="store-panel-title">Categorías</h2>
+
+                <ul class="store-category-list">
+                    <li>
+                        <a href="{% url 'verproducto' %}">
+                            <span>🌾</span> Todos los productos
+                        </a>
+                    </li>
+
+                    {% for categoria in links %}
+                    <li>
+                        <a href="{{ categoria.get_url }}">
+                            <span>🥬</span> {{ categoria.nombre }}
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li class="store-no-categories">
+                        No hay categorías disponibles.
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Productos -->
+        <main class="store-main">
+
+            <div class="store-results-header">
+                <div>
+                    <h2>Productos disponibles</h2>
+                    <p>Encuentra productos frescos para tu hogar o negocio.</p>
+                </div>
+                <span class="store-results-count">
+                    {{ producto_count }} productos
+                </span>
+            </div>
+
+            <div class="store-products-grid">
+
+                {% for categoria in productos %}
+
+                <article class="store-product-card">
+
+                    <a href="{{ categoria.get_url }}"
+                       class="store-product-image-link">
+
+                        {% if categoria.image %}
+                        <img
+                            src="{{ categoria.image.url }}"
+                            alt="{{ categoria.nombre }}"
+                            class="store-product-image"
+                            loading="lazy">
+                        {% else %}
+                        <div class="store-image-placeholder">🌱</div>
+                        {% endif %}
+
+                        <span class="store-product-label">
+                            Producto agrícola
+                        </span>
+                    </a>
+
+                    <div class="store-product-info">
+
+                        <h3>
+                            <a href="{{ categoria.get_url }}">
+                                {{ categoria.nombre }}
+                            </a>
+                        </h3>
+
+                        <div class="store-product-footer">
+                            <div>
+                                <span class="store-price-label">
+                                    Precio
+                                </span>
+                                <strong class="store-product-price">
+                                    ${{ categoria.precio|intcomma }}
+                                </strong>
+                            </div>
+
+                            <a
+                                href="{% url 'add_carrito' categoria.id %}"
+                                class="store-add-cart"
+                                aria-label="Añadir {{ categoria.nombre }} al carrito"
+                                title="Añadir al carrito">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+
+                {% empty %}
+
+                <div class="store-empty-products">
+                    <div>🧺</div>
+                    <h3>No se encontraron productos</h3>
+                    <p>Prueba con otra categoría para encontrar lo que buscas.</p>
+                    <a href="{% url 'verproducto' %}"
+                       class="store-button">
+                        Ver todos los productos
+                    </a>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <!-- Productores relacionados -->
+            {% if users %}
+            <section class="store-sellers">
+                <div class="store-results-header">
+                    <div>
+                        <h2>Productores relacionados</h2>
+                        <p>Conoce a las personas detrás de los productos.</p>
+                    </div>
+                </div>
+
+                <div class="store-sellers-grid">
+                    {% for post in users %}
+                    <article class="store-seller-card">
+
+                        {% if post.userperfil.image_perfil %}
+                        <img
+                            src="{{ post.userperfil.image_perfil.url }}"
+                            alt="Perfil de {{ post.nombres }}"
+                            loading="lazy">
+                        {% else %}
+                        <div class="store-seller-placeholder">👨‍🌾</div>
+                        {% endif %}
+
+                        <div class="store-seller-info">
+                            <h3>{{ post.nombres }}</h3>
+                            <p>{{ post.userperfil.descripcion }}</p>
+
+                            <a href="{% url 'perfil' post.userperfil.user.nombreusuario %}">
+                                Ver perfil →
+                            </a>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Paginación -->
+            {% if productos.has_other_pages %}
+            <nav class="store-pagination" aria-label="Paginación de productos">
+                <ul>
+                    {% if productos.has_previous %}
+                    <li>
+                        <a href="?page={{ productos.previous_page_number }}"
+                           aria-label="Página anterior">‹</a>
+                    </li>
+                    {% endif %}
+
+                    {% for i in productos.paginator.page_range %}
+                    <li class="{% if productos.number == i %}active{% endif %}">
+                        {% if productos.number == i %}
+                        <span aria-current="page">{{ i }}</span>
+                        {% else %}
+                        <a href="?page={{ i }}">{{ i }}</a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+
+                    {% if productos.has_next %}
+                    <li>
+                        <a href="?page={{ productos.next_page_number }}"
+                           aria-label="Página siguiente">›</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        </main>
+    </div>
+</section>
+
+{% endblock %}

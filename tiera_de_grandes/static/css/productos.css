@@ -1,0 +1,106 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   productos.css
+   Reutiliza .product-card, .product-image, .product-price, etc.
+   definidos en index.css. Aquí solo va la cuadrícula del listado.
+============================================================ */
+
+.catalog {
+    width: 100%;
+}
+
+/* Cuadrícula flexible: se adapta al ancho disponible, sirve
+   tanto en la página de productos como dentro del perfil */
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
+}
+
+
+/* Ajustes de las tarjetas dentro del listado */
+
+.catalog-grid .product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.catalog-grid .product-image {
+    height: 190px;
+}
+
+.catalog-grid .product-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 16px;
+}
+
+.catalog-grid .product-info h3 {
+    min-height: 0;
+    margin: 6px 0 14px;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+}
+
+.catalog-grid .product-footer {
+    margin-top: auto;
+}
+
+.catalog-grid .product-price {
+    font-size: 19px;
+}
+
+
+/* Accesibilidad */
+
+.catalog-grid .product-image-link:focus-visible,
+.catalog-grid .product-info h3 a:focus-visible,
+.catalog-grid .add-cart:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .catalog-grid .product-card,
+    .catalog-grid .product-image {
+        transition: none;
+    }
+
+    .catalog-grid .product-card:hover,
+    .catalog-grid .product-card:hover .product-image {
+        transform: none;
+    }
+}
+
+
+/* Móvil */
+
+@media (max-width: 768px) {
+
+    .catalog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .catalog-grid .product-image {
+        height: 150px;
+    }
+
+    .catalog-grid .product-info {
+        padding: 12px;
+    }
+
+    .catalog-grid .product-info h3 {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+}

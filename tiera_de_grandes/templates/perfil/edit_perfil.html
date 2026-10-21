@@ -1,0 +1,176 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block titulo %}Editar perfil | Tierra de Grandes{% endblock titulo %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/editar_perfil.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<main class="edit-page">
+    <div class="container">
+
+        <div class="edit-card">
+
+            <!-- ENCABEZADO -->
+            <header class="edit-header">
+                <div class="edit-header-overlay"></div>
+
+                <div class="edit-header-content">
+
+                    <div class="edit-avatar-box">
+                        {% if userperfil.image_perfil %}
+                            <img src="{{ userperfil.image_perfil.url }}"
+                                 alt="Imagen de perfil actual"
+                                 class="edit-avatar"
+                                 id="avatarPreview">
+                        {% else %}
+                            <img src="{% static 'images/default-user.png' %}"
+                                 alt="Imagen de perfil por defecto"
+                                 class="edit-avatar"
+                                 id="avatarPreview">
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <span class="edit-tag">🌾 MI CUENTA</span>
+                        <h1>Editar perfil</h1>
+                        <p>Mantén tus datos al día para que los compradores puedan encontrarte y contactarte.</p>
+                    </div>
+
+                </div>
+            </header>
+
+
+            <!-- ALERTAS -->
+            <div class="edit-alerts">
+                {% include 'includes/alerts.html' %}
+            </div>
+
+
+            <!-- FORMULARIO -->
+            <form action="{% url 'edit_perfil' %}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="edit-form">
+
+                {% csrf_token %}
+
+                <!-- DATOS PERSONALES -->
+                <fieldset class="edit-fieldset">
+                    <legend><span aria-hidden="true">👤</span> Datos personales</legend>
+
+                    <div class="edit-grid">
+
+                        <div class="edit-field">
+                            <label for="{{ user_form.nombres.id_for_label }}">Nombre</label>
+                            {{ user_form.nombres }}
+                            {{ user_form.nombres.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ user_form.apellidos.id_for_label }}">Apellidos</label>
+                            {{ user_form.apellidos }}
+                            {{ user_form.apellidos.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ user_form.numero_telefono.id_for_label }}">Teléfono</label>
+                            {{ user_form.numero_telefono }}
+                            {{ user_form.numero_telefono.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.image_perfil.id_for_label }}">Imagen de perfil</label>
+                            {{ perfil_form.image_perfil }}
+                            {{ perfil_form.image_perfil.errors }}
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+                <!-- UBICACIÓN -->
+                <fieldset class="edit-fieldset">
+                    <legend><span aria-hidden="true">📍</span> Ubicación</legend>
+
+                    <div class="edit-grid">
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.direccion_linea_1.id_for_label }}">Detalle de dirección</label>
+                            {{ perfil_form.direccion_linea_1 }}
+                            {{ perfil_form.direccion_linea_1.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.direccion_linea_2.id_for_label }}">Otra dirección</label>
+                            {{ perfil_form.direccion_linea_2 }}
+                            {{ perfil_form.direccion_linea_2.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.ciudad.id_for_label }}">Ciudad</label>
+                            {{ perfil_form.ciudad }}
+                            {{ perfil_form.ciudad.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.departamento.id_for_label }}">Departamento</label>
+                            {{ perfil_form.departamento }}
+                            {{ perfil_form.departamento.errors }}
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+                <!-- DESCRIPCIÓN -->
+                <fieldset class="edit-fieldset">
+                    <legend><span aria-hidden="true">📝</span> Sobre ti</legend>
+
+                    <div class="edit-field">
+                        <label for="{{ perfil_form.descripcion.id_for_label }}">Descripción</label>
+                        {{ perfil_form.descripcion }}
+                        {{ perfil_form.descripcion.errors }}
+                    </div>
+                </fieldset>
+
+
+                <!-- ACCIONES -->
+                <div class="edit-actions">
+                    <a href="{% url 'perfil' %}" class="btn-edit-cancel">Cancelar</a>
+                    <button type="submit" class="btn-edit-save">
+                        Guardar cambios
+                        <span aria-hidden="true">✓</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</main>
+
+
+<script>
+    // Vista previa de la nueva imagen antes de guardar
+    (function () {
+        const input = document.getElementById("{{ perfil_form.image_perfil.id_for_label }}");
+        const preview = document.getElementById("avatarPreview");
+
+        if (!input || !preview) return;
+
+        input.addEventListener("change", function () {
+            const file = input.files && input.files[0];
+            if (file && file.type.startsWith("image/")) {
+                preview.src = URL.createObjectURL(file);
+            }
+        });
+    })();
+</script>
+
+{% endblock content %}

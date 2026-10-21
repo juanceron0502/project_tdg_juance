@@ -1,0 +1,104 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% block titulo %}Agregar producto | Tierra de Grandes{% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/producto-form.css' %}">
+
+
+<section class="tdg-product-section">
+    <div class="container">
+
+        <!-- Encabezado -->
+        <div class="tdg-page-heading">
+            <span class="tdg-eyebrow">TIERRA DE GRANDES</span>
+            <h1>Publica tu cosecha</h1>
+            <p>
+                Comparte tus productos agrícolas y conecta directamente
+                con compradores.
+            </p>
+        </div>
+
+        <div class="tdg-form-card">
+
+            <div class="tdg-form-header">
+                <div class="tdg-form-icon">🌱</div>
+                <div>
+                    <h2>Agregar un producto</h2>
+                    <p>Completa la información de tu cosecha.</p>
+                </div>
+            </div>
+
+            <hr class="tdg-divider">
+
+            <form method="POST"
+                  action=""
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {% if formulario.non_field_errors %}
+                    <div class="tdg-alert">
+                        {{ formulario.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="tdg-form-grid">
+
+                    {% for field in formulario %}
+                        <div class="tdg-field
+                            {% if field.name == 'descripcion' or field.name == 'informacion_produccion' %}
+                                tdg-field-full
+                            {% endif %}">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+
+                                {% if field.field.required %}
+                                    <span class="tdg-required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="tdg-help">
+                                    {{ field.help_text }}
+                                </small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="tdg-error">
+                                    {{ error }}
+                                </small>
+                            {% endfor %}
+
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+                <div class="tdg-form-actions">
+                    <a href="{% url 'inicio' %}" class="tdg-btn-cancel">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="tdg-btn-save">
+                        <span>＋</span> Guardar producto
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+        <p class="tdg-footer-note">
+            🌾 Promovemos el comercio justo y el crecimiento del campo colombiano.
+        </p>
+
+    </div>
+</section>
+
+{% endblock content %}

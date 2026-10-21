@@ -1,0 +1,231 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block titulo %}Detalle del producto | Tierra de Grandes{% endblock titulo %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/productos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/detalle_producto.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<main class="detail-page">
+    <div class="container">
+
+        <a href="{% url 'verproducto' %}" class="detail-back">← Volver a las cosechas</a>
+
+
+        <!-- =====================================================
+             DETALLE DEL PRODUCTO
+        ====================================================== -->
+        {% for producto in verproducto %}
+
+        <article class="detail-card">
+
+            <div class="detail-media">
+                {% if producto.image %}
+                    <a href="{{ producto.image.url }}" target="_blank" rel="noopener" title="Ver imagen completa">
+                        <img src="{{ producto.image.url }}"
+                             alt="{{ producto.nombre }}"
+                             class="detail-image">
+                    </a>
+                {% else %}
+                    <img src="{% static 'images/image_5.jpg' %}"
+                         alt="Imagen no disponible"
+                         class="detail-image">
+                {% endif %}
+                <span class="product-label">Fresco</span>
+            </div>
+
+
+            <div class="detail-info">
+
+                <span class="detail-tag">🌾 PRODUCTO AGRÍCOLA</span>
+
+                <h1>{{ producto.nombre }}</h1>
+
+                <time class="detail-date" datetime="{{ producto.timestamp|date:'c' }}">
+                    🕒 Publicado {{ producto.timestamp|naturaltime }}
+                </time>
+
+                <p class="detail-price">${{ producto.precio|intcomma }}</p>
+
+                {% if producto.Informacion_de_produccion %}
+                    <div class="detail-production">
+                        <h2>Información de producción</h2>
+                        <p>{{ producto.Informacion_de_produccion|linebreaksbr }}</p>
+                    </div>
+                {% endif %}
+
+                {% if producto.descripcion %}
+                    <div class="detail-description">
+                        <h2>Descripción</h2>
+                        <p>{{ producto.descripcion|linebreaksbr }}</p>
+                    </div>
+                {% endif %}
+
+
+                {% if request.user.is_authenticated %}
+                    <div class="detail-actions">
+
+                        <a href="{% url 'modificar_producto' producto.pk %}" class="btn-detail-primary">
+                            ✏️ Modificar
+                        </a>
+
+                        <!-- IMPORTANTE: cambia 'eliminar_producto' por el nombre real de tu URL -->
+                        <form action="{% url 'eliminar_producto' producto.pk %}"
+                              method="post"
+                              onsubmit="return confirm('¿Seguro que quieres eliminar este producto?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-detail-danger">🗑️ Eliminar</button>
+                        </form>
+
+                    </div>
+                {% endif %}
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+</main>
+
+
+<!-- =========================================================
+     PRODUCTOS RELACIONADOS
+     Requiere que la vista envíe la variable "relacionados"
+========================================================== -->
+{% if relacionados %}
+<section class="related-section">
+    <div class="container">
+
+        <div class="section-heading">
+            <span class="section-tag">🌱 Más cosechas</span>
+            <h2>Productos relacionados</h2>
+            <p>Otras cosechas que pueden interesarte.</p>
+        </div>
+
+        <div class="catalog-grid">
+
+            {% for rel in relacionados %}
+
+                <article class="product-card">
+
+                    <a href="{% url 'verproducto_usuario' rel.pk %}" class="product-image-link">
+                        {% if rel.image %}
+                            <img src="{{ rel.image.url }}" alt="{{ rel.nombre }}" class="product-image" loading="lazy">
+                        {% else %}
+                            <img src="{% static 'images/image_5.jpg' %}" alt="Imagen no disponible" class="product-image" loading="lazy">
+                        {% endif %}
+                        <span class="product-label">Fresco</span>
+                    </a>
+
+                    <div class="product-info">
+                        <span class="product-category">Producto agrícola</span>
+
+                        <h3><a href="{% url 'verproducto_usuario' rel.pk %}">{{ rel.nombre }}</a></h3>
+
+                        <div class="product-footer">
+                            <div>
+                                <span class="price-label">Precio</span>
+                                <span class="product-price">${{ rel.precio|intcomma }}</span>
+                            </div>
+
+                            <a href="{% url 'add_carrito' rel.pk %}"
+                               class="add-cart"
+                               title="Agregar al carrito"
+                               aria-label="Agregar {{ rel.nombre }} al carrito">
+                                <span aria-hidden="true">🛒</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+{% endif %}
+
+
+<!-- =========================================================
+     CALIFICACIÓN Y COMENTARIOS
+========================================================== -->
+<section class="review-section">
+    <div class="container">
+
+        <div class="review-grid">
+
+            <div class="review-intro">
+                <span class="section-tag">⭐ Tu opinión cuenta</span>
+                <h2>Califica este producto</h2>
+                <p>Cuéntanos cómo fue tu experiencia. Tus comentarios ayudan a otros compradores y a los agricultores a mejorar.</p>
+            </div>
+
+
+            <div class="review-card">
+
+                {% if request.user.is_authenticated %}
+
+                    <form action="" method="post" class="review-form">
+                        {% csrf_token %}
+
+                        <h3>Escribe tu comentario</h3>
+
+                        <fieldset class="review-rating">
+                            <legend>¿Cómo calificarías este producto?</legend>
+
+                            <div class="rate">
+                                <input type="radio" name="calificacion" value="5"   id="calificacion10"><label for="calificacion10" title="5"></label>
+                                <input type="radio" name="calificacion" value="4.5" id="calificacion9"><label for="calificacion9" title="4.5" class="half"></label>
+                                <input type="radio" name="calificacion" value="4"   id="calificacion8"><label for="calificacion8" title="4"></label>
+                                <input type="radio" name="calificacion" value="3.5" id="calificacion7"><label for="calificacion7" title="3.5" class="half"></label>
+                                <input type="radio" name="calificacion" value="3"   id="calificacion6"><label for="calificacion6" title="3"></label>
+                                <input type="radio" name="calificacion" value="2.5" id="calificacion5"><label for="calificacion5" title="2.5" class="half"></label>
+                                <input type="radio" name="calificacion" value="2"   id="calificacion4"><label for="calificacion4" title="2"></label>
+                                <input type="radio" name="calificacion" value="1.5" id="calificacion3"><label for="calificacion3" title="1.5" class="half"></label>
+                                <input type="radio" name="calificacion" value="1"   id="calificacion2"><label for="calificacion2" title="1"></label>
+                                <input type="radio" name="calificacion" value="0.5" id="calificacion1"><label for="calificacion1" title="0.5" class="half"></label>
+                            </div>
+                        </fieldset>
+
+                        <div class="review-field">
+                            <label for="tema">Título del comentario</label>
+                            <input type="text" id="tema" name="tema" maxlength="100">
+                        </div>
+
+                        <div class="review-field">
+                            <label for="comentario">Comentario</label>
+                            <textarea id="comentario" name="comentario" rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-detail-primary">Enviar comentario</button>
+
+                    </form>
+
+                {% else %}
+
+                    <div class="review-login">
+                        <span aria-hidden="true">🔒</span>
+                        <p>Inicia sesión para calificar este producto.</p>
+                        <a href="{% url 'login' %}" class="btn-detail-primary">Iniciar sesión</a>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,294 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   informacion_productor.css
+   Depende de las variables definidas en index.css
+============================================================ */
+
+.producer-page {
+    padding: 50px 0 80px;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(102, 187, 106, .14), transparent 30%),
+        var(--cream);
+}
+
+.producer-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+
+/* ============================================================
+   ENCABEZADO
+============================================================ */
+
+.producer-header {
+    position: relative;
+    padding: 40px 35px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: var(--white);
+}
+
+.producer-header-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 85% 20%, rgba(249, 168, 37, .25), transparent 35%),
+        radial-gradient(circle at 10% 90%, rgba(102, 187, 106, .35), transparent 40%);
+    pointer-events: none;
+}
+
+.producer-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.producer-tag {
+    display: inline-block;
+    margin-bottom: 4px;
+    color: #FFE082;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.producer-header h1 {
+    margin: 0 0 6px;
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.producer-name {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    opacity: .95;
+}
+
+
+/* ============================================================
+   CUERPO Y TABLA
+============================================================ */
+
+.producer-body {
+    padding: 30px 35px 35px;
+}
+
+.producer-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.producer-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.producer-table thead {
+    background: var(--green-soft);
+}
+
+.producer-table th {
+    padding: 14px 16px;
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--green-light);
+}
+
+.producer-table td {
+    padding: 14px 16px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.producer-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.producer-table tbody tr:nth-child(even) {
+    background: var(--cream);
+}
+
+.producer-table tbody tr {
+    transition: background-color .2s;
+}
+
+.producer-table tbody tr:hover {
+    background: var(--green-soft);
+}
+
+.producer-table td a {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.producer-table td a:hover {
+    color: var(--green-dark);
+}
+
+
+/* ESTADO VACÍO */
+
+.producer-empty-row,
+.producer-empty-row:hover {
+    background: var(--white) !important;
+}
+
+.producer-empty {
+    padding: 35px 15px;
+    text-align: center;
+}
+
+.producer-empty span {
+    font-size: 42px;
+}
+
+.producer-empty p {
+    margin: 8px 0 0;
+    color: var(--text-light);
+}
+
+
+/* ============================================================
+   BOTÓN
+============================================================ */
+
+.producer-actions {
+    margin-top: 25px;
+}
+
+.btn-producer-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: transparent;
+    border: 1px solid var(--green);
+    border-radius: 7px;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+    transition: background-color .25s, transform .25s;
+}
+
+.btn-producer-back:hover {
+    background: var(--green-soft);
+    color: var(--green-dark);
+    transform: translateX(-3px);
+}
+
+.btn-producer-back:focus-visible,
+.producer-table td a:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .producer-table tbody tr,
+    .btn-producer-back {
+        transition: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   En móvil cada fila se convierte en una tarjeta
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .producer-page {
+        padding: 30px 0 60px;
+    }
+
+    .producer-header {
+        padding: 30px 20px;
+    }
+
+    .producer-body {
+        padding: 22px 20px 28px;
+    }
+
+    .producer-table-wrapper {
+        border: none;
+        overflow: visible;
+    }
+
+    .producer-table,
+    .producer-table tbody,
+    .producer-table tr,
+    .producer-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .producer-table thead {
+        /* oculto visualmente pero accesible para lectores de pantalla */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    .producer-table tbody tr {
+        margin-bottom: 15px;
+        overflow: hidden;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .producer-table tbody tr:nth-child(even) {
+        background: var(--white);
+    }
+
+    .producer-table td {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 11px 15px;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .producer-table td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        color: var(--green-dark);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .5px;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .producer-empty-row td::before {
+        content: none;
+    }
+
+    .producer-actions {
+        text-align: center;
+    }
+}

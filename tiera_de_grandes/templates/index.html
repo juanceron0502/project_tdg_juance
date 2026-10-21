@@ -1,0 +1,928 @@
+{% load humanize %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block titulo %}Tierra de Grandes{% endblock titulo %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    
+
+    <!-- Estilos propios de Tierra de Grandes -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login_tdg.css' %}">
+
+    <!-- CSS propio -->
+    
+
+    {% block extra_css %}
+   
+    {% endblock extra_css %}
+    
+</head>
+
+<body>
+
+    <!-- =========================================================
+         BARRA SUPERIOR
+    ========================================================== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+
+                <div class="top-item">
+                    <span>📞</span>
+                    <span>3007845658</span>
+                </div>
+
+                <div class="top-item">
+                    <span>✉️</span>
+                    <span>Tierradegrandes@gmail.com</span>
+                </div>
+
+                <div class="top-item top-message">
+                    <span>🌱</span>
+                    <span>Apoyamos al campo colombiano</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         NAVBAR
+    ========================================================== -->
+    <nav class="main-navbar">
+
+        <div class="container">
+
+            <div class="navbar-content">
+
+                <!-- LOGO -->
+                <a href="{% url 'inicio' %}" class="brand">
+                    <span class="brand-icon">🌱</span>
+                    <span>TIERRA DE <strong>GRANDES</strong></span>
+                </a>
+
+
+                <!-- BUSCADOR -->
+                <form class="search-form"
+                      action="{% url 'buscador' %}"
+                      method="get">
+
+                    <input
+                        type="search"
+                        name="keyword"
+                        placeholder="Buscar cosechas..."
+                        aria-label="Buscar productos">
+
+                    <button type="submit">
+                        Buscar
+                    </button>
+
+                </form>
+
+
+                <!-- MENÚ -->
+                <div class="nav-menu">
+
+                    <a href="{% url 'inicio' %}" class="nav-link">
+                        Inicio
+                    </a>
+
+                    <a href="{% url 'verproducto' %}" class="nav-link">
+                        Cosechas
+                    </a>
+
+
+                    <!-- CATEGORÍAS -->
+                    <div class="nav-dropdown">
+
+                        <button class="nav-link dropdown-button"
+                                type="button"
+                                onclick="toggleCategorias()">
+
+                            Categorías
+                            <span>⌄</span>
+
+                        </button>
+
+                        <div id="categoriasMenu" class="dropdown-content">
+
+                            <a href="{% url 'verproducto' %}">
+                                Todos los productos
+                            </a>
+
+                            {% for categoria in links %}
+
+                                <a href="{{ categoria.get_url }}">
+                                    {{ categoria.nombre }}
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- USUARIO -->
+                    {% if request.user.is_authenticated %}
+
+                        <a href="{% url 'logout' %}" class="nav-link">
+                            Cerrar Sesión
+                        </a>
+
+
+                        {% if user.is_staff %}
+
+                            <a href="{% url 'tablero' %}"
+                               class="nav-link">
+                                Dashboard
+                            </a>
+
+                        {% else %}
+
+                            <a href="{% url 'carrito' %}"
+                               class="cart-link">
+
+                                🛒
+                                <span class="cart-count">
+                                    {{ carrito_count }}
+                                </span>
+
+                            </a>
+
+                            <a href="{% url 'perfil' %}"
+                               class="profile-link">
+
+                                <img
+                                    src="{{ user.userperfil.image_perfil.url }}"
+                                    alt="Perfil">
+
+                            </a>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}"
+                           class="nav-link">
+                            Iniciar Sesión
+                        </a>
+
+                        <a href="{% url 'registrar' %}"
+                           class="register-button">
+                            Registrate
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================================
+         CONTENIDO PRINCIPAL
+    ========================================================== -->
+    {% block content %}
+
+    <main>
+
+
+        <!-- =====================================================
+             HERO PRINCIPAL
+        ====================================================== -->
+        <section class="hero">
+
+            <div class="container">
+
+                <div class="hero-content">
+
+                    <div class="hero-text">
+
+                        <span class="hero-tag">
+                            🌾 COMERCIO AGRÍCOLA COLOMBIANO
+                        </span>
+
+                        <h1>
+                            Conectamos el
+                            <span>campo colombiano</span>
+                        </h1>
+
+                        <p>
+                            Compra directamente a los agricultores
+                            y contribuye a un comercio más justo,
+                            transparente y sostenible.
+                        </p>
+
+                        <div class="hero-buttons">
+
+                            <a href="{% url 'verproducto' %}"
+                               class="btn-primary-green">
+                                Explorar cosechas
+                                <span>→</span>
+                            </a>
+
+                            <a href="#como-funciona"
+                               class="btn-secondary">
+                                ¿Cómo funciona?
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-image-wrapper">
+
+                        <div class="hero-image-decoration"></div>
+
+                        <img
+                            src="{% static 'images/image_5.jpg' %}"
+                            alt="Productos agrícolas colombianos"
+                            class="hero-image">
+
+                        <div class="hero-badge">
+
+                            <strong>100%</strong>
+
+                            <span>
+                                Productos
+                                del campo
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PROPUESTA DE VALOR
+        ====================================================== -->
+        <section class="value-section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-tag">
+                        ¿Por qué Tierra de Grandes?
+                    </span>
+
+                    <h2>
+                        Una conexión directa con el campo
+                    </h2>
+
+                    <p>
+                        Facilitamos el encuentro entre agricultores
+                        y consumidores mediante una plataforma
+                        digital de comercio agrícola.
+                    </p>
+
+                </div>
+
+
+                <div class="value-grid">
+
+                    <article class="value-card">
+
+                        <div class="value-icon">
+                            🌾
+                        </div>
+
+                        <h3>
+                            Apoyamos al agricultor
+                        </h3>
+
+                        <p>
+                            Brindamos un espacio digital para que
+                            los productores puedan ofrecer sus
+                            cosechas directamente.
+                        </p>
+
+                    </article>
+
+
+                    <article class="value-card">
+
+                        <div class="value-icon">
+                            🤝
+                        </div>
+
+                        <h3>
+                            Comercio justo
+                        </h3>
+
+                        <p>
+                            Buscamos reducir la dependencia de
+                            intermediarios y favorecer relaciones
+                            comerciales más transparentes.
+                        </p>
+
+                    </article>
+
+
+                    <article class="value-card">
+
+                        <div class="value-icon">
+                            🛒
+                        </div>
+
+                        <h3>
+                            Compra fácil
+                        </h3>
+
+                        <p>
+                            Los consumidores pueden encontrar
+                            productos agrícolas y realizar sus
+                            compras desde una plataforma digital.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BANNER AGRÍCOLA
+        ====================================================== -->
+        <section class="agriculture-banner">
+
+            <div class="agriculture-overlay"></div>
+
+            <div class="container">
+
+                <div class="agriculture-content">
+
+                    <span>
+                        🌱 DEL CAMPO A TU MESA
+                    </span>
+
+                    <h2>
+                        Productos frescos y naturales
+                    </h2>
+
+                    <p>
+                        Conoce las cosechas disponibles
+                        directamente de nuestros agricultores.
+                    </p>
+
+                    <a href="{% url 'verproducto' %}"
+                       class="btn-harvest">
+                        Ver catálogo
+                        <span>→</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PRODUCTOS DESTACADOS
+        ====================================================== -->
+        <section class="products-section">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-tag">
+                        🌱 Comercio justo
+                    </span>
+
+                    <h2>
+                        Cosechas destacadas
+                    </h2>
+
+                    <p>
+                        <strong>{{ product_count }}</strong>
+                        productos frescos disponibles
+                        directamente de nuestros agricultores.
+                    </p>
+
+                </div>
+
+
+                <div class="products-grid">
+
+                    {% for post in productos %}
+
+                        <article class="product-card">
+
+                            <a href="{{ post.get_url }}"
+                               class="product-image-link">
+
+                                <img
+                                    src="{{ post.image.url }}"
+                                    alt="{{ post.nombre }}"
+                                    class="product-image">
+
+                                <span class="product-label">
+                                    Fresco
+                                </span>
+
+                            </a>
+
+
+                            <div class="product-info">
+
+                                <span class="product-category">
+                                    Producto agrícola
+                                </span>
+
+                                <h3>
+                                    <a href="{{ post.get_url }}">
+                                        {{ post.nombre }}
+                                    </a>
+                                </h3>
+
+
+                                <div class="product-footer">
+
+                                    <div>
+
+                                        <span class="price-label">
+                                            Precio
+                                        </span>
+
+                                        <span class="product-price">
+                                            ${{ post.precio|intcomma }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <a
+                                        href="{% url 'add_carrito' post.pk %}"
+                                        class="add-cart"
+                                        title="Agregar al carrito">
+
+                                        🛒
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                    {% empty %}
+
+                        <div class="empty-products">
+
+                            <div class="empty-icon">
+                                🌾
+                            </div>
+
+                            <h3>
+                                No hay cosechas disponibles
+                            </h3>
+
+                            <p>
+                                Actualmente no hay productos
+                                publicados.
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                {% if productos.has_other_pages %}
+
+                    <!-- =================================================
+                         PAGINACIÓN
+                    ================================================== -->
+                    <div class="pagination-wrapper">
+
+                        <ul class="custom-pagination">
+
+                            {% if productos.has_previous %}
+
+                                <li>
+                                    <a href="?page={{ productos.previous_page_number }}">
+                                        ←
+                                    </a>
+                                </li>
+
+                            {% endif %}
+
+
+                            {% for i in productos.paginator.page_range %}
+
+                                {% if productos.number == i %}
+
+                                    <li class="active">
+                                        <span>{{ i }}</span>
+                                    </li>
+
+                                {% else %}
+
+                                    <li>
+                                        <a href="?page={{ i }}">
+                                            {{ i }}
+                                        </a>
+                                    </li>
+
+                                {% endif %}
+
+                            {% endfor %}
+
+
+                            {% if productos.has_next %}
+
+                                <li>
+                                    <a href="?page={{ productos.next_page_number }}">
+                                        →
+                                    </a>
+                                </li>
+
+                            {% endif %}
+
+                        </ul>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CÓMO FUNCIONA
+        ====================================================== -->
+        <section class="how-section"
+                 id="como-funciona">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-tag">
+                        SIMPLE Y DIRECTO
+                    </span>
+
+                    <h2>
+                        ¿Cómo funciona Tierra de Grandes?
+                    </h2>
+
+                    <p>
+                        Una plataforma pensada para facilitar
+                        la comercialización de productos agrícolas.
+                    </p>
+
+                </div>
+
+
+                <div class="steps-grid">
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <div class="step-icon">
+                            👨‍🌾
+                        </div>
+
+                        <h3>
+                            El agricultor publica
+                        </h3>
+
+                        <p>
+                            Los productores pueden ofrecer sus
+                            cosechas en la plataforma.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <div class="step-icon">
+                            🔎
+                        </div>
+
+                        <h3>
+                            El consumidor encuentra
+                        </h3>
+
+                        <p>
+                            Los compradores pueden buscar
+                            productos y consultar su información.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <div class="step-icon">
+                            🛒
+                        </div>
+
+                        <h3>
+                            Realiza su compra
+                        </h3>
+
+                        <p>
+                            El consumidor agrega los productos
+                            al carrito y realiza su pedido.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            04
+                        </div>
+
+                        <div class="step-icon">
+                            🤝
+                        </div>
+
+                        <h3>
+                            Conexión directa
+                        </h3>
+
+                        <p>
+                            Se fortalece la relación entre
+                            productores y consumidores.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CTA
+        ====================================================== -->
+        <section class="cta-section">
+
+            <div class="container">
+
+                <div class="cta-content">
+
+                    <div>
+
+                        <span>
+                            🇨🇴 APOYEMOS EL CAMPO COLOMBIANO
+                        </span>
+
+                        <h2>
+                            Tu compra también puede transformar
+                            el campo.
+                        </h2>
+
+                        <p>
+                            Descubre productos agrícolas y apoya
+                            a nuestros productores.
+                        </p>
+
+                    </div>
+
+                    <a href="{% url 'verproducto' %}"
+                       class="cta-button">
+                        Comprar cosechas →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    {% endblock content %}
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+
+                <!-- INFORMACIÓN -->
+                <div class="footer-column">
+
+                    <a href="{% url 'inicio' %}"
+                       class="footer-brand">
+
+                        🌱 TIERRA DE GRANDES
+
+                    </a>
+
+                    <p>
+                        Conectamos productores agrícolas y
+                        consumidores mediante una plataforma
+                        digital para el comercio justo.
+                    </p>
+
+                    <div class="social-links">
+
+                        <a href="https://twitter.com/?lang=es"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Twitter
+                        </a>
+
+                        <a href="https://www.facebook.com/profile.php?id=100084250750943"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Facebook
+                        </a>
+
+                        <a href="https://www.instagram.com/"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Instagram
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MENÚ -->
+                <div class="footer-column">
+
+                    <h4>
+                        Navegación
+                    </h4>
+
+                    <a href="{% url 'inicio' %}">
+                        Inicio
+                    </a>
+
+                    <a href="{% url 'verproducto' %}">
+                        Cosechas
+                    </a>
+
+                    <a href="{% url 'perfil' %}">
+                        Perfil
+                    </a>
+
+                    <a href="{% url 'contactar' %}">
+                        Contactar
+                    </a>
+
+                </div>
+
+
+                <!-- AYUDA -->
+                <div class="footer-column">
+
+                    <h4>
+                        Ayuda
+                    </h4>
+
+                    <a href="{% url 'verproducto' %}">
+                        Buscar productos
+                    </a>
+
+                    <a href="#">
+                        Términos y condiciones
+                    </a>
+
+                    <a href="{% url 'contactar' %}">
+                        Contactar
+                    </a>
+
+                </div>
+
+
+                <!-- CONTACTO -->
+                <div class="footer-column">
+
+                    <h4>
+                        ¿Tienes preguntas?
+                    </h4>
+
+                    <p>
+                        📍 Popayán, Cauca, Colombia
+                    </p>
+
+                    <p>
+                        📞 3165482565
+                    </p>
+
+                    <p>
+                        ✉️ Tierradegrandes@gmail.com
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © {% now "Y" %} Tierra de Grandes.
+                    Todos los derechos reservados.
+                </p>
+
+                <p>
+                    Plataforma de comercio agrícola colombiano
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         SCRIPTS
+    ========================================================== -->
+    <script>
+
+        function toggleCategorias() {
+
+            const menu =
+                document.getElementById("categoriasMenu");
+
+            menu.classList.toggle("show");
+
+        }
+
+
+        document.addEventListener("click", function(event) {
+
+            const dropdown =
+                document.querySelector(".nav-dropdown");
+
+            const menu =
+                document.getElementById("categoriasMenu");
+
+            if (!dropdown.contains(event.target)) {
+
+                menu.classList.remove("show");
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

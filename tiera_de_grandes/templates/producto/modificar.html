@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block titulo %}Editar producto | Tierra de Grandes{% endblock titulo %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/editar_perfil.css' %}">
+    <link rel="stylesheet" href="{% static 'css/editar_producto.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<main class="edit-page">
+    <div class="container">
+
+        <div class="edit-card product-edit">
+
+            <!-- ENCABEZADO -->
+            <header class="edit-header">
+                <div class="edit-header-overlay"></div>
+
+                <div class="edit-header-content">
+                    <div>
+                        <span class="edit-tag">🌾 MIS COSECHAS</span>
+                        <h1>Editar producto</h1>
+                        <p>Actualiza la información de tu cosecha para que los compradores siempre vean datos al día.</p>
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- MENSAJE -->
+            {% if mensaje %}
+                <div class="edit-alerts">
+                    <div class="alert alert-info" role="alert">{{ mensaje }}</div>
+                </div>
+            {% endif %}
+
+
+            <!-- FORMULARIO -->
+            <form action="" method="post" enctype="multipart/form-data" class="edit-form">
+
+                {% csrf_token %}
+
+                {{ p_form }}
+                {{ form }}
+
+                <div class="edit-actions">
+                    <a href="{% url 'tablero' %}" class="btn-edit-cancel">Cancelar</a>
+                    <button type="submit" class="btn-edit-save">
+                        Guardar cambios
+                        <span aria-hidden="true">✓</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</main>
+
+{% endblock content %}

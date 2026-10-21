@@ -1,0 +1,262 @@
+
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="es">
+<head>
+    <title>Iniciar sesión | Tierra de Grandes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    
+</head>
+
+<body class="tdg-login-body">
+
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'css/Login.css' %}">
+    <main class="tdg-login-page">
+
+        <a href="{% url 'inicio' %}" class="tdg-back-home">
+            <i class="fa fa-arrow-left"></i>
+            Volver al inicio
+        </a>
+
+        {% if request.GET.command == 'verification' %}
+
+            <section class="tdg-verification-card">
+
+                <div class="tdg-brand-icon">
+                    <i class="fa fa-leaf"></i>
+                </div>
+
+                <span class="tdg-eyebrow">TIERRA DE GRANDES</span>
+
+                <h1>¡Gracias por registrarte!</h1>
+
+                <p>
+                    Te hemos enviado un correo electrónico para confirmar
+                    tu cuenta:
+                </p>
+
+                <div class="tdg-email">
+                    <i class="fa fa-envelope-o"></i>
+                    {{ request.GET.email }}
+                </div>
+
+                <p class="tdg-verification-note">
+                    Si ya verificaste tu cuenta, puedes iniciar sesión.
+                </p>
+
+                <a href="{% url 'login' %}" class="tdg-primary-button">
+                    Iniciar sesión
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+
+            </section>
+
+        {% else %}
+
+            <section class="tdg-login-layout">
+
+                <!-- Panel de identidad -->
+                <div class="tdg-login-banner">
+
+                    <a href="{% url 'inicio' %}" class="tdg-brand">
+                        <span class="tdg-brand-symbol">
+                            <i class="fa fa-leaf"></i>
+                        </span>
+
+                        <span>
+                            Tierra de <strong>Grandes</strong>
+                        </span>
+                    </a>
+
+                    <div class="tdg-banner-content">
+
+                        <span class="tdg-eyebrow">
+                            CONECTAMOS EL CAMPO CON TU MESA
+                        </span>
+
+                        <h1>
+                            El campo colombiano
+                            <span>más cerca de ti.</span>
+                        </h1>
+
+                        <p>
+                            Compra productos agrícolas y conecta directamente
+                            con productores colombianos.
+                        </p>
+
+                        <div class="tdg-benefit">
+                            <i class="fa fa-check-circle"></i>
+                            Comercio directo con productores
+                        </div>
+
+                        <div class="tdg-benefit">
+                            <i class="fa fa-check-circle"></i>
+                            Apoyo a la agricultura colombiana
+                        </div>
+
+                        <div class="tdg-benefit">
+                            <i class="fa fa-check-circle"></i>
+                            Una comunidad que hace crecer el campo
+                        </div>
+
+                    </div>
+
+                    <div class="tdg-banner-footer">
+                        Cultivamos oportunidades, cosechamos futuro.
+                    </div>
+
+                </div>
+
+                <!-- Formulario -->
+                <div class="tdg-login-form-panel">
+
+                    <div class="tdg-form-heading">
+
+                        <div class="tdg-mobile-brand">
+                            <i class="fa fa-leaf"></i>
+                            Tierra de <strong>Grandes</strong>
+                        </div>
+
+                        <span class="tdg-form-tag">BIENVENIDO DE NUEVO</span>
+
+                        <h2>Iniciar sesión</h2>
+
+                        <p>
+                            Ingresa a tu cuenta para continuar.
+                        </p>
+
+                    </div>
+
+                    <div class="tdg-alerts">
+                        {% include 'includes/alerts.html' %}
+                    </div>
+
+                    <form action="{% url 'login' %}" method="POST" class="tdg-signin-form">
+                        {% csrf_token %}
+
+                        <div class="tdg-form-group">
+
+                            <label for="email">Correo electrónico</label>
+
+                            <div class="tdg-input-wrapper">
+                                <i class="fa fa-envelope-o"></i>
+
+                                <input
+                                    id="email"
+                                    type="text"
+                                    class="tdg-input"
+                                    placeholder="Ingresa tu correo"
+                                    name="email"
+                                    autocomplete="username"
+                                    required>
+                            </div>
+
+                        </div>
+
+                        <div class="tdg-form-group">
+
+                            <label for="password-field">Contraseña</label>
+
+                            <div class="tdg-input-wrapper">
+                                <i class="fa fa-lock"></i>
+
+                                <input
+                                    id="password-field"
+                                    type="password"
+                                    class="tdg-input tdg-password-input"
+                                    placeholder="Ingresa tu contraseña"
+                                    name="password"
+                                    autocomplete="current-password"
+                                    required>
+
+                                <button
+                                    type="button"
+                                    toggle="#password-field"
+                                    class="fa fa-eye tdg-toggle-password"
+                                    aria-label="Mostrar u ocultar contraseña">
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="tdg-forgot-row">
+                            <a href="{% url 'passwordolvidada' %}">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+
+                        <button type="submit" class="tdg-primary-button tdg-submit-button">
+                            Iniciar sesión
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+
+                    </form>
+
+                    <div class="tdg-register-prompt">
+                        <span>¿Todavía no tienes una cuenta?</span>
+                        <a href="{% url 'registrar' %}">Regístrate</a>
+                    </div>
+
+                    <div class="tdg-divider">
+                        <span>O</span>
+                    </div>
+
+                    <a href="{% url 'inicio' %}" class="tdg-home-button">
+                        <i class="fa fa-home"></i>
+                        Volver a la tienda
+                    </a>
+
+                    <p class="tdg-terms">
+                        Al ingresar, ayudas a fortalecer el comercio agrícola colombiano.
+                    </p>
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+        <footer class="tdg-page-footer">
+            © {% now "Y" %} Tierra de Grandes · Apoyando al campo colombiano
+        </footer>
+
+    </main>
+
+    {% endblock %}
+
+    <script src="{% static 'js1/jquery.min.js' %}"></script>
+    <script src="{% static 'js1/popper.js' %}"></script>
+    <script src="{% static 'js1/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js1/main.js' %}"></script>
+
+    <!-- Mostrar u ocultar contraseña -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.querySelector(".tdg-toggle-password");
+            const password = document.querySelector("#password-field");
+
+            if (toggle && password) {
+                toggle.addEventListener("click", function () {
+                    const isPassword = password.type === "password";
+
+                    password.type = isPassword ? "text" : "password";
+
+                    this.classList.toggle("fa-eye", !isPassword);
+                    this.classList.toggle("fa-eye-slash", isPassword);
+
+                    this.setAttribute(
+                        "aria-label",
+                        isPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                    );
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

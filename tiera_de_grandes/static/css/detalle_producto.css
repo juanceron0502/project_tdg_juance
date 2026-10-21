@@ -1,0 +1,452 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   detalle_producto.css
+   Depende de index.css (variables, tarjetas) y productos.css (cuadrícula)
+============================================================ */
+
+.detail-page {
+    padding: 40px 0 70px;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(102, 187, 106, .14), transparent 30%),
+        var(--cream);
+}
+
+.detail-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform .25s;
+}
+
+.detail-back:hover {
+    color: var(--green);
+    transform: translateX(-3px);
+}
+
+
+/* ============================================================
+   TARJETA DE DETALLE
+============================================================ */
+
+.detail-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 45px;
+    margin-bottom: 25px;
+    padding: 35px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.detail-media {
+    position: relative;
+    align-self: start;
+}
+
+.detail-image {
+    display: block;
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: var(--shadow-hover);
+}
+
+.detail-media .product-label {
+    top: 16px;
+    left: 16px;
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   INFORMACIÓN
+============================================================ */
+
+.detail-tag {
+    color: var(--yellow-dark);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.detail-info h1 {
+    margin: 8px 0 10px;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 800;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.detail-date {
+    display: block;
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.detail-price {
+    margin: 16px 0 22px;
+    color: var(--green);
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.detail-info h2 {
+    margin: 0 0 8px;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.detail-info p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.detail-production {
+    margin-bottom: 18px;
+    padding: 16px 18px;
+    background: var(--green-soft);
+    border-left: 4px solid var(--green);
+    border-radius: 10px;
+}
+
+.detail-production p {
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.detail-description {
+    margin-bottom: 25px;
+}
+
+.detail-description p {
+    color: var(--text);
+    font-size: 15px;
+}
+
+
+/* ============================================================
+   BOTONES
+============================================================ */
+
+.detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+}
+
+.detail-actions form {
+    margin: 0;
+}
+
+.btn-detail-primary,
+.btn-detail-danger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color .25s, color .25s, transform .25s;
+}
+
+.btn-detail-primary {
+    background: var(--green);
+    border: 1px solid var(--green);
+    color: var(--white);
+}
+
+.btn-detail-primary:hover {
+    background: var(--green-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-detail-danger {
+    background: transparent;
+    border: 1px solid #C62828;
+    color: #C62828;
+}
+
+.btn-detail-danger:hover {
+    background: #C62828;
+    color: var(--white);
+}
+
+.detail-back:focus-visible,
+.btn-detail-primary:focus-visible,
+.btn-detail-danger:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   RELACIONADOS
+============================================================ */
+
+.related-section {
+    padding: 70px 0;
+    background: var(--white);
+}
+
+
+/* ============================================================
+   CALIFICACIÓN Y COMENTARIOS
+============================================================ */
+
+.review-section {
+    padding: 70px 0;
+    background: var(--cream);
+}
+
+.review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    align-items: center;
+    gap: 50px;
+}
+
+.review-intro h2 {
+    margin: 10px 0;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.review-intro p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+.review-card {
+    padding: 30px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.review-form h3 {
+    margin: 0 0 18px;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.review-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.review-field label {
+    margin-bottom: 6px;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.review-field input,
+.review-field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.review-field textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.review-field input:focus,
+.review-field textarea:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, .28);
+}
+
+.review-login {
+    padding: 20px 10px;
+    text-align: center;
+}
+
+.review-login > span {
+    font-size: 38px;
+}
+
+.review-login p {
+    margin: 8px 0 18px;
+    color: var(--text-light);
+}
+
+
+/* ============================================================
+   ESTRELLAS (CSS puro, con medias estrellas)
+   El HTML va de 5 a 0.5; row-reverse lo muestra de 0.5 a 5.
+============================================================ */
+
+.review-rating {
+    min-width: 0;
+    margin: 0 0 18px;
+    padding: 0;
+    border: none;
+}
+
+.review-rating legend {
+    margin-bottom: 6px;
+    padding: 0;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.rate {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    width: fit-content;
+}
+
+.rate input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.rate label {
+    width: 15px;
+    height: 32px;
+    overflow: hidden;
+    color: #CFD8DC;
+    cursor: pointer;
+    transition: color .15s;
+}
+
+.rate label::before {
+    content: "★";
+    display: block;
+    width: 30px;
+    font-size: 32px;
+    line-height: 32px;
+}
+
+/* Mitad derecha de la estrella (valores enteros) */
+.rate label:not(.half)::before {
+    margin-left: -15px;
+}
+
+.rate input:checked ~ label,
+.rate label:hover,
+.rate label:hover ~ label {
+    color: var(--yellow);
+}
+
+.rate input:focus-visible + label {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-back,
+    .btn-detail-primary,
+    .btn-detail-danger,
+    .rate label,
+    .review-field input,
+    .review-field textarea {
+        transition: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .detail-card {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 22px;
+    }
+
+    .review-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .review-intro {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .detail-page {
+        padding: 25px 0 50px;
+    }
+
+    .related-section,
+    .review-section {
+        padding: 50px 0;
+    }
+
+    .detail-price {
+        font-size: 30px;
+    }
+
+    .review-intro h2 {
+        font-size: 27px;
+    }
+
+    .review-card {
+        padding: 22px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .detail-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-detail-primary,
+    .btn-detail-danger {
+        width: 100%;
+        justify-content: center;
+    }
+}

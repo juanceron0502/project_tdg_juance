@@ -1,0 +1,106 @@
+{% extends 'productos.html' %}
+{% load static %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<main class="profile-page">
+    <div class="container">
+
+        <article class="profile-card">
+
+            <!-- PORTADA + DATOS PRINCIPALES -->
+            <header class="profile-cover">
+                <div class="profile-cover-overlay"></div>
+
+                <div class="profile-head">
+
+                    <div class="profile-avatar-box">
+                        {% if user.userperfil.image_perfil %}
+                            <a href="{{ user.userperfil.image_perfil.url }}" class="image-popup">
+                                <img src="{{ user.userperfil.image_perfil.url }}"
+                                     alt="Foto de {{ user.full_nombre }}"
+                                     class="profile-avatar">
+                            </a>
+                        {% else %}
+                            <img src="{% static 'images/default-user.png' %}"
+                                 alt="Foto de perfil por defecto"
+                                 class="profile-avatar">
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-identity">
+                        <span class="profile-tag">🌾 AGRICULTOR</span>
+                        <h1>{{ user.full_nombre|capfirst }}</h1>
+                        <p class="profile-phone">
+                            <span aria-hidden="true">📞</span>
+                            <a href="tel:{{ user.numero_telefono }}">{{ user.numero_telefono }}</a>
+                        </p>
+                    </div>
+
+                    {% if request.user.is_authenticated %}
+                        <div class="profile-actions">
+                            {% if user.nombreusuario == request.user.nombreusuario %}
+                                <a href="{% url 'edit_perfil' %}" class="btn-profile-primary">
+                                    ✏️ Editar perfil
+                                </a>
+                            {% else %}
+                                <a href="{% url 'mas_informacion' user.nombreusuario %}" class="btn-profile-primary">
+                                    ✉️ Contactar
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </header>
+
+
+            <!-- ESTADÍSTICAS -->
+            <section class="profile-stats">
+                <div class="profile-stat">
+                    <span class="profile-stat-icon" aria-hidden="true">🌱</span>
+                    <div>
+                        <strong>{{ user.product.count }}</strong>
+                        <span>Productos publicados</span>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- DESCRIPCIÓN -->
+            <section class="profile-section">
+                <h2 class="profile-title">Sobre mí</h2>
+
+                <div class="profile-description">
+                    {% if user.userperfil.descripcion %}
+                        <p>{{ user.userperfil.descripcion }}</p>
+                    {% else %}
+                        <p class="profile-muted">Este agricultor aún no ha agregado una descripción.</p>
+                    {% endif %}
+                </div>
+            </section>
+
+
+            <!-- PRODUCTOS -->
+            <section class="profile-section profile-products">
+                <div class="profile-section-header">
+                    <h2 class="profile-title">Mis cosechas</h2>
+                    <a href="{% url 'verproducto' %}" class="profile-link-all">Ver catálogo →</a>
+                </div>
+
+                <div class="profile-products-wrapper">
+                    {{ block.super }}
+                </div>
+            </section>
+
+        </article>
+
+    </div>
+</main>
+
+{% endblock content %}

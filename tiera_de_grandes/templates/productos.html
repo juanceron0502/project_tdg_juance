@@ -1,0 +1,80 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/productos.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="catalog">
+
+    <div class="catalog-grid">
+
+        {% for producto in product %}
+
+            <article class="product-card">
+
+                <a href="{{ producto.get_url }}" class="product-image-link">
+
+                    {% if producto.image %}
+                        <img src="{{ producto.image.url }}"
+                             alt="{{ producto.nombre }}"
+                             class="product-image"
+                             loading="lazy">
+                    {% else %}
+                        <img src="{% static 'images/image_5.jpg' %}"
+                             alt="Imagen no disponible"
+                             class="product-image"
+                             loading="lazy">
+                    {% endif %}
+
+                    <span class="product-label">Fresco</span>
+
+                </a>
+
+                <div class="product-info">
+
+                    <span class="product-category">Producto agrícola</span>
+
+                    <h3>
+                        <a href="{{ producto.get_url }}">{{ producto.nombre }}</a>
+                    </h3>
+
+                    <div class="product-footer">
+
+                        <div>
+                            <span class="price-label">Precio</span>
+                            <span class="product-price">${{ producto.precio|intcomma }}</span>
+                        </div>
+
+                        <a href="{% url 'add_carrito' producto.pk %}"
+                           class="add-cart"
+                           title="Agregar al carrito"
+                           aria-label="Agregar {{ producto.nombre }} al carrito">
+                            <span aria-hidden="true">🛒</span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="empty-products">
+                <div class="empty-icon" aria-hidden="true">🌾</div>
+                <h3>No hay cosechas disponibles</h3>
+                <p>Actualmente no hay productos publicados.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock content %}

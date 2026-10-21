@@ -1,0 +1,187 @@
+
+/* Paleta Tierra de Grandes */
+.ia-container {
+    --verde: #195c2a;
+    --verde-oscuro: #103d1c;
+    --verde-claro: #eaf4e9;
+    --dorado: #f5a623;
+    --texto: #30483a;
+    --fondo: #f8f6ed;
+
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 55px 24px 70px;
+    color: var(--texto);
+}
+
+.ia-header {
+    text-align: center;
+    margin-bottom: 38px;
+}
+
+.ia-eyebrow {
+    color: var(--verde);
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.ia-header h1 {
+    margin: 12px 0;
+    color: var(--verde);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+}
+
+.ia-header p {
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.ia-status {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px;
+    margin-bottom: 28px;
+    background: white;
+    border: 1px solid #e2e8dd;
+    border-left: 5px solid var(--dorado);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px #183c1b0d;
+}
+
+.ia-status-icon,
+.ia-card-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--verde-claro);
+    color: var(--verde);
+    font-weight: 800;
+}
+
+.ia-status h2,
+.ia-notice h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 8px;
+}
+
+.ia-status p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.ia-badge {
+    margin-left: auto;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ia-badge-pending {
+    background: #fff1d6;
+    color: #855700;
+}
+
+.ia-badge-ready {
+    background: var(--verde-claro);
+    color: var(--verde);
+}
+
+.ia-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.ia-card {
+    padding: 25px;
+    background: white;
+    border: 1px solid #e4e8df;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px #183c1b08;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ia-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px #183c1b12;
+}
+
+.ia-card h3 {
+    margin: 20px 0 12px;
+    color: var(--verde);
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.ia-card p {
+    min-height: 85px;
+    line-height: 1.7;
+}
+
+.ia-tag {
+    display: inline-block;
+    padding: 7px 10px;
+    background: var(--verde-claro);
+    color: var(--verde);
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.ia-notice {
+    margin-top: 30px;
+    padding: 26px;
+    background: #fff8e9;
+    border: 1px solid #f2dfb5;
+    border-radius: 14px;
+}
+
+.ia-notice p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+.ia-back {
+    display: inline-block;
+    margin-top: 28px;
+    color: var(--verde);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.ia-back:hover {
+    color: #b47b12;
+}
+
+@media (max-width: 768px) {
+    .ia-container {
+        padding: 35px 16px 45px;
+    }
+
+    .ia-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ia-status {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .ia-badge {
+        margin-left: 0;
+    }
+
+    .ia-card p {
+        min-height: 0;
+    }
+}
