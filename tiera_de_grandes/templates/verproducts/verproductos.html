@@ -1,471 +1,269 @@
-
 {% extends 'index.html' %}
 {% load static %}
+{% load humanize %}
+
+{% block titulo %}{{ single_producto.nombre }} | Tierra de Grandes{% endblock titulo %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/detalle_producto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/producto_detalle.css' %}">
+{% endblock extra_css %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>{{ single_producto.nombre }} | Tierra de Grandes</title>
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
-    <!-- Iconos -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <!-- CSS propio -->
-   
-</head>
-
- <link rel="stylesheet"
-          href="{% static 'css/single_product.css' %}">
-<body>
-
-<!-- =========================================================
-     BARRA SUPERIOR
-========================================================= -->
-
-
-
-
-<!-- =========================================================
-     NAVBAR
-========================================================= -->
-
-
-
-
-<!-- =========================================================
-     MIGAS DE PAN
-========================================================= -->
-
-
-
 
 <!-- =========================================================
      DETALLE DEL PRODUCTO
-========================================================= -->
-
-<section class="product-detail-section">
-
+========================================================== -->
+<main class="detail-page">
     <div class="container">
 
-        <div class="product-detail-card">
-
-            <!-- IMAGEN -->
-
-            <div class="product-image-container">
-
-                <div class="product-image">
-
-                    {% if single_producto.image %}
-
-                        <img
-                            src="{{ single_producto.image.url }}"
-                            alt="{{ single_producto.nombre }}">
-
-                    {% else %}
-
-                        <div class="no-image">
-
-                            <i class="fas fa-image"></i>
-
-                            <p>
-                                Imagen no disponible
-                            </p>
-
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
-
-            <!-- INFORMACIÓN -->
-
-            <div class="product-information">
-
-                <span class="product-category">
-
-                    <i class="fas fa-leaf"></i>
-
-                    Producto agrícola
-
-                </span>
-
-
-                <h1>
-                    {{ single_producto.nombre }}
-                </h1>
-
-
-                <div class="product-price">
-
-                    ${{ single_producto.precio }}
-
-                </div>
-
-
-                <div class="separator"></div>
-
-
-                <h3>
-                    Descripción
-                </h3>
-
-
-                <p class="product-description">
-
-                    {{ single_producto.descripcion }}
-
-                </p>
-
-
-                <!-- INFORMACIÓN -->
-
-                <div class="product-features">
-
-                    <div class="feature">
-
-                        <div class="feature-icon">
-
-                            <i class="fas fa-tractor"></i>
-
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Producto del campo
-                            </strong>
-
-                            <span>
-                                Directamente de nuestros agricultores
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="feature">
-
-                        <div class="feature-icon">
-
-                            <i class="fas fa-leaf"></i>
-
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Fresco y natural
-                            </strong>
-
-                            <span>
-                                Productos seleccionados
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="feature">
-
-                        <div class="feature-icon">
-
-                            <i class="fas fa-handshake"></i>
-
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Comercio justo
-                            </strong>
-
-                            <span>
-                                Compra directamente al agricultor
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- BOTONES -->
-
-                <div class="product-actions">
-
-                    {% if in_carrito %}
-
-                        <a href="{% url 'carrito' %}"
-                           class="btn-cart added">
-
-                            <i class="fas fa-check"></i>
-
-                            Ver carrito
-
-                        </a>
-
-                    {% else %}
-
-                        <a href="{% url 'add_carrito' single_producto.pk %}"
-                           class="btn-cart">
-
-                            <i class="fas fa-cart-plus"></i>
-
-                            Agregar al carrito
-
-                        </a>
-
-                    {% endif %}
-
-
-                    <a href="{% url 'verproducto' %}"
-                       class="btn-back">
-
-                        <i class="fas fa-arrow-left"></i>
-
-                        Seguir comprando
-
+        <a href="{% url 'verproducto' %}" class="detail-back">← Volver a las cosechas</a>
+
+        <article class="detail-card">
+
+            <div class="detail-media">
+                {% if single_producto.image %}
+                    <a href="{{ single_producto.image.url }}" target="_blank" rel="noopener" title="Ver imagen completa">
+                        <img src="{{ single_producto.image.url }}"
+                             alt="{{ single_producto.nombre }}"
+                             class="detail-image">
                     </a>
+                {% else %}
+                    <img src="{% static 'images/image_5.jpg' %}"
+                         alt="Imagen no disponible"
+                         class="detail-image">
+                {% endif %}
+                <span class="product-label">Fresco</span>
+            </div>
 
+
+            <div class="detail-info">
+
+                <span class="detail-tag">🌾 PRODUCTO AGRÍCOLA</span>
+
+                <h1>{{ single_producto.nombre }}</h1>
+
+                <p class="detail-producer">
+                    <span aria-hidden="true">👨‍🌾</span>
+                    Vendido por
+                    <a href="{% url 'perfil' single_producto.user.nombreusuario %}">{{ single_producto.user.nombres|title }}</a>
+                </p>
+
+                <div class="detail-meta">
+                    <time class="detail-date" datetime="{{ single_producto.timestamp|date:'c' }}">
+                        🕒 Publicado {{ single_producto.timestamp|naturaltime }}
+                    </time>
+
+                    {% with promedio=single_producto.revisionPromedio %}
+                        {% if promedio %}
+                            <span class="rating-summary">
+                                <span class="stars-static"
+                                      style="--rating: {{ promedio|stringformat:'.1f' }}"
+                                      role="img"
+                                      aria-label="Calificación promedio: {{ promedio|stringformat:'.1f' }} de 5"></span>
+                                <strong>{{ promedio|stringformat:".1f" }}</strong>
+                            </span>
+                        {% else %}
+                            <span class="rating-summary rating-none">Sin calificaciones</span>
+                        {% endif %}
+                    {% endwith %}
                 </div>
+
+                <p class="detail-price">${{ single_producto.precio|intcomma }}</p>
+
+                {% if single_producto.Informacion_de_produccion %}
+                    <div class="detail-production">
+                        <h2>Información de producción</h2>
+                        <p>{{ single_producto.Informacion_de_produccion|linebreaksbr }}</p>
+                    </div>
+                {% endif %}
+
+                {% if single_producto.descripcion %}
+                    <div class="detail-description">
+                        <h2>Descripción</h2>
+                        <p>{{ single_producto.descripcion|linebreaksbr }}</p>
+                    </div>
+                {% endif %}
+
+
+                <!-- COMPRA -->
+                {% if single_producto.stock <= 0 %}
+
+                    <p class="stock-out">🚫 Producto fuera de stock</p>
+
+                {% else %}
+
+                    <form method="POST"
+                          action="{% url 'add_carrito' single_producto.pk %}"
+                          class="buy-form">
+                        {% csrf_token %}
+
+                        
+
+                        <p class="stock-info">✅ {{ single_producto.stock|intcomma }} disponibles</p>
+
+                        <button type="submit" class="btn-detail-primary">
+                            <span aria-hidden="true">🛒</span> Agregar al carrito
+                        </button>
+                    </form>
+
+                {% endif %}
 
             </div>
 
-        </div>
+        </article>
 
     </div>
-
-</section>
-
-
-<!-- =========================================================
-     BENEFICIOS
-========================================================= -->
-
-<section class="benefits-section">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <span>
-                Tierra de Grandes
-            </span>
-
-            <h2>
-                Compra directamente al campo
-            </h2>
-
-            <p>
-                Conectamos productores y consumidores
-                para construir un comercio agrícola más justo.
-            </p>
-
-        </div>
-
-
-        <div class="benefits-grid">
-
-            <div class="benefit-card">
-
-                <div class="benefit-icon">
-
-                    <i class="fas fa-hand-holding-dollar"></i>
-
-                </div>
-
-                <h3>
-                    Precio justo
-                </h3>
-
-                <p>
-                    Buscamos reducir la intermediación
-                    y favorecer al productor.
-                </p>
-
-            </div>
-
-
-            <div class="benefit-card">
-
-                <div class="benefit-icon">
-
-                    <i class="fas fa-seedling"></i>
-
-                </div>
-
-                <h3>
-                    Productos frescos
-                </h3>
-
-                <p>
-                    Encuentra productos agrícolas
-                    cultivados por nuestros productores.
-                </p>
-
-            </div>
-
-
-            <div class="benefit-card">
-
-                <div class="benefit-icon">
-
-                    <i class="fas fa-users"></i>
-
-                </div>
-
-                <h3>
-                    Conexión directa
-                </h3>
-
-                <p>
-                    Facilitamos la conexión entre
-                    agricultores y consumidores.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+</main>
 
 
 <!-- =========================================================
      COMENTARIOS
-========================================================= -->
-
-<section class="reviews-section">
-
+========================================================== -->
+<section class="comments-section">
     <div class="container">
 
-        <div class="section-title">
+        <div class="section-heading">
+            <span class="section-tag">💬 Opiniones</span>
+            <h2>Comentarios del producto</h2>
+            <p>{{ comentarios|length }} {% if comentarios|length == 1 %}comentario{% else %}comentarios{% endif %}</p>
+        </div>
 
-            <span>
-                Opiniones
-            </span>
+        <div class="comments-list">
 
-            <h2>
-                Lo que dicen nuestros clientes
-            </h2>
+            {% for coment in comentarios %}
+
+                <article class="comment-card">
+
+                    <header class="comment-head">
+
+                        {% if coment.user.userperfil.image_perfil %}
+                            <img src="{{ coment.user.userperfil.image_perfil.url }}"
+                                 alt="Foto de {{ coment.user.full_nombre }}"
+                                 class="comment-avatar">
+                        {% else %}
+                            <img src="{% static 'images/default-user.png' %}"
+                                 alt="Foto de perfil por defecto"
+                                 class="comment-avatar">
+                        {% endif %}
+
+                        <div class="comment-author">
+                            <h3>{{ coment.user.full_nombre }}</h3>
+                            <span class="stars-static"
+                                  style="--rating: {{ coment.calificacion|stringformat:'.1f' }}"
+                                  role="img"
+                                  aria-label="Calificación: {{ coment.calificacion|stringformat:'.1f' }} de 5"></span>
+                        </div>
+
+                        <time class="comment-date" datetime="{{ coment.fecha_subido|date:'c' }}">
+                            {{ coment.fecha_subido|date:"d M Y" }}
+                        </time>
+
+                    </header>
+
+                    <div class="comment-body">
+                        {% if coment.Sujeto %}<h4>{{ coment.Sujeto }}</h4>{% endif %}
+                        <p>{{ coment.comentario|linebreaksbr }}</p>
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="comments-empty">
+                    <span aria-hidden="true">💬</span>
+                    <p>Aún no hay comentarios. ¡Sé el primero en opinar!</p>
+                </div>
+
+            {% endfor %}
 
         </div>
 
-
-        {% if comentarios %}
-
-            <div class="reviews-grid">
-
-                {% for comentario in comentarios %}
-
-                    <div class="review-card">
-
-                        <div class="review-header">
-
-                            <div class="review-avatar">
-
-                                <i class="fas fa-user"></i>
-
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    {{ comentario.user }}
-                                </strong>
-
-                                <div class="stars">
-
-                                    {% if comentario.calificacion >= 1 %}
-                                        <i class="fas fa-star"></i>
-                                    {% endif %}
-
-                                    {% if comentario.calificacion >= 2 %}
-                                        <i class="fas fa-star"></i>
-                                    {% endif %}
-
-                                    {% if comentario.calificacion >= 3 %}
-                                        <i class="fas fa-star"></i>
-                                    {% endif %}
-
-                                    {% if comentario.calificacion >= 4 %}
-                                        <i class="fas fa-star"></i>
-                                    {% endif %}
-
-                                    {% if comentario.calificacion >= 5 %}
-                                        <i class="fas fa-star"></i>
-                                    {% endif %}
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <p class="review-subject">
-                            {{ comentario.Sujeto }}
-                        </p>
-
-
-                        <p class="review-text">
-
-                            "{{ comentario.comentario }}"
-
-                        </p>
-
-                    </div>
-
-                {% endfor %}
-
-            </div>
-
-        {% else %}
-
-            <div class="no-reviews">
-
-                <i class="far fa-comment-dots"></i>
-
-                <h3>
-                    Aún no hay comentarios
-                </h3>
-
-                <p>
-                    Sé el primero en compartir tu experiencia
-                    con este producto.
-                </p>
-
-            </div>
-
-        {% endif %}
-
     </div>
-
 </section>
 
 
 <!-- =========================================================
-     FOOTER
-========================================================= -->
+     CALIFICAR
+========================================================== -->
+<section class="review-section">
+    <div class="container">
 
-{% endblock %}
+        <div class="review-grid">
+
+            <div class="review-intro">
+                <span class="section-tag">⭐ Tu opinión cuenta</span>
+                <h2>Califica este producto</h2>
+                <p>Comparte tu experiencia para ayudar a otros compradores y a los agricultores a seguir mejorando.</p>
+            </div>
 
 
-</body>
-</html>
+            <div class="review-card">
+
+                {% if user.is_authenticated %}
+
+                    {% if ordenproducto %}
+
+                        <form action="{% url 'comentarios_calf' single_producto.id %}" method="POST" class="review-form">
+                            {% csrf_token %}
+
+                            <h3>Escribe tu comentario</h3>
+
+                            <fieldset class="review-rating">
+                                <legend>¿Cómo calificarías este producto?</legend>
+
+                                <div class="rate">
+                                    <input type="radio" name="calificacion" value="5"   id="calificacion10"><label for="calificacion10" title="5"></label>
+                                    <input type="radio" name="calificacion" value="4.5" id="calificacion9"><label for="calificacion9" title="4.5" class="half"></label>
+                                    <input type="radio" name="calificacion" value="4"   id="calificacion8"><label for="calificacion8" title="4"></label>
+                                    <input type="radio" name="calificacion" value="3.5" id="calificacion7"><label for="calificacion7" title="3.5" class="half"></label>
+                                    <input type="radio" name="calificacion" value="3"   id="calificacion6"><label for="calificacion6" title="3"></label>
+                                    <input type="radio" name="calificacion" value="2.5" id="calificacion5"><label for="calificacion5" title="2.5" class="half"></label>
+                                    <input type="radio" name="calificacion" value="2"   id="calificacion4"><label for="calificacion4" title="2"></label>
+                                    <input type="radio" name="calificacion" value="1.5" id="calificacion3"><label for="calificacion3" title="1.5" class="half"></label>
+                                    <input type="radio" name="calificacion" value="1"   id="calificacion2"><label for="calificacion2" title="1"></label>
+                                    <input type="radio" name="calificacion" value="0.5" id="calificacion1"><label for="calificacion1" title="0.5" class="half"></label>
+                                </div>
+                            </fieldset>
+
+                            <div class="review-field">
+                                <label for="sujeto">Título del comentario</label>
+                                <input type="text" id="sujeto" name="Sujeto" maxlength="100">
+                            </div>
+
+                            <div class="review-field">
+                                <label for="comentario">Comentario</label>
+                                <textarea id="comentario" name="comentario" rows="4"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-detail-primary">Enviar comentario</button>
+                        </form>
+
+                    {% else %}
+
+                        <div class="review-login">
+                            <span aria-hidden="true">🛒</span>
+                            <p>Debes comprar este producto primero para poder comentar.</p>
+                        </div>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <div class="review-login">
+                        <span aria-hidden="true">🔒</span>
+                        <p>Para enviar comentarios tienes que estar registrado.</p>
+                        <a href="{% url 'login' %}" class="btn-detail-primary">Iniciar sesión</a>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}
