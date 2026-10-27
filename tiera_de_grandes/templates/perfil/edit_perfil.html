@@ -127,6 +127,39 @@
                 </fieldset>
 
 
+                <!-- REDES SOCIALES -->
+                <fieldset class="edit-fieldset">
+                    <legend><span aria-hidden="true">🔗</span> Redes sociales</legend>
+
+                    <div class="edit-grid">
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.instagram.id_for_label }}">Instagram</label>
+                            {{ perfil_form.instagram }}
+                            {{ perfil_form.instagram.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.tiktok.id_for_label }}">TikTok</label>
+                            {{ perfil_form.tiktok }}
+                            {{ perfil_form.tiktok.errors }}
+                        </div>
+
+                        <div class="edit-field">
+                            <label for="{{ perfil_form.facebook.id_for_label }}">Facebook</label>
+                            {{ perfil_form.facebook }}
+                            {{ perfil_form.facebook.errors }}
+                        </div>
+
+                    </div>
+
+                    <p class="edit-help">
+                        Pega el enlace completo de tu perfil, por ejemplo
+                        <em>https://www.instagram.com/tu_usuario</em>. Déjalo vacío si no usas esa red.
+                    </p>
+                </fieldset>
+
+
                 <!-- DESCRIPCIÓN -->
                 <fieldset class="edit-fieldset">
                     <legend><span aria-hidden="true">📝</span> Sobre ti</legend>

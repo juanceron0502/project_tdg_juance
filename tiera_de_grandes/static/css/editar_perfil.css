@@ -156,6 +156,7 @@
 .edit-field input[type="text"],
 .edit-field input[type="email"],
 .edit-field input[type="tel"],
+.edit-field input[type="url"],
 .edit-field input[type="number"],
 .edit-field input[type="password"],
 .edit-field select,
@@ -367,4 +368,19 @@
         width: 100%;
         justify-content: center;
     }
+}
+
+
+/* Texto de ayuda bajo un grupo de campos */
+
+.edit-help {
+    margin: 12px 0 0;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.edit-help em {
+    color: var(--green-dark);
+    font-style: normal;
+    font-weight: 600;
 }

@@ -148,9 +148,9 @@
 
                                 <a href="{% url 'perfil' %}">👤 Mi perfil</a>
 
-                                {% if u.is_staff %}
+                         
                                     <a href="{% url 'tablero' %}">📊 Dashboard</a>
-                                {% endif %}
+                               
 
                                 <!-- Cerrar sesión por POST (Django 5+ no acepta GET) -->
                                 <form method="post" action="{% url 'logout' %}">

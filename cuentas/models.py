@@ -88,6 +88,10 @@ class UserPerfil(models.Model):
     ciudad = models.CharField(blank=True, max_length=20)
     departamento = models.CharField(blank=True, max_length=20)
     descripcion = models.TextField()
+    instagram = models.URLField("Instagram", max_length=200, blank=True)
+    tiktok = models.URLField("TikTok", max_length=200, blank=True)
+    facebook = models.URLField("Facebook", max_length=200, blank=True)
+
 
     def __str__(self):
         return self.user.nombres

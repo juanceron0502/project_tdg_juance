@@ -42,19 +42,17 @@
                         </p>
                     </div>
 
-                    
-                        <div class="profile-actions">
-                            {% if perfil_usuario == request.user %} 
-                                <a href="{% url 'edit_perfil' %}" class="btn-profile-primary">
-                                    ✏️ Editar perfil
-                                </a>
-                            {% else %}
-                                <a href="{% url 'mas_informacion' user.nombreusuario %}" class="btn-profile-primary">
-                                    ✉️ Contactar
-                                </a>
-                            {% endif %}
-                        </div>
-                    
+                    <div class="profile-actions">
+                        {% if perfil_usuario == request.user %}
+                            <a href="{% url 'edit_perfil' %}" class="btn-profile-primary">
+                                ✏️ Editar perfil
+                            </a>
+                        {% else %}
+                            <a href="{% url 'mas_informacion' user.nombreusuario %}" class="btn-profile-primary">
+                                ✉️ Contactar
+                            </a>
+                        {% endif %}
+                    </div>
 
                 </div>
             </header>
@@ -84,6 +82,81 @@
                     {% endif %}
                 </div>
             </section>
+
+
+            <!-- REDES SOCIALES -->
+            {% with p=user.userperfil %}
+                {% if p.instagram or p.tiktok or p.facebook %}
+
+                    <section class="profile-section profile-social">
+                        <h2 class="profile-title">Sígueme en mis redes</h2>
+
+                        <ul class="social-list">
+
+                            {% if p.instagram %}
+                                <li>
+                                    <a href="{{ p.instagram }}"
+                                       class="social-btn social-instagram"
+                                       target="_blank"
+                                       rel="noopener noreferrer nofollow"
+                                       aria-label="Instagram de {{ user.full_nombre }} (se abre en una pestaña nueva)">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                                        </svg>
+                                        <span>Instagram</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if p.tiktok %}
+                                <li>
+                                    <a href="{{ p.tiktok }}"
+                                       class="social-btn social-tiktok"
+                                       target="_blank"
+                                       rel="noopener noreferrer nofollow"
+                                       aria-label="TikTok de {{ user.full_nombre }} (se abre en una pestaña nueva)">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                                            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                                        </svg>
+                                        <span>TikTok</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if p.facebook %}
+                                <li>
+                                    <a href="{{ p.facebook }}"
+                                       class="social-btn social-facebook"
+                                       target="_blank"
+                                       rel="noopener noreferrer nofollow"
+                                       aria-label="Facebook de {{ user.full_nombre }} (se abre en una pestaña nueva)">
+                                        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                                        </svg>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        </ul>
+                    </section>
+
+                {% elif perfil_usuario == request.user %}
+
+                    <!-- Solo el dueño del perfil ve esta invitación -->
+                    <section class="profile-section profile-social">
+                        <h2 class="profile-title">Sígueme en mis redes</h2>
+                        <p class="profile-muted social-empty">
+                            Aún no has agregado tus redes sociales.
+                            <a href="{% url 'edit_perfil' %}">Agrégalas desde Editar perfil</a>
+                            para que tus clientes puedan seguirte.
+                        </p>
+                    </section>
+
+                {% endif %}
+            {% endwith %}
 
 
             <!-- PRODUCTOS -->

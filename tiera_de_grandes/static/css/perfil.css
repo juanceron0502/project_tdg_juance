@@ -248,6 +248,105 @@
 
 
 /* ============================================================
+   REDES SOCIALES
+============================================================ */
+
+.social-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px 11px 16px;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.social-btn svg {
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.social-btn:hover {
+    box-shadow: var(--shadow-hover);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+.social-btn:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+.social-instagram {
+    background: linear-gradient(45deg, #D62976, #962FBF, #4F5BD5);
+}
+
+.social-tiktok {
+    background: #121212;
+}
+
+.social-facebook {
+    background: #1877F2;
+}
+
+.social-empty {
+    margin: 0;
+    padding: 16px 20px;
+    background: var(--cream);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.social-empty a {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.social-empty a:hover {
+    color: var(--green-dark);
+    text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .social-btn {
+        transition: none;
+    }
+
+    .social-btn:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-list {
+        flex-direction: column;
+    }
+
+    .social-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+
+/* ============================================================
    PRODUCTOS (contenido heredado de productos.html)
 ============================================================ */
 
