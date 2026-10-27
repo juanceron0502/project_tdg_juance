@@ -77,52 +77,8 @@
 
 
 /* ============================================================
-   COMPRA
+   STOCK Y CONTACTO
 ============================================================ */
-
-.buy-form {
-    padding-top: 22px;
-    border-top: 1px solid var(--border);
-}
-
-.buy-selects {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 14px;
-}
-
-.buy-field {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.buy-field label {
-    margin-bottom: 6px;
-    color: var(--green-dark);
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.buy-field select {
-    width: 100%;
-    padding: 11px 14px;
-    background-color: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    cursor: pointer;
-    transition: border-color .2s, box-shadow .2s;
-}
-
-.buy-field select:focus {
-    outline: none;
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(102, 187, 106, .28);
-}
 
 .stock-info {
     margin: 0 0 18px;
@@ -140,6 +96,74 @@
     color: #C62828;
     font-size: 14px;
     font-weight: 700;
+}
+
+
+.contact-box {
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+}
+
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 24px 11px 12px;
+    background: #0F7B6C;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.25;
+    transition: background-color .25s, transform .25s, box-shadow .25s;
+}
+
+.btn-whatsapp:hover {
+    background: #075E54;
+    box-shadow: var(--shadow-hover);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-whatsapp:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+.whatsapp-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    background: #25D366;
+    border-radius: 50%;
+    color: var(--white);
+}
+
+.whatsapp-text small {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: .9;
+}
+
+.contact-hint {
+    margin: 10px 0 0;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.contact-missing {
+    margin: 0;
+    padding: 14px 16px;
+    background: var(--cream);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 600;
 }
 
 
@@ -251,8 +275,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .buy-field select {
+    .btn-whatsapp {
         transition: none;
+    }
+
+    .btn-whatsapp:hover {
+        transform: none;
     }
 }
 
@@ -283,12 +311,112 @@
 
 @media (max-width: 480px) {
 
-    .buy-selects {
-        grid-template-columns: 1fr;
+    .btn-whatsapp {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   ME GUSTA
+============================================================ */
+
+.like-wrap {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 3;
+}
+
+.like-form {
+    margin: 0;
+}
+
+.like-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 15px 9px 12px;
+    background: rgba(255, 255, 255, .96);
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+    color: #37474F;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.like-button:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .24);
+    color: #37474F;
+    transform: translateY(-2px);
+}
+
+.like-button:disabled {
+    cursor: wait;
+    opacity: .75;
+}
+
+.like-button:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+.like-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    color: #78909C;
+    transition: color .2s, fill .2s;
+}
+
+.like-button:hover .like-icon,
+.like-button.is-liked .like-icon {
+    color: #E53935;
+}
+
+.like-button.is-liked .like-icon {
+    fill: currentColor;
+}
+
+.like-button.just-liked .like-icon {
+    animation: like-pop .4s ease;
+}
+
+@keyframes like-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .like-button,
+    .like-icon {
+        transition: none;
     }
 
-    .buy-form .btn-detail-primary {
-        width: 100%;
-        justify-content: center;
+    .like-button.just-liked .like-icon {
+        animation: none;
+    }
+
+    .like-button:hover {
+        transform: none;
     }
 }

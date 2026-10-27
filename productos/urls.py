@@ -18,6 +18,7 @@ urlpatterns = [
     #path('productos/', views.productos, name='productos'),
     path('productos_usuario/', views.productos_usuario, name='productos_usuario'),
     path('comentarios_calf/<int:producto_id>/', views.comentarios_calf, name="comentarios_calf"),
+    path("producto/<int:pk>/like/", views.toggle_like, name="toggle_like"),
    
    
 

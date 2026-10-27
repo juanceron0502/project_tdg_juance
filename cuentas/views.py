@@ -22,8 +22,6 @@ from cuentas.models import *
 from .forms import *
 from ordenes_de_compra.models import *
 
-from carrito.views import _carrito_id
-from carrito.models import *
 import requests
 
 # Create your views here.
@@ -83,45 +81,7 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
-            try:
-                carrito = Carrito.objects.get(carrito_id=_carrito_id(request))
-                is_carrito_item_exist = CarritoItem.objects.filter(carrito=carrito).exists()
-                if is_carrito_item_exist:
-                    carrito_item = CarritoItem.objects.filter(carrito=carrito)
-
-                    productos_kardex = []
-                    for item in carrito_item:
-                        kardex = item.kardexob.all()
-                        productos_kardex.append(list(kardex))
-
-                    carrito_item = CarritoItem.objects.filter(user=user)
-                    ex_var_list = []
-                    id= []
-                    for item in carrito_item:
-                        existing_kardex = item.kardexob.all()
-                        ex_var_list.append(list(existing_kardex))
-                        id.append(item.id)
-
-                    #productos_kardex  = [,3,41,2,5]
-                    # ex_var_list = [5, 6, 7, ,8]
-
-                    for pr in productos_kardex:
-                        if pr in ex_var_list:
-                            index = ex_var_list.index(pr)
-                            item_id = id[index]
-                            item = CarritoItem.objects.get(id=item_id)
-                            item.candidad +=1
-                            item.user = user
-                            item.save()
-                        else:
-                            carrito_item = CarritoItem.objects.filter(carrito=carrito)
-                            for item in carrito_item:
-                                item.user = user
-                                item.save()
-
-                    
-            except:
-                pass
+            
             #http://127.0.0.1:8000/login/?next=/checkout
             auth.login(request, user)
             messages.success(request, 'Has iniciado sesion Exitosamente')
@@ -238,8 +198,8 @@ def resetearpassword(request):
         return render (request, 'registracion/resetearpassword.html')
 
     return render()
-@login_required
-def perfil (request, nombreusuario=None):
+
+"""def perfil (request, nombreusuario=None):
     current_user = request.user
     if nombreusuario and nombreusuario !=current_user.nombreusuario:
         user = Cuentas.objects.get(nombreusuario=nombreusuario)
@@ -249,9 +209,24 @@ def perfil (request, nombreusuario=None):
         product = current_user.product.all()
         user = current_user
 
-    return render(request, 'perfil/perfil.html',{'user':user, 'product':product})
+    return render(request, 'perfil/perfil.html',{'user':user, 'product':product})"""
 
-@login_required
+
+def perfil(request, nombreusuario=None):
+    if nombreusuario:
+        # Perfil público: cualquiera puede verlo, tenga sesión o no
+        user = get_object_or_404(Cuentas, nombreusuario=nombreusuario)
+    elif request.user.is_authenticated:
+        # URL sin nombre (ej. /perfil/): muestra el perfil del usuario logueado
+        user = request.user
+    else:
+        # URL sin nombre y sin sesión: no hay perfil que mostrar
+        return redirect('login')
+
+    product = user.product.all()
+
+    return render(request, 'perfil/perfil.html', {'user': user, 'product': product})
+
 def perfilusuario(request, nombres=None):
     current_user = request.user
     if nombres and nombres !=current_user.nombres:

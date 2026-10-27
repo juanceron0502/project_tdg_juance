@@ -42,9 +42,9 @@
                         </p>
                     </div>
 
-                    {% if request.user.is_authenticated %}
+                    
                         <div class="profile-actions">
-                            {% if user.nombreusuario == request.user.nombreusuario %}
+                            {% if perfil_usuario == request.user %} 
                                 <a href="{% url 'edit_perfil' %}" class="btn-profile-primary">
                                     ✏️ Editar perfil
                                 </a>
@@ -54,7 +54,7 @@
                                 </a>
                             {% endif %}
                         </div>
-                    {% endif %}
+                    
 
                 </div>
             </header>

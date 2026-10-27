@@ -12,7 +12,8 @@ from django.contrib.auth.decorators import  login_required
 from cuentas.models import *
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from ordenes_de_compra.models import OrdenProducto
-
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -45,28 +46,17 @@ def verproducto (request, categoria_slug=None):
 
 
 def detalleproducto(request, categoria_slug, producto_slug):
-    try:
-        single_producto = Producto.objects.get(categoria__slug=categoria_slug, slug=producto_slug)
-        in_carrito = CarritoItem.objects.filter(carrito__carrito_id=_carrito_id(request), productos=single_producto).exists()
+    
+    single_producto = Producto.objects.get(categoria__slug=categoria_slug, slug=producto_slug)
+    le_gusta = (request.user.is_authenticated and single_producto.likes.filter(user=request.user).exists()
+   )
 
-    except Exception as e:
-        raise e
-    if request.user.is_authenticated:
-
-        try: 
-            ordenproducto = OrdenProducto.objects.filter(user=request.user, productos=single_producto.id ).exists()
-
-        except OrdenProducto.DoesNotExist:
-            ordenproducto = None
-    else:
-        ordenproducto = None 
 
     comentarios = RevisionCalificacion.objects.filter(producto_id=single_producto.id, estado=True)
 
     context = {
         'single_producto': single_producto,
-        'in_carrito':in_carrito,
-        'ordenproducto':ordenproducto,
+        'le_gusta': le_gusta,
         'comentarios': comentarios,
     }    
     return render(request, 'verproducts/verproductos.html', context) 
@@ -192,6 +182,26 @@ def comentarios_calf (request, producto_id):
                 messages.success(request, 'Muchas Gracias! Tu comentario fue enviado con exito')
                 return redirect(url) 
 
+
+@login_required
+@require_POST
+
+def toggle_like(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+
+    like, creado = Like.objects.get_or_create(user=request.user, producto=producto)
+    if not creado:
+        like.delete()          # si ya existía, se quita (funciona como interruptor)
+
+    # Petición con JavaScript (fetch): responde JSON, sin recargar la página
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return JsonResponse({
+            "liked": creado,
+            "total": producto.likes.count(),
+        })
+
+    # Sin JavaScript: vuelve a la página del producto
+    return redirect(producto.get_url())
 
 
 

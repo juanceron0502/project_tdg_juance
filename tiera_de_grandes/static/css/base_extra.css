@@ -1,0 +1,260 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   base_extra.css
+   Se carga DESPUÉS de index.css. Contiene lo nuevo de la plantilla
+   base: menú de usuario, botón "ver detalle" y alertas.
+============================================================ */
+
+
+/* ============================================================
+   MENÚ DE USUARIO
+============================================================ */
+
+.user-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 5px;
+    background: transparent;
+    border: none;
+    border-radius: 50px;
+    color: var(--white);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .2s;
+}
+
+.user-button:hover,
+.user-button[aria-expanded="true"] {
+    background: rgba(255, 255, 255, .12);
+}
+
+.user-button:focus-visible,
+.nav-link:focus-visible,
+.dropdown-content a:focus-visible,
+.dropdown-content button:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 2px;
+}
+
+/* Avatar con inicial de respaldo y foto encima */
+
+.user-avatar {
+    position: relative;
+    display: block;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--white);
+}
+
+.user-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: var(--green-light);
+    border-radius: 50%;
+    color: var(--green-dark);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.user-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Punto verde: indica que hay sesión iniciada */
+
+.user-avatar::after {
+    content: "";
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    z-index: 2;
+    width: 11px;
+    height: 11px;
+    background: #69F0AE;
+    border: 2px solid var(--green-dark);
+    border-radius: 50%;
+}
+
+.user-name {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-caret {
+    font-size: 12px;
+}
+
+/* Contenido del menú */
+
+.user-menu {
+    min-width: 230px;
+}
+
+.dropdown-header {
+    padding: 13px 15px;
+    background: var(--green-soft);
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.dropdown-header strong {
+    display: block;
+    margin-top: 2px;
+    color: var(--green-dark);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.dropdown-content form {
+    margin: 0;
+}
+
+.dropdown-content form button {
+    display: block;
+    width: 100%;
+    padding: 11px 15px;
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--border);
+    color: #C62828;
+    font-family: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-content form button:hover {
+    background: #FFEBEE;
+}
+
+
+/* ============================================================
+   BOTÓN "VER DETALLE" (reemplaza al botón del carrito)
+============================================================ */
+
+.view-product {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--green);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 18px;
+    transition: background-color .25s, transform .25s;
+}
+
+.view-product:hover {
+    background: var(--green-dark);
+    color: var(--white);
+    transform: translateX(3px);
+}
+
+.view-product:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   ALERTAS (Bootstrap ya no se carga)
+============================================================ */
+
+.alert {
+    margin-bottom: 15px;
+    padding: 12px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.alert-success {
+    background: var(--green-soft);
+    border-color: #A5D6A7;
+    color: var(--green-dark);
+}
+
+.alert-info {
+    background: #E3F2FD;
+    border-color: #90CAF9;
+    color: #0D47A1;
+}
+
+.alert-warning {
+    background: #FFF8E1;
+    border-color: #FFE082;
+    color: #8D6E00;
+}
+
+.alert-danger,
+.alert-error {
+    background: #FFEBEE;
+    border-color: #EF9A9A;
+    color: #B71C1C;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .user-button,
+    .view-product {
+        transition: none;
+    }
+
+    .view-product:hover {
+        transform: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   El menú de la barra tenía overflow-x: auto en móvil, lo que
+   recortaba los desplegables. Aquí se corrige.
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow: visible;
+    }
+
+    .dropdown-content {
+        max-width: calc(100vw - 30px);
+    }
+
+    /* Categorías se abre hacia la derecha, el usuario hacia la izquierda */
+    .nav-dropdown:first-of-type .dropdown-content {
+        right: auto;
+        left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .user-name {
+        display: none;
+    }
+}

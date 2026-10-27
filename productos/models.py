@@ -90,6 +90,27 @@ class RevisionCalificacion(models.Model):
     def __str__(self):
         return self.Sujeto
 
+class Like(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="likes",
+    )
+    producto = models.ForeignKey(
+        Producto,                      # <-- cambia por el nombre de tu modelo
+        on_delete=models.CASCADE,
+        related_name="likes",            # permite usar producto.likes.count en la plantilla
+    )
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # Un usuario solo puede dar un me gusta por producto
+        constraints = [
+            models.UniqueConstraint(fields=["user", "producto"], name="unique_like_user_producto"),
+        ]
+
+    def __str__(self):
+        return f"{self.user} ♥ {self.producto}"
 
     
     

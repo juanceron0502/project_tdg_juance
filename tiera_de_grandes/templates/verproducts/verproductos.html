@@ -35,6 +35,51 @@
                          class="detail-image">
                 {% endif %}
                 <span class="product-label">Fresco</span>
+
+                <!-- ME GUSTA -->
+                <div class="like-wrap">
+
+                    {% if request.user.is_authenticated %}
+
+                        <form method="post"
+                              action="{% url 'toggle_like' single_producto.pk %}"
+                              class="like-form"
+                              data-like-form>
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="like-button{% if le_gusta %} is-liked{% endif %}"
+                                    aria-pressed="{% if le_gusta %}true{% else %}false{% endif %}"
+                                    data-like-button>
+
+                                <svg class="like-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+
+                                <span class="sr-only">Me gusta</span>
+                                <span class="like-count" data-like-count>{{ single_producto.likes.count }}</span>
+
+                            </button>
+                        </form>
+
+                    {% else %}
+
+                        <a href="{% url 'login' %}?next={{ request.path|urlencode }}"
+                           class="like-button"
+                           title="Inicia sesión para dar me gusta">
+
+                            <svg class="like-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+
+                            <span class="sr-only">Inicia sesión para dar me gusta.</span>
+                            <span class="like-count">{{ single_producto.likes.count }}</span>
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
             </div>
 
 
@@ -70,7 +115,7 @@
                     {% endwith %}
                 </div>
 
-                <p class="detail-price">${{ single_producto.precio|intcomma }}</p>
+                <p class="detail-price">${{ single_producto.precio|stringformat:".0f"|intcomma }}</p>
 
                 {% if single_producto.Informacion_de_produccion %}
                     <div class="detail-production">
@@ -87,28 +132,54 @@
                 {% endif %}
 
 
-                <!-- COMPRA -->
-                {% if single_producto.stock <= 0 %}
+                <!-- CONTACTO CON EL PRODUCTOR -->
+                <div class="contact-box">
 
-                    <p class="stock-out">🚫 Producto fuera de stock</p>
-
-                {% else %}
-
-                    <form method="POST"
-                          action="{% url 'add_carrito' single_producto.pk %}"
-                          class="buy-form">
-                        {% csrf_token %}
-
-                        
-
+                    {% if single_producto.stock <= 0 %}
+                        <p class="stock-out">🚫 Producto fuera de stock</p>
+                    {% else %}
                         <p class="stock-info">✅ {{ single_producto.stock|intcomma }} disponibles</p>
+                    {% endif %}
 
-                        <button type="submit" class="btn-detail-primary">
-                            <span aria-hidden="true">🛒</span> Agregar al carrito
-                        </button>
-                    </form>
+                    {# Se limpia el número (espacios, guiones, +) y, si tiene 10 dígitos, se le antepone el 57 de Colombia #}
+                    {% with tel=single_producto.user.numero_telefono|cut:" "|cut:"-"|cut:"+" %}
 
-                {% endif %}
+                        {% if tel %}
+
+                            <a href="https://wa.me/{% if tel|length == 10 %}57{% endif %}{{ tel }}?text=Hola%2C%20vi%20tu%20producto%20%22{{ single_producto.nombre|urlencode }}%22%20en%20Tierra%20de%20Grandes%20y%20me%20interesa.%0A{{ request.build_absolute_uri|urlencode:'' }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="btn-whatsapp"
+                               aria-label="Chatear por WhatsApp con {{ single_producto.user.nombres|title }}, el productor">
+
+                                <span class="whatsapp-icon">
+                                    <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true" focusable="false">
+                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                    </svg>
+                                </span>
+
+                                <span class="whatsapp-text">
+                                    <small>¿Te interesa esta cosecha?</small>
+                                    Chatear con el productor
+                                </span>
+
+                            </a>
+
+                            <p class="contact-hint">
+                                Se abrirá WhatsApp con un mensaje listo para enviar a {{ single_producto.user.nombres|title }}.
+                            </p>
+
+                        {% else %}
+
+                            <p class="contact-missing">
+                                📵 Este productor aún no ha registrado un número de teléfono.
+                            </p>
+
+                        {% endif %}
+
+                    {% endwith %}
+
+                </div>
 
             </div>
 
@@ -265,5 +336,46 @@
 
     </div>
 </section>
+
+
+<script>
+    // Me gusta sin recargar la página. Si algo falla, se envía el formulario normalmente.
+    (function () {
+        document.querySelectorAll("[data-like-form]").forEach(function (form) {
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const button = form.querySelector("[data-like-button]");
+                const count = form.querySelector("[data-like-count]");
+                if (!button || button.disabled) return;
+
+                button.disabled = true;
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form),
+                    headers: { "X-Requested-With": "XMLHttpRequest" },
+                    credentials: "same-origin"
+                })
+                .then(function (response) {
+                    if (!response.ok) throw new Error("Error " + response.status);
+                    return response.json();
+                })
+                .then(function (data) {
+                    button.classList.toggle("is-liked", data.liked);
+                    button.classList.toggle("just-liked", data.liked);
+                    button.setAttribute("aria-pressed", data.liked ? "true" : "false");
+                    if (count) count.textContent = data.total;
+                    button.disabled = false;
+                })
+                .catch(function () {
+                    form.submit();
+                });
+            });
+
+        });
+    })();
+</script>
 
 {% endblock content %}

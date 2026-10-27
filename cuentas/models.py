@@ -3,6 +3,10 @@ from dataclasses import fields
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
+from django.conf import settings
+
+#from productos.models import Producto
+
 # Create your models here.
 
 class CuentaAdd(BaseUserManager):
@@ -93,6 +97,7 @@ class UserPerfil(models.Model):
 
 
     
+
 
 
 
