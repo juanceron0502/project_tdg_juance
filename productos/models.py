@@ -8,6 +8,18 @@ from autoslug import AutoSlugField
 from django.db.models import Avg
 
 # Create your models here.
+PRODUCTOS_SIPSA = [
+    ("Papa parda pastusa", "Papa parda pastusa"),
+    ("Tomate larga vida", "Tomate larga vida"),
+    ("Habichuela", "Habichuela"),
+]
+
+UNIDADES_PRECIO = [
+    ("kg", "Kilogramo"),
+    ("lb", "Libra"),
+    ("bulto", "Bulto"),
+    ("unidad", "Unidad"),
+]
 
 class Producto(models.Model):
     user = models.ForeignKey(Cuentas,on_delete=models.CASCADE, related_name='product')
@@ -24,6 +36,27 @@ class Producto(models.Model):
     activo=models.BooleanField(default=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     modificacion_date = models.DateTimeField(auto_now=True)
+    unidad_precio = models.CharField(max_length=10, choices=UNIDADES_PRECIO, default="kg")
+    producto_sipsa = models.CharField(
+        max_length=100, blank=True, choices=PRODUCTOS_SIPSA,
+        help_text="Producto equivalente en el SIPSA, si tiene precio de referencia",
+    )
+
+    def referencia_precio(self):
+        # Import local para evitar importaciones circulares
+        from inteligencia_artificial.services.recomendaciones import recomendacion_de
+        return recomendacion_de(self.producto_sipsa)
+
+    def comparacion_referencia(self):
+        """Compara el precio del productor con la referencia, solo si ambos son por kg."""
+        r = self.referencia_precio()
+        if not r or self.unidad_precio != "kg" or not r["precio_estimado"]:
+            return None
+        return {
+            "referencia": r,
+            "diferencia_pct": round((self.precio / r["precio_estimado"] - 1) * 100),
+            "dentro_rango": r["rango_bajo"] <= self.precio <= r["rango_alto"],
+        }
 
 
     def get_url(self):

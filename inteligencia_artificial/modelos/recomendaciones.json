@@ -1,0 +1,103 @@
+[
+  {
+    "producto": "Papa parda pastusa",
+    "mes_base": "2024-12",
+    "mes_estimado": "2025-01",
+    "precio_actual": 2044,
+    "precio_estimado": 2229,
+    "rango_bajo": 1817,
+    "rango_alto": 2889,
+    "cambio_esperado_pct": 9.0,
+    "direccion": "Sube",
+    "confianza": "Media",
+    "metodo": "Regresión Lineal",
+    "mejora_vs_ingenuo_pct": 3.6,
+    "error_tipico_pct": 10.3,
+    "vs_promedio_12m_pct": -9.7,
+    "meses_altos": [
+      3,
+      5,
+      4
+    ],
+    "meses_bajos": [],
+    "mensaje": [
+      "Precio de referencia de Papa parda pastusa para enero de 2025: $2.229 por kg (rango probable: $1.817 a $2.889).",
+      "Se espera que el precio suba cerca de 9 % frente a diciembre.",
+      "Confianza media: el modelo redujo el error en 4 % frente al método simple, pero con pocos meses de prueba esa diferencia no es concluyente. Úselo como guía, no como cifra exacta.",
+      "El error típico de este método ha sido de unos 10 %.",
+      "El precio actual está 10 % por debajo del promedio de los últimos 12 meses.",
+      "Históricamente los precios suelen ser más altos en marzo, abril, mayo.",
+      "Es una estimación del precio mayorista en Popayán (SIPSA-DANE), no un precio garantizado de venta."
+    ],
+    "meses_interpolados": 0,
+    "p_valor": 0.712316411959755,
+    "acierto_direccion_pct": 80,
+    "n_senales_direccion": 15
+  },
+  {
+    "producto": "Tomate larga vida",
+    "mes_base": "2024-12",
+    "mes_estimado": "2025-01",
+    "precio_actual": 2689,
+    "precio_estimado": 2689,
+    "rango_bajo": 2253,
+    "rango_alto": 3326,
+    "cambio_esperado_pct": 0.0,
+    "direccion": "Sin señal",
+    "confianza": "Baja",
+    "metodo": "Ingenuo (mes anterior)",
+    "mejora_vs_ingenuo_pct": 0.0,
+    "error_tipico_pct": 10.6,
+    "vs_promedio_12m_pct": -10.3,
+    "meses_altos": [],
+    "meses_bajos": [],
+    "mensaje": [
+      "Precio de referencia de Tomate larga vida para enero de 2025: $2.689 por kg (rango probable: $2.253 a $3.326).",
+      "Para este producto no hay una señal confiable de subida o bajada; la referencia es el último precio observado.",
+      "Confianza baja: el modelo no superó a repetir el último precio, por eso se usa el precio actual como referencia.",
+      "El error típico de este método ha sido de unos 11 %.",
+      "El precio actual está 10 % por debajo del promedio de los últimos 12 meses.",
+      "No se observa una temporada de precios altos estable para este producto.",
+      "Es una estimación del precio mayorista en Popayán (SIPSA-DANE), no un precio garantizado de venta."
+    ],
+    "meses_interpolados": 1,
+    "p_valor": null,
+    "acierto_direccion_pct": null,
+    "n_senales_direccion": 0
+  },
+  {
+    "producto": "Habichuela",
+    "mes_base": "2024-12",
+    "mes_estimado": "2025-01",
+    "precio_actual": 2130,
+    "precio_estimado": 2927,
+    "rango_bajo": 2071,
+    "rango_alto": 4140,
+    "cambio_esperado_pct": 37.4,
+    "direccion": "Sube",
+    "confianza": "Alta",
+    "metodo": "Regresión Lineal",
+    "mejora_vs_ingenuo_pct": 30.0,
+    "error_tipico_pct": 21.1,
+    "vs_promedio_12m_pct": -43.6,
+    "meses_altos": [
+      3,
+      1,
+      2
+    ],
+    "meses_bajos": [],
+    "mensaje": [
+      "Precio de referencia de Habichuela para enero de 2025: $2.927 por kg (rango probable: $2.071 a $4.140).",
+      "Se espera que el precio suba cerca de 37 % frente a diciembre.",
+      "Confianza alta: en los últimos 24 meses el modelo redujo el error en 30 % frente a repetir el precio del mes anterior.",
+      "El error típico de este método ha sido de unos 21 %.",
+      "El precio actual está 44 % por debajo del promedio de los últimos 12 meses.",
+      "Históricamente los precios suelen ser más altos en enero, febrero, marzo.",
+      "Es una estimación del precio mayorista en Popayán (SIPSA-DANE), no un precio garantizado de venta."
+    ],
+    "meses_interpolados": 0,
+    "p_valor": 0.044656601411726934,
+    "acierto_direccion_pct": 71,
+    "n_senales_direccion": 21
+  }
+]

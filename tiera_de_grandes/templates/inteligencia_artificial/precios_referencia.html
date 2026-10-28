@@ -1,0 +1,81 @@
+{% extends "index.html" %}
+{% load humanize %}
+
+{% block titulo %}Precios de referencia · Tierra de Grandes{% endblock %}
+
+{% block extra_css %}
+<style>
+  .ref-wrap { padding: 60px 0; }
+  .ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+  .ref-card { background: #fff; border: 1px solid var(--border); border-radius: 15px;
+              box-shadow: var(--shadow); padding: 24px; }
+  .ref-card h3 { color: var(--green-dark); margin: 0 0 4px; font-size: 20px; }
+  .ref-precio { font-size: 32px; font-weight: 800; color: var(--green); margin: 8px 0 0; }
+  .ref-rango { color: var(--text-light); font-size: 14px; margin-bottom: 12px; }
+  .badge-ref { display: inline-block; padding: 4px 10px; border-radius: 50px;
+               font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .b-sube { background: #E8F5E9; color: #1B5E20; }
+  .b-baja { background: #FDECEA; color: #B71C1C; }
+  .b-neutro { background: #ECEFF1; color: #455A64; }
+  .b-alta { background: #E8F5E9; color: #1B5E20; }
+  .b-media { background: #FFF8E1; color: #F57F17; }
+  .b-baja-conf { background: #FDECEA; color: #B71C1C; }
+  .ref-aviso { background: #FFF8E1; border-left: 4px solid var(--yellow); padding: 10px 14px;
+               border-radius: 6px; font-size: 13px; margin: 12px 0; }
+  .ref-card details { margin-top: 12px; font-size: 14px; color: var(--text); }
+  .ref-card summary { cursor: pointer; color: var(--green-dark); font-weight: 600; }
+  .ref-card li { margin-bottom: 6px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="ref-wrap">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-tag">Precios de referencia</span>
+      <h2>¿A cuánto se está moviendo el mercado?</h2>
+      <p>Estimación del precio mayorista en Popayán a partir de datos del SIPSA-DANE.
+         Es una guía orientativa, no un precio garantizado de venta.</p>
+    </div>
+    {% with primera=recomendaciones.0 %}
+        {% if primera.atraso_meses > 1 %}
+            <div class="ref-aviso" style="max-width: 900px; margin: 0 auto 30px;">
+            <strong>Datos desactualizados.</strong> Estas estimaciones son para
+        {{ primera.mes_estimado_texto }}, porque el modelo se entrenó con datos del SIPSA
+        hasta {{ primera.mes_base_texto }}. Ya pasaron {{ primera.atraso_meses }} meses.
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="ref-grid">
+      {% for r in recomendaciones %}
+      <article class="ref-card">
+        <h3>{{ r.producto }}</h3>
+
+        <span class="badge-ref {% if r.direccion == 'Sube' %}b-sube{% elif r.direccion == 'Baja' %}b-baja{% else %}b-neutro{% endif %}">
+          {% if r.direccion == 'Sube' %}↑ Sube{% elif r.direccion == 'Baja' %}↓ Baja
+          {% elif r.direccion == 'Estable' %}→ Estable{% else %}Sin señal{% endif %}
+        </span>
+        <span class="badge-ref {% if r.confianza == 'Alta' %}b-alta{% elif r.confianza == 'Media' %}b-media{% else %}b-baja-conf{% endif %}">
+          Confianza {{ r.confianza|lower }}
+        </span>
+
+        <p class="ref-precio">${{ r.precio_estimado|floatformat:"0g" }} <small style="font-size:14px;font-weight:600">/ kg</small></p>
+        <p class="ref-rango">Rango probable: ${{ r.rango_bajo|floatformat:"0g" }} a ${{ r.rango_alto|floatformat:"0g" }}</p>
+
+      
+
+        <details>
+          <summary>Ver detalle</summary>
+          <ul>
+            {% for linea in r.mensaje %}<li>{{ linea }}</li>{% endfor %}
+          </ul>
+        </details>
+      </article>
+      {% empty %}
+      <p>Aún no hay recomendaciones generadas. Ejecuta <code>entrenar_modelos.py</code>.</p>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}

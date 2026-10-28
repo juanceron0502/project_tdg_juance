@@ -46,35 +46,44 @@ def verproducto (request, categoria_slug=None):
 
 
 def detalleproducto(request, categoria_slug, producto_slug):
-    
-    single_producto = Producto.objects.get(categoria__slug=categoria_slug, slug=producto_slug)
-    le_gusta = (request.user.is_authenticated and single_producto.likes.filter(user=request.user).exists()
-   )
+    single_producto = get_object_or_404(
+        Producto, categoria__slug=categoria_slug, slug=producto_slug)
 
+    le_gusta = (request.user.is_authenticated
+                and single_producto.likes.filter(user=request.user).exists())
 
-    comentarios = RevisionCalificacion.objects.filter(producto_id=single_producto.id, estado=True)
+    comentarios = RevisionCalificacion.objects.filter(
+        producto=single_producto, estado=True)
+
+    es_dueno = request.user.is_authenticated and (
+        request.user.pk == single_producto.user_id or request.user.is_staff)
+    comparacion = single_producto.comparacion_referencia() if es_dueno else None
 
     context = {
         'single_producto': single_producto,
         'le_gusta': le_gusta,
         'comentarios': comentarios,
-    }    
-    return render(request, 'verproducts/verproductos.html', context) 
+        'comparacion': comparacion,
+    }
+    return render(request, 'verproducts/verproductos.html', context)
 
 def buscador(request):
-    if 'keyword' in request.GET:
-        keyword = request.GET['keyword']
-        if keyword:
-            users = Cuentas.objects.filter(Q(nombres__icontains=keyword))
-            productos = Producto.objects.order_by('-fecha_creacion').filter(Q(descripcion__icontains=keyword) | Q(nombre__icontains=keyword))
-            producto_count = productos.count()
+    keyword = request.GET.get('keyword', '').strip()
+    productos = Producto.objects.none()
+    users = Cuentas.objects.none()
+
+    if keyword:
+        users = Cuentas.objects.filter(Q(nombres__icontains=keyword))
+        productos = (Producto.objects.filter(activo=True)
+                     .filter(Q(descripcion__icontains=keyword) | Q(nombre__icontains=keyword))
+                     .order_by('-fecha_creacion'))
 
     context = {
-        'productos':productos,
-        'producto_count':producto_count,
-        'users':users
+        'productos': productos,
+        'producto_count': productos.count(),
+        'users': users,
     }
-    return render(request, 'categorias/vercategoria.html' ,context)
+    return render(request, 'categorias/vercategoria.html', context)
 
 @login_required
 def agregar_Producto(request):
@@ -101,26 +110,30 @@ def listar_productos(request):
     }
     return render(request, 'producto/listar.html', data)
 
-def modificar_producto(request,pk):
-    
+@login_required
+def modificar_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
+    if producto.user_id != request.user.pk and not request.user.is_superuser:
+        messages.error(request, 'No tienes permiso para modificar este producto')
+        return redirect('inicio')
 
-    data = {
-        'form': ProductoForm(instance=producto)
-    }
+    data = {'form': ProductoForm(instance=producto)}
     if request.method == 'POST':
         form = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Producto Modificado con Exito')
             return redirect("tablero")
-
-        data["form"] = form    
+        data["form"] = form
     return render(request, 'producto/modificar.html', data)
 
 
+@login_required
 def eliminar_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
+    if producto.user_id != request.user.pk and not request.user.is_superuser:
+        messages.error(request, 'No tienes permiso para eliminar este producto')
+        return redirect('inicio')
     producto.delete()
     messages.success(request, 'Producto Eliminado con Exito')
     return redirect(to="tablero")

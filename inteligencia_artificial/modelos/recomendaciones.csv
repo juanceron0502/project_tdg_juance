@@ -1,0 +1,4 @@
+﻿producto,mes_base,mes_estimado,precio_actual,precio_estimado,rango_bajo,rango_alto,cambio_esperado_pct,direccion,confianza,metodo,mejora_vs_ingenuo_pct,error_tipico_pct,vs_promedio_12m_pct,meses_altos,meses_bajos,meses_interpolados,p_valor,acierto_direccion_pct,n_senales_direccion
+Papa parda pastusa,2024-12,2025-01,2044,2229,1817,2889,9.0,Sube,Media,Regresión Lineal,3.6,10.3,-9.7,"[3, 5, 4]",[],0,0.712316411959755,80.0,15
+Tomate larga vida,2024-12,2025-01,2689,2689,2253,3326,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,10.6,-10.3,[],[],1,,,0
+Habichuela,2024-12,2025-01,2130,2927,2071,4140,37.4,Sube,Alta,Regresión Lineal,30.0,21.1,-43.6,"[3, 1, 2]",[],0,0.044656601411726934,71.0,21
