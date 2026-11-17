@@ -30,9 +30,6 @@ urlpatterns = [
     path('', inicio, name='inicio' ),
     path('',include('productos.urls')),
     path('', include('cuentas.urls')),
-    path('', include('carrito.urls')),
-    #path('ordenes/', include('ordenes.urls')),
-    path('', include ('ordenes_de_compra.urls')),
     path('', include ('inteligencia_artificial.urls')),
     path('formm/', formm, name='formm' ),
     

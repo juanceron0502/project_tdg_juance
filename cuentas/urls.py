@@ -17,6 +17,5 @@ urlpatterns = [
     #path('perfilusuario/<str:nombres>/', views.perfilusuario, name='perfilusuario'),
     path('mas_informacion/<str:nombreusuario>/', views.mas_informacion, name='mas_informacion'),
     path('contactar/', views.contactar,name="contactar"),
-    path ('mis_ordenes/', views.mis_ordenes, name='mis_ordenes'),  
     path ('mis_productos/', views.mis_productos, name='mis_productos'),  
 ]

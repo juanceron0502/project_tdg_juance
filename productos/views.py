@@ -3,15 +3,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from cuentas.models import *
 from categorias.models import *
-from carrito.models import *
-from carrito.views import _carrito_id
 from django.contrib import messages
 from django.db.models import Q
 from .forms import *
 from django.contrib.auth.decorators import  login_required
 from cuentas.models import *
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from ordenes_de_compra.models import OrdenProducto
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 
@@ -83,7 +80,7 @@ def buscador(request):
         'producto_count': productos.count(),
         'users': users,
     }
-    return render(request, 'categorias/vercategoria.html', context)
+    return render(request, 'categorias/buscador.html', context)
 
 @login_required
 def agregar_Producto(request):
@@ -141,19 +138,6 @@ def eliminar_producto(request, pk):
 
 def verificar(request):
     return render(request, 'producto/verificar.html')
-
-
-
-
-"""def productos (request):
-    product = Producto.objects.all().filter(activo = True)
-
-    context = {
-        'product': product,
-    }
-    return render (request, 'productos.html', context)"""
-
-
 
 def productos_usuario (request):
     product = Producto.objects.all().filter(activo = True)

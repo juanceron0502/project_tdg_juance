@@ -1,65 +1,188 @@
 {% extends 'index.html' %}
 {% load static %}
 
-
 {% block titulo %}Editar producto | Tierra de Grandes{% endblock titulo %}
 
 {% block extra_css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/editar_perfil.css' %}">
     <link rel="stylesheet" href="{% static 'css/editar_producto.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
 
-<main class="edit-page">
+<main class="pe-page">
     <div class="container">
 
-        <div class="edit-card product-edit">
+        <a href="{% url 'tablero' %}" class="pe-back">← Volver al panel</a>
 
-            <!-- ENCABEZADO -->
-            <header class="edit-header">
-                <div class="edit-header-overlay"></div>
+        <!-- ENCABEZADO -->
+        <header class="pe-hero">
+            <div class="pe-hero-overlay"></div>
 
-                <div class="edit-header-content">
-                    <div>
-                        <span class="edit-tag">🌾 MIS COSECHAS</span>
-                        <h1>Editar producto</h1>
-                        <p>Actualiza la información de tu cosecha para que los compradores siempre vean datos al día.</p>
-                    </div>
-                </div>
-            </header>
+            <div class="pe-hero-content">
+                <span class="pe-hero-tag">🌾 MIS COSECHAS</span>
+                <h1>Editar producto</h1>
+                <p>Actualiza la información de tu cosecha para que los compradores siempre vean datos al día.</p>
+            </div>
+        </header>
 
 
-            <!-- MENSAJE -->
-            {% if mensaje %}
-                <div class="edit-alerts">
-                    <div class="alert alert-info" role="alert">{{ mensaje }}</div>
-                </div>
-            {% endif %}
+        <div class="pe-layout">
 
-
-            <!-- FORMULARIO -->
-            <form action="" method="post" enctype="multipart/form-data" class="edit-form">
+            <!-- =====================================================
+                 FORMULARIO
+            ====================================================== -->
+            <form action="" method="post" enctype="multipart/form-data" class="pe-form">
 
                 {% csrf_token %}
 
-                {{ p_form }}
-                {{ form }}
+                {% if mensaje %}
+                    <div class="pe-alert pe-alert-info" role="status">{{ mensaje }}</div>
+                {% endif %}
 
-                <div class="edit-actions">
-                    <a href="{% url 'tablero' %}" class="btn-edit-cancel">Cancelar</a>
-                    <button type="submit" class="btn-edit-save">
-                        Guardar cambios
-                        <span aria-hidden="true">✓</span>
+                {% if p_form.non_field_errors or form.non_field_errors %}
+                    <div class="pe-alert pe-alert-error" role="alert">
+                        {% for error in p_form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                    </div>
+                {% endif %}
+
+
+                <section class="pe-section">
+                    <h2 class="pe-section-title"><span aria-hidden="true">📝</span> Información del producto</h2>
+
+                    <div class="pe-grid">
+                        {% for field in p_form %}
+                            {% include 'includes/campo_formulario.html' with field=field %}
+                        {% endfor %}
+                    </div>
+                </section>
+
+
+                <section class="pe-section">
+                    <h2 class="pe-section-title"><span aria-hidden="true">📦</span> Detalles adicionales</h2>
+
+                    <div class="pe-grid">
+                        {% for field in form %}
+                            {% include 'includes/campo_formulario.html' with field=field %}
+                        {% endfor %}
+                    </div>
+                </section>
+
+
+                <!-- ACCIONES (barra fija al final) -->
+                <div class="pe-actions">
+                    <a href="{% url 'tablero' %}" class="pe-btn pe-btn-cancel">Cancelar</a>
+                    <button type="submit" class="pe-btn pe-btn-save">
+                        Guardar cambios <span aria-hidden="true">✓</span>
                     </button>
                 </div>
 
             </form>
 
+
+            <!-- =====================================================
+                 VISTA PREVIA Y CONSEJOS
+            ====================================================== -->
+            <aside class="pe-aside" aria-label="Vista previa y consejos">
+
+                <div class="pe-preview" id="pePreview">
+
+                    <span class="pe-aside-title"><span aria-hidden="true">👀</span> Vista previa</span>
+
+                    <article class="product-card">
+
+                        <div class="product-image-link">
+                            <img id="pePreviewImg"
+                                 class="product-image"
+                                 src="{% static 'images/image_5.jpg' %}"
+                                 data-fallback="{% static 'images/image_5.jpg' %}"
+                                 alt="Vista previa de la imagen del producto"
+                                 onerror="this.onerror=null;this.src=this.dataset.fallback">
+                            <span class="product-label">Fresco</span>
+                        </div>
+
+                        <div class="product-info">
+                            <span class="product-category">Producto agrícola</span>
+                            <h3 id="pePreviewName">Nombre de tu cosecha</h3>
+
+                            <div class="product-footer">
+                                <div>
+                                    <span class="price-label">Precio</span>
+                                    <span class="product-price" id="pePreviewPrice">$0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+
+                    <p class="pe-aside-note">Así verán tu cosecha los compradores en el catálogo.</p>
+
+                </div>
+
+
+                <div class="pe-tips">
+                    <h3><span aria-hidden="true">💡</span> Consejos</h3>
+                    <ul>
+                        <li>Usa una foto clara y con buena luz.</li>
+                        <li>Indica la cantidad y la unidad (kg, libra, bulto) en la descripción.</li>
+                        <li>Mantén el stock al día para no vender lo que ya no tienes.</li>
+                    </ul>
+                </div>
+
+            </aside>
+
         </div>
 
     </div>
 </main>
+
+
+<script>
+    // Vista previa en vivo de la tarjeta del producto
+    (function () {
+        const preview = document.getElementById("pePreview");
+        const imgEl = document.getElementById("pePreviewImg");
+        const nameEl = document.getElementById("pePreviewName");
+        const priceEl = document.getElementById("pePreviewPrice");
+
+        const nombre = document.querySelector('.pe-form [name$="nombre"]');
+        const precio = document.querySelector('.pe-form [name$="precio"]');
+
+        // Si el formulario no tiene estos campos, se oculta la vista previa
+        if (!preview || (!nombre && !precio)) {
+            if (preview) preview.hidden = true;
+            return;
+        }
+
+        const current = document.querySelector("[data-current-image]");
+        if (current) imgEl.src = current.getAttribute("src");
+
+        function formatPrice(value) {
+            const n = parseFloat(String(value).replace(",", "."));
+            if (isNaN(n)) return "$0";
+            return "$" + new Intl.NumberFormat("es-CO", { maximumFractionDigits: 0 }).format(n);
+        }
+
+        function update() {
+            const text = nombre ? nombre.value.trim() : "";
+            nameEl.textContent = text || "Nombre de tu cosecha";
+            priceEl.textContent = precio ? formatPrice(precio.value) : "";
+        }
+
+        if (nombre) nombre.addEventListener("input", update);
+        if (precio) precio.addEventListener("input", update);
+        update();
+
+        document.querySelectorAll('.pe-form input[type="file"]').forEach(function (input) {
+            input.addEventListener("change", function () {
+                const file = input.files && input.files[0];
+                if (file && file.type.startsWith("image/")) {
+                    imgEl.src = URL.createObjectURL(file);
+                }
+            });
+        });
+    })();
+</script>
 
 {% endblock content %}

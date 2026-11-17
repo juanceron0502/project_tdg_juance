@@ -1,12 +1,14 @@
-
 {% extends 'index.html' %}
 {% load static %}
+{% load humanize %}
 
-{% block titulo %}Panel de control | Tierra de Grandes{% endblock %}
+{% block titulo %}Panel de control | Tierra de Grandes{% endblock titulo %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard-bi.css' %}">
-{% endblock %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/dashboard-bi.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard_likes.css' %}">
+{% endblock extra_css %}
 
 {% block content %}
 <section class="bi-dashboard">
@@ -34,42 +36,55 @@
             <aside class="col-lg-3 col-xl-2 mb-4">
                 <div class="bi-sidebar">
                     <div class="bi-profile">
-                        <div class="bi-avatar"><img src="{{ user.userperfil.image_perfil.url }}" alt=""></div>
+
+                        <!-- Avatar seguro: siempre hay inicial; la foto se pone encima si existe -->
+                        <div class="bi-avatar">
+                            <span class="bi-avatar-initial" aria-hidden="true">{{ request.user.first_name|default:request.user.nombreusuario|default:"U"|slice:":1"|upper }}</span>
+                            {% if request.user.userperfil.image_perfil %}
+                                <img src="{{ request.user.userperfil.image_perfil.url }}" alt="" onerror="this.remove()">
+                            {% endif %}
+                        </div>
+
                         <h3>{{ request.user.first_name|default:request.user.nombreusuario }}</h3>
                         <span>Productor agrícola</span>
                     </div>
 
                     <span class="bi-menu-title">MI ESPACIO</span>
 
-                    <a class="bi-menu-link active"
-                       href="{% url 'perfil' %}">
+                    <a class="bi-menu-link active" href="{% url 'perfil' %}">
                         <span>▦</span> Resumen
                     </a>
 
-                    <a class="bi-menu-link"
-                       href="{% url 'mis_ordenes' %}">
+                    <a class="bi-menu-link" href="#estadisticas">
+                        <span>♥</span> Mis estadísticas
+                    </a>
+
+                    <a class="bi-menu-link" href="#mis-favoritos">
+                        <span>★</span> Mis favoritos
+                    </a>
+
+                    <a class="bi-menu-link" href="">
                         <span>▤</span> Mis pedidos
                     </a>
 
-                    <a class="bi-menu-link"
-                       href="{% url 'mis_productos' %}">
+                    <a class="bi-menu-link" href="{% url 'mis_productos' %}">
                         <span>🌾</span> Mis cosechas
                     </a>
 
-                    <a class="bi-menu-link"
-                       href="{% url 'agregar_producto' %}">
+                    <a class="bi-menu-link" href="{% url 'agregar_producto' %}">
                         <span>＋</span> Agregar producto
                     </a>
 
-                    <a class="bi-menu-link"
-                       href="{% url 'edit_perfil' %}">
+                    <a class="bi-menu-link" href="{% url 'edit_perfil' %}">
                         <span>⚙</span> Editar perfil
                     </a>
 
                     <div class="bi-sidebar-bottom">
-                        <a class="bi-logout" href="{% url 'logout' %}">
-                            ↪ Cerrar sesión
-                        </a>
+                        <!-- Cerrar sesión por POST (Django 5+ no acepta GET) -->
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="bi-logout">↪ Cerrar sesión</button>
+                        </form>
                     </div>
                 </div>
             </aside>
@@ -146,6 +161,132 @@
 
                 </div>
 
+
+                <!-- =====================================================
+                     ESTADÍSTICAS DE ME GUSTA (interés en mis cosechas)
+                ====================================================== -->
+                <div class="bi-section-heading" id="estadisticas">
+                    <div>
+                        <h2>Interés en tus cosechas</h2>
+                        <p>Los "Me gusta" que reciben tus productos</p>
+                    </div>
+                    <span class="bi-live-label bi-live-heart">
+                        <span></span> Me gusta
+                    </span>
+                </div>
+
+                <div class="bi-like-kpis">
+
+                    <article class="bi-kpi-card">
+                        <div class="bi-kpi-top">
+                            <span>Me gusta recibidos</span>
+                            <div class="bi-kpi-icon bi-icon-heart">♥</div>
+                        </div>
+                        <strong>{{ total_likes_recibidos|default:0|intcomma }}</strong>
+                        <small>En todas tus cosechas</small>
+                    </article>
+
+                    <article class="bi-kpi-card">
+                        <div class="bi-kpi-top">
+                            <span>Últimos 30 días</span>
+                            <div class="bi-kpi-icon green">📈</div>
+                        </div>
+                        <strong>{{ likes_30_dias|default:0|intcomma }}</strong>
+                        <small>Nuevos me gusta este mes</small>
+                    </article>
+
+                    <article class="bi-kpi-card">
+                        <div class="bi-kpi-top">
+                            <span>Cosecha estrella</span>
+                            <div class="bi-kpi-icon orange">🏆</div>
+                        </div>
+                        {% if producto_estrella %}
+                            <strong class="bi-kpi-text" title="{{ producto_estrella.nombre }}">{{ producto_estrella.nombre|truncatechars:22 }}</strong>
+                            <small>♥ {{ producto_estrella.total_likes }} me gusta</small>
+                        {% else %}
+                            <strong class="bi-kpi-text">—</strong>
+                            <small>Aún sin me gusta</small>
+                        {% endif %}
+                    </article>
+
+                </div>
+
+
+                <div class="bi-likes-grid">
+
+                    <!-- Ranking -->
+                    <section class="bi-panel">
+                        <div class="bi-panel-heading">
+                            <div>
+                                <h3>Cosechas más gustadas</h3>
+                                <p>Las 5 con más me gusta</p>
+                            </div>
+                            <a href="{% url 'mis_productos' %}">Ver todas →</a>
+                        </div>
+
+                        {% if top_productos %}
+                            <ol class="bi-rank">
+                                {% for p in top_productos %}
+                                    <li class="bi-rank-item">
+                                        <span class="bi-rank-pos">{{ forloop.counter }}</span>
+
+                                        <div class="bi-rank-body">
+                                            <div class="bi-rank-top">
+                                                <a href="{{ p.get_url }}">{{ p.nombre }}</a>
+                                                <strong>♥ {{ p.total_likes }}</strong>
+                                            </div>
+                                            <div class="bi-rank-track" aria-hidden="true">
+                                                <div class="bi-rank-bar" style="width: {{ p.pct }}%"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        {% else %}
+                            <div class="bi-empty">
+                                <span>🌾</span>
+                                <h4>Aún no tienes cosechas</h4>
+                                <p>Publica tu primera cosecha para empezar a recibir me gusta.</p>
+                            </div>
+                        {% endif %}
+                    </section>
+
+
+                    <!-- Gráfico por día -->
+                    <section class="bi-panel">
+                        <div class="bi-panel-heading">
+                            <div>
+                                <h3>Me gusta por día</h3>
+                                <p>Últimos 14 días · {{ likes_14_dias|default:0 }} en total</p>
+                            </div>
+                        </div>
+
+                        {% if likes_14_dias %}
+                            <div class="bi-bars"
+                                 role="img"
+                                 aria-label="Gráfico de barras con los me gusta recibidos cada día durante los últimos 14 días. Total: {{ likes_14_dias }}.">
+                                {% for dia in likes_por_dia %}
+                                    <div class="bi-bar-col" title="{{ dia.fecha|date:'d/m/Y' }}: {{ dia.total }}">
+                                        <span class="bi-bar-value">{{ dia.total }}</span>
+                                        <div class="bi-bar-track">
+                                            <div class="bi-bar" style="height: {{ dia.pct }}%"></div>
+                                        </div>
+                                        <span class="bi-bar-label">{{ dia.fecha|date:"d" }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="bi-empty">
+                                <span>♥</span>
+                                <h4>Sin me gusta en los últimos 14 días</h4>
+                                <p>Comparte tus cosechas en tus redes para atraer más visitas.</p>
+                            </div>
+                        {% endif %}
+                    </section>
+
+                </div>
+
+
                 <!-- Paneles de información -->
                 <div class="row">
 
@@ -156,7 +297,7 @@
                                     <h3>Últimos pedidos</h3>
                                     <p>Seguimiento de tus ventas</p>
                                 </div>
-                                <a href="{% url 'mis_ordenes' %}">
+                                <a href="">
                                     Ver todos →
                                 </a>
                             </div>
@@ -175,20 +316,14 @@
                                         <tbody>
                                             {% for orden in ordenes_recientes %}
                                                 <tr>
-                                                    <td>
-                                                        #{{ orden.id }}
-                                                    </td>
-                                                    <td>
-                                                        {{ orden.fecha|date:"d/m/Y" }}
-                                                    </td>
+                                                    <td>#{{ orden.id }}</td>
+                                                    <td>{{ orden.fecha|date:"d/m/Y" }}</td>
                                                     <td>
                                                         <span class="bi-status">
                                                             {{ orden.estado|default:"Registrado" }}
                                                         </span>
                                                     </td>
-                                                    <td>
-                                                        ${{ orden.total|floatformat:0 }}
-                                                    </td>
+                                                    <td>${{ orden.total|floatformat:0 }}</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -234,7 +369,7 @@
                                 <b>→</b>
                             </a>
 
-                            <a class="bi-action" href="{% url 'mis_ordenes' %}">
+                            <a class="bi-action" href="">
                                 <span class="bi-action-icon">📦</span>
                                 <span>
                                     <strong>Consultar pedidos</strong>
@@ -246,6 +381,85 @@
                     </div>
 
                 </div>
+
+
+                <!-- =====================================================
+                     PRODUCTOS A LOS QUE YO LE DI ME GUSTA
+                ====================================================== -->
+                <section class="bi-panel bi-favorites" id="mis-favoritos">
+
+                    <div class="bi-panel-heading">
+                        <div>
+                            <h3>Mis favoritos</h3>
+                            <p>
+                                Productos a los que les diste me gusta
+                                {% if total_mis_likes %}
+                                    · mostrando {{ mis_likes|length }} de {{ total_mis_likes }}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if mis_likes %}
+
+                        <div class="bi-fav-grid">
+
+                            {% for fav in mis_likes %}
+
+                                <article class="bi-fav-card">
+
+                                    <a href="{{ fav.producto.get_url }}" class="bi-fav-image">
+                                        {% if fav.producto.image %}
+                                            <img src="{{ fav.producto.image.url }}"
+                                                 alt="{{ fav.producto.nombre }}"
+                                                 loading="lazy"
+                                                 onerror="this.onerror=null;this.src='{% static 'images/image_5.jpg' %}'">
+                                        {% else %}
+                                            <img src="{% static 'images/image_5.jpg' %}"
+                                                 alt="Imagen no disponible"
+                                                 loading="lazy">
+                                        {% endif %}
+                                    </a>
+
+                                    <div class="bi-fav-info">
+                                        <h4>
+                                            <a href="{{ fav.producto.get_url }}">{{ fav.producto.nombre }}</a>
+                                        </h4>
+
+                                        <p class="bi-fav-producer">
+                                            <span aria-hidden="true">👨‍🌾</span>
+                                            {{ fav.producto.user.nombres|title }}
+                                        </p>
+
+                                        <div class="bi-fav-bottom">
+                                            <strong>${{ fav.producto.precio|stringformat:".0f"|intcomma }}</strong>
+                                            <time datetime="{{ fav.fecha|date:'c' }}">
+                                                <span aria-hidden="true">♥</span> {{ fav.fecha|naturaltime }}
+                                            </time>
+                                        </div>
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="bi-empty">
+                            <span>♥</span>
+                            <h4>Aún no tienes favoritos</h4>
+                            <p>
+                                Explora las cosechas y toca el corazón de las que más te gusten.
+                            </p>
+                            <a href="{% url 'verproducto' %}" class="bi-empty-link">Explorar cosechas →</a>
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
 
                 <div class="bi-bottom-note">
                     <span>🌱</span>

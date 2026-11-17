@@ -45,13 +45,11 @@ INSTALLED_APPS = [
     'categorias',
     'cuentas',
     'productos',
-    'carrito',
     'colorfield',
     'crispy_forms',
     'bootstrap4',
     'widget_tweaks',
     'django.contrib.humanize',
-    'ordenes_de_compra',
     'import_export',
     'inteligencia_artificial',
     
@@ -89,7 +87,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'categorias.context_processors.menu_links',
-                'carrito.context_processors.counter',
+                
             ],
         },
     },

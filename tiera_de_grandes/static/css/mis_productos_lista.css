@@ -1,0 +1,585 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   mis_productos_lista.css
+   Depende de index.css (variables). Reutiliza .list-page de
+   mis_productos.css. En escritorio es una tabla; en móvil cada
+   fila se convierte en una tarjeta.
+============================================================ */
+
+
+/* ============================================================
+   ENCABEZADO
+============================================================ */
+
+.lista-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.lista-top h1 {
+    margin: 6px 0 4px;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.lista-top p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 15px;
+}
+
+.btn-lista-publicar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: var(--green);
+    border-radius: 7px;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 700;
+    transition: background-color .25s, transform .25s;
+}
+
+.btn-lista-publicar:hover {
+    background: var(--green-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   BUSCADOR
+============================================================ */
+
+.lista-filter {
+    position: relative;
+    max-width: 380px;
+    margin-bottom: 18px;
+}
+
+.lista-filter-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    font-size: 14px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.lista-filter input {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.lista-filter input:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, .28);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* ============================================================
+   TABLA
+============================================================ */
+
+.lista-wrapper {
+    overflow-x: auto;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.lista-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lista-table thead {
+    background: var(--green-soft);
+}
+
+.lista-table th {
+    padding: 14px 18px;
+    border-bottom: 2px solid var(--green-light);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.lista-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.lista-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.lista-table tbody tr {
+    transition: background-color .2s;
+}
+
+.lista-table tbody tr:hover {
+    background: var(--cream);
+}
+
+.lista-table tr[hidden] {
+    display: none !important;
+}
+
+
+/* Producto */
+
+.lista-product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 220px;
+}
+
+.lista-thumb {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.lista-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lista-product-text {
+    min-width: 0;
+}
+
+.lista-name {
+    display: block;
+    color: var(--green-dark);
+    font-size: 15px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.lista-name:hover {
+    color: var(--green);
+    text-decoration: underline;
+}
+
+.lista-date {
+    display: block;
+    margin-top: 2px;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+
+/* Precio, estado, likes */
+
+.lista-price {
+    color: var(--green);
+    font-size: 16px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.lista-badge {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.lista-badge-ok {
+    background: var(--green-soft);
+    color: var(--green-dark);
+}
+
+.lista-badge-out {
+    background: #FFEBEE;
+    color: #B71C1C;
+}
+
+.lista-likes {
+    color: #E53935;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   BOTONES DE ACCIÓN
+============================================================ */
+
+.lista-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lista-delete-form {
+    margin: 0;
+}
+
+.btn-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .2s, color .2s, transform .2s;
+}
+
+.btn-row:hover {
+    transform: translateY(-2px);
+}
+
+.btn-row-view {
+    background: transparent;
+    border-color: var(--green);
+    color: var(--green-dark);
+}
+
+.btn-row-view:hover {
+    background: var(--green-soft);
+    color: var(--green-dark);
+}
+
+.btn-row-edit {
+    background: var(--yellow);
+    color: #263238;
+}
+
+.btn-row-edit:hover {
+    background: var(--yellow-dark);
+    color: var(--white);
+}
+
+.btn-row-delete {
+    background: transparent;
+    border-color: #C62828;
+    color: #C62828;
+}
+
+.btn-row-delete:hover {
+    background: #C62828;
+    color: var(--white);
+}
+
+.btn-row-danger-solid {
+    background: #C62828;
+    color: var(--white);
+}
+
+.btn-row-danger-solid:hover {
+    background: #B71C1C;
+}
+
+.btn-row:focus-visible,
+.lista-name:focus-visible,
+.btn-lista-publicar:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   ESTADOS VACÍOS
+============================================================ */
+
+.lista-empty {
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.lista-empty > span {
+    font-size: 42px;
+}
+
+.lista-empty h2 {
+    margin: 8px 0;
+    color: var(--green-dark);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.lista-empty p {
+    margin: 8px 0 0;
+    color: var(--text-light);
+}
+
+.lista-empty .btn-lista-publicar {
+    margin-top: 18px;
+}
+
+.lista-empty-card {
+    padding: 55px 20px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.lista-no-results:hover {
+    background: var(--white) !important;
+}
+
+
+/* ============================================================
+   DIÁLOGO DE CONFIRMACIÓN
+============================================================ */
+
+.confirm-dialog {
+    width: min(92vw, 420px);
+    padding: 0;
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .3);
+    color: var(--text);
+}
+
+.confirm-dialog::backdrop {
+    background: rgba(18, 61, 24, .55);
+}
+
+.confirm-dialog form {
+    padding: 30px 28px 26px;
+    text-align: center;
+}
+
+.confirm-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    background: #FFEBEE;
+    border-radius: 50%;
+    font-size: 30px;
+}
+
+.confirm-dialog h2 {
+    margin: 0 0 8px;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.confirm-dialog p {
+    margin: 0 0 22px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.confirm-actions .btn-row {
+    flex: 1;
+    padding: 12px 14px;
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-row,
+    .btn-lista-publicar,
+    .lista-table tbody tr,
+    .lista-filter input {
+        transition: none;
+    }
+
+    .btn-row:hover,
+    .btn-lista-publicar:hover {
+        transform: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE: cada fila se convierte en una tarjeta
+============================================================ */
+
+@media (max-width: 860px) {
+
+    .lista-wrapper {
+        overflow: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+    }
+
+    .lista-table,
+    .lista-table tbody,
+    .lista-table tr,
+    .lista-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .lista-table thead {
+        /* oculto visualmente, disponible para lectores de pantalla */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    .lista-table tbody tr {
+        margin-bottom: 16px;
+        overflow: hidden;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+    }
+
+    .lista-table tbody tr:hover {
+        background: var(--white);
+    }
+
+    .lista-table td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 11px 16px;
+        text-align: right;
+    }
+
+    .lista-table td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        color: var(--green-dark);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .5px;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    /* Producto y acciones ocupan todo el ancho, sin etiqueta */
+
+    .lista-cell-product,
+    .lista-cell-actions {
+        display: block;
+        text-align: left;
+    }
+
+    .lista-cell-product::before,
+    .lista-cell-actions::before {
+        content: none;
+    }
+
+    .lista-cell-product {
+        padding: 16px;
+        background: var(--cream);
+    }
+
+    .lista-product {
+        min-width: 0;
+    }
+
+    .lista-cell-actions {
+        padding: 14px 16px 16px;
+    }
+
+    .lista-actions {
+        flex-wrap: wrap;
+    }
+
+    .lista-actions > .btn-row,
+    .lista-actions > .lista-delete-form {
+        flex: 1 1 90px;
+    }
+
+    .lista-delete-form .btn-row {
+        width: 100%;
+    }
+
+    .lista-no-results td {
+        display: block;
+    }
+
+    .lista-no-results td::before {
+        content: none;
+    }
+
+    .lista-filter {
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .lista-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-lista-publicar {
+        justify-content: center;
+    }
+
+    .confirm-actions {
+        flex-direction: column-reverse;
+    }
+}

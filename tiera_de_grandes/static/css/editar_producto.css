@@ -1,51 +1,181 @@
 /* ============================================================
    TIERRA DE GRANDES
    editar_producto.css
-   Estilos para los campos generados por crispy-forms.
-   La tarjeta, el encabezado y los botones vienen de editar_perfil.css
-   (.edit-page, .edit-card, .edit-header, .edit-actions, .btn-edit-*).
+   Formulario de producto sin crispy-forms. Depende de index.css
+   (variables y .product-card para la vista previa).
 ============================================================ */
 
-.product-edit {
-    max-width: 720px;
+.pe-page {
+    padding: 35px 0 80px;
+    background:
+        radial-gradient(circle at 90% 8%, rgba(102, 187, 106, .14), transparent 30%),
+        var(--cream);
+}
+
+.pe-back {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform .25s;
+}
+
+.pe-back:hover {
+    color: var(--green);
+    transform: translateX(-3px);
 }
 
 
 /* ============================================================
-   CAMPOS
+   ENCABEZADO
 ============================================================ */
 
-.product-edit .form-group,
-.product-edit .mb-3 {
-    margin-bottom: 18px;
+.pe-hero {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 34px 35px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    color: var(--white);
 }
 
-.product-edit label,
-.product-edit .col-form-label,
-.product-edit .form-label {
+.pe-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 88% 15%, rgba(249, 168, 37, .28), transparent 35%),
+        radial-gradient(circle at 8% 95%, rgba(102, 187, 106, .38), transparent 40%);
+    pointer-events: none;
+}
+
+.pe-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.pe-hero-tag {
+    color: #FFE082;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.pe-hero h1 {
+    margin: 6px 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.pe-hero p {
+    margin: 0;
+    max-width: 560px;
+    font-size: 14px;
+    opacity: .92;
+}
+
+
+/* ============================================================
+   DISTRIBUCIÓN
+============================================================ */
+
+.pe-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+    gap: 26px;
+}
+
+.pe-form {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+}
+
+
+/* ============================================================
+   SECCIONES Y CAMPOS
+============================================================ */
+
+.pe-section {
+    padding: 28px 30px 6px;
+}
+
+.pe-section + .pe-section {
+    border-top: 1px solid var(--border);
+}
+
+.pe-section-title {
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--green-soft);
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.pe-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 22px;
+    padding-bottom: 22px;
+}
+
+.pe-grid:empty {
+    display: none;
+}
+
+.pe-field {
+    min-width: 0;
+}
+
+.pe-field--wide {
+    grid-column: 1 / -1;
+}
+
+.pe-label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
     color: var(--green-dark);
     font-size: 13px;
     font-weight: 700;
 }
 
-.product-edit .asteriskField {
-    margin-left: 2px;
+.pe-req {
     color: #C62828;
 }
 
-.product-edit .form-control,
-.product-edit .form-select,
-.product-edit select,
-.product-edit textarea {
+.pe-help {
+    margin: 6px 0 0;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.pe-error {
+    margin: 6px 0 0;
+    color: #C62828;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* Inputs, selects y textareas generados por Django */
+
+.pe-field input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]),
+.pe-field select,
+.pe-field textarea {
     display: block;
     width: 100%;
-    height: auto;
-    padding: 11px 14px;
+    padding: 12px 14px;
     background-color: var(--white);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     color: var(--text);
     font-family: inherit;
     font-size: 14px;
@@ -53,56 +183,181 @@
     transition: border-color .2s, box-shadow .2s;
 }
 
-.product-edit textarea {
+.pe-field textarea {
     min-height: 130px;
     resize: vertical;
 }
 
-.product-edit .form-control:focus,
-.product-edit .form-select:focus,
-.product-edit select:focus,
-.product-edit textarea:focus {
+.pe-field input:focus,
+.pe-field select:focus,
+.pe-field textarea:focus {
     outline: none;
     border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(102, 187, 106, .28);
+    box-shadow: 0 0 0 4px rgba(102, 187, 106, .25);
 }
 
+.pe-field:has(.pe-error) input:not([type="checkbox"]):not([type="file"]),
+.pe-field:has(.pe-error) select,
+.pe-field:has(.pe-error) textarea {
+    border-color: #C62828;
+}
 
-/* Ayuda debajo de un campo */
+/* Precio con el signo $ */
 
-.product-edit .form-text,
-.product-edit small.text-muted,
-.product-edit .help-block {
-    display: block;
-    margin-top: 5px;
-    color: var(--text-light) !important;
-    font-size: 12px;
+.pe-affix-wrap {
+    position: relative;
+}
+
+.pe-affix {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    color: var(--green);
+    font-size: 15px;
+    font-weight: 800;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.pe-affix-wrap input {
+    padding-left: 32px !important;
+}
+
+/* Listas de opciones (radio / casillas múltiples) */
+
+.pe-field ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pe-field ul label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pe-field input[type="radio"],
+.pe-field ul input[type="checkbox"] {
+    accent-color: var(--green);
 }
 
 
 /* ============================================================
-   ARCHIVO / IMAGEN
+   INTERRUPTOR (casillas simples, por ejemplo "Activo")
 ============================================================ */
 
-.product-edit input[type="file"] {
-    display: block;
-    width: 100%;
-    padding: 8px;
+.pe-field--check {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pe-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.pe-switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.pe-switch-ui {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+    background: #CFD8DC;
+    border-radius: 50px;
+    transition: background-color .2s;
+}
+
+.pe-switch-ui::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: var(--white);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+    transition: transform .2s;
+}
+
+.pe-switch input:checked + .pe-switch-ui {
+    background: var(--green);
+}
+
+.pe-switch input:checked + .pe-switch-ui::after {
+    transform: translateX(20px);
+}
+
+.pe-switch input:focus-visible + .pe-switch-ui {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+.pe-switch-text {
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   IMAGEN
+============================================================ */
+
+.pe-file {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px;
     background: var(--cream);
     border: 1px dashed var(--green-light);
-    border-radius: 8px;
+    border-radius: 12px;
+}
+
+.pe-current-img {
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.pe-file-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.pe-file-input {
+    width: 100%;
     color: var(--text-light);
     font-family: inherit;
     font-size: 13px;
     cursor: pointer;
 }
 
-.product-edit input[type="file"]::file-selector-button {
+.pe-file-input::file-selector-button {
     margin-right: 12px;
-    padding: 8px 14px;
+    padding: 9px 16px;
     background: var(--green);
     border: none;
-    border-radius: 6px;
+    border-radius: 7px;
     color: var(--white);
     font-family: inherit;
     font-size: 13px;
@@ -111,62 +366,174 @@
     transition: background-color .2s;
 }
 
-.product-edit input[type="file"]::file-selector-button:hover {
+.pe-file-input::file-selector-button:hover {
     background: var(--green-dark);
 }
 
-/* "Actualmente: enlace  [ ] Limpiar" que agrega Django al ImageField */
-
-.product-edit a {
-    color: var(--green);
-    font-weight: 600;
-    word-break: break-all;
-}
-
-.product-edit a:hover {
-    color: var(--green-dark);
-}
-
-.product-edit .btn-edit-save,
-.product-edit .btn-edit-cancel {
-    word-break: normal;
-}
-
-.product-edit .btn-edit-cancel,
-.product-edit .btn-edit-cancel:hover {
-    color: var(--green-dark);
-    font-weight: 700;
-}
-
-.product-edit input[type="checkbox"],
-.product-edit input[type="radio"] {
-    accent-color: var(--green);
+.pe-file-hint {
+    margin: 8px 0 0;
+    color: var(--text-light);
+    font-size: 12px;
 }
 
 
 /* ============================================================
-   ERRORES DE VALIDACIÓN
+   ALERTAS
 ============================================================ */
 
-.product-edit .is-invalid {
-    border-color: #C62828 !important;
-}
-
-.product-edit .invalid-feedback,
-.product-edit .help-block strong {
-    display: block;
-    margin-top: 6px;
-    color: #C62828;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.product-edit .alert {
-    margin: 0 0 18px;
+.pe-alert {
+    margin: 22px 30px 0;
     padding: 12px 16px;
-    border-radius: 8px;
+    border: 1px solid transparent;
+    border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
+}
+
+.pe-alert p {
+    margin: 0;
+}
+
+.pe-alert-info {
+    background: #E3F2FD;
+    border-color: #90CAF9;
+    color: #0D47A1;
+}
+
+.pe-alert-error {
+    background: #FFEBEE;
+    border-color: #EF9A9A;
+    color: #B71C1C;
+}
+
+
+/* ============================================================
+   BARRA DE ACCIONES (fija al final de la pantalla)
+============================================================ */
+
+.pe-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 30px;
+    background: rgba(255, 255, 255, .96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--border);
+    border-radius: 0 0 18px 18px;
+}
+
+.pe-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color .25s, color .25s, transform .25s;
+}
+
+.pe-btn-save {
+    background: var(--green);
+    border: 1px solid var(--green);
+    color: var(--white);
+}
+
+.pe-btn-save:hover {
+    background: var(--green-dark);
+    transform: translateY(-2px);
+}
+
+.pe-btn-cancel {
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green-dark);
+}
+
+.pe-btn-cancel:hover {
+    background: var(--green-soft);
+    color: var(--green-dark);
+}
+
+.pe-btn:focus-visible,
+.pe-back:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   VISTA PREVIA Y CONSEJOS
+============================================================ */
+
+.pe-aside {
+    position: sticky;
+    top: 100px;
+    display: grid;
+    gap: 18px;
+}
+
+.pe-aside-title {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--green-dark);
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.pe-preview[hidden] {
+    display: none;
+}
+
+.pe-preview .product-card:hover {
+    transform: none;
+}
+
+.pe-preview .product-info h3 {
+    min-height: 0;
+    color: var(--green-dark);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.pe-aside-note {
+    margin: 10px 0 0;
+    color: var(--text-light);
+    font-size: 12px;
+    text-align: center;
+}
+
+.pe-tips {
+    padding: 18px 20px;
+    background: var(--green-soft);
+    border-left: 4px solid var(--green);
+    border-radius: 12px;
+}
+
+.pe-tips h3 {
+    margin: 0 0 8px;
+    color: var(--green-dark);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.pe-tips ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--green-dark);
+    font-size: 13px;
+}
+
+.pe-tips li + li {
+    margin-top: 6px;
 }
 
 
@@ -175,10 +542,75 @@
 ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-    .product-edit .form-control,
-    .product-edit select,
-    .product-edit textarea,
-    .product-edit input[type="file"]::file-selector-button {
+    .pe-back,
+    .pe-btn,
+    .pe-field input,
+    .pe-field select,
+    .pe-field textarea,
+    .pe-switch-ui,
+    .pe-switch-ui::after,
+    .pe-file-input::file-selector-button {
         transition: none;
+    }
+
+    .pe-btn-save:hover,
+    .pe-back:hover {
+        transform: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 960px) {
+
+    .pe-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .pe-aside {
+        position: static;
+    }
+
+    .pe-preview {
+        max-width: 340px;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .pe-page {
+        padding: 25px 0 60px;
+    }
+
+    .pe-hero {
+        padding: 26px 20px;
+    }
+
+    .pe-section {
+        padding: 22px 18px 4px;
+    }
+
+    .pe-alert {
+        margin: 18px 18px 0;
+    }
+
+    .pe-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pe-file {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pe-actions {
+        padding: 14px 18px;
+    }
+
+    .pe-btn {
+        flex: 1;
     }
 }

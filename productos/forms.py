@@ -2,15 +2,20 @@ from struct import calcsize
 from productos.models import Producto
 from django import forms
 from django import forms
-from ordenes_de_compra.models import *
+
 
 from django import forms
 
-from ordenes_de_compra.models import Orden
 from productos.models import Producto, RevisionCalificacion
-
+from inteligencia_artificial.services.recomendaciones import cargar_recomendaciones
 
 class ProductoForm(forms.ModelForm):
+    producto_sipsa = forms.ChoiceField(
+        required=False,
+        label='Referencia de precio de mercado',
+        help_text=('Si su producto tiene referencia en el mercado mayorista de Popayán, '
+                   'selecciónelo para comparar su precio.'),
+    )
 
     class Meta:
         model = Producto
@@ -20,19 +25,28 @@ class ProductoForm(forms.ModelForm):
             'image', 'categoria',
         ]
         labels = {
-            'precio': 'Precio',
             'unidad_precio': 'El precio es por',
-            'producto_sipsa': 'Referencia de precio de mercado',
+            'descripcion': 'Descripción',
+            'image': 'Imagen',
+            'Informacion_de_produccion': 'Información de producción',
         }
+        
         help_texts = {
-            'producto_sipsa': (
-                'Si su producto es papa, tomate o habichuela, selecciónelo para ver '
-                'el precio de referencia del mercado mayorista de Popayán.'
-            ),
-            'unidad_precio': (
-                'La comparación con el mercado solo se muestra cuando el precio es por kilogramo.'
-            ),
+            'unidad_precio': 'La comparación con el mercado solo se muestra si el precio es por kilogramo.',
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        opciones = [("", "Sin referencia de precio")]
+        opciones += sorted(
+            (r["producto"], f"{r['producto']} (confianza {r['confianza'].lower()})")
+            for r in cargar_recomendaciones()
+        )
+        # Si el producto ya tenía un valor que dejó de existir, no se pierde al editar
+        actual = self.instance.producto_sipsa if self.instance and self.instance.pk else ""
+        if actual and actual not in dict(opciones):
+            opciones.append((actual, f"{actual} (sin referencia vigente)"))
+        self.fields["producto_sipsa"].choices = opciones
 
     def clean_precio(self):
         precio = self.cleaned_data['precio']
@@ -47,14 +61,7 @@ class ProductoForm(forms.ModelForm):
         return stock
 
 
-class OrdenForm(forms.ModelForm):
-    class Meta:
-        model = Orden
-        fields = [
-            'nombres', 'apellidos', 'numero_telefono', 'email',
-            'direccion_linea_1', 'direccion_linea_2', 'ciudad',
-            'departamento', 'orden_descripcion',
-        ]
+
 
 
 class comentarioform(forms.ModelForm):

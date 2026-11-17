@@ -33,7 +33,8 @@ MODELOS.mkdir(exist_ok=True)
 # CONFIGURACIÓN (todo lo que decide el criterio de éxito queda aquí, a la vista)
 # ----------------------------------------------------------------------------
 PRODUCTOS = ["Papa parda pastusa", "Tomate larga vida", "Habichuela"]
-USAR_TODOS_FRESCOS = False          # True: todos los frescos con >= 95 % de cobertura
+USAR_TODOS_FRESCOS = True      # True: todos los frescos con >= 95 % de cobertura
+EXCLUIR = ["Kiwi"]             # productos que no vende un productor del Cauca
 FIN_DATOS = "2024-12"
 INICIO_VALIDACION = pd.Period("2021-01", "M")   # 2021-2022: se ELIGE el método
 INICIO_PRUEBA = pd.Period("2023-01", "M")       # 2023-2024: se REPORTA el resultado
@@ -48,6 +49,18 @@ CONSISTENCIA_MIN = 0.70     # % de años en que un mes debe repetir su patrón
 
 NAIVE = "Ingenuo (mes anterior)"
 ESTAC = "Ingenuo estacional (12 meses)"      # solo referencia, no es elegible
+
+if USAR_TODOS_FRESCOS:
+        cob = pd.read_csv(SALIDA / "cobertura_productos.csv")
+        frescos = ["FRUTAS", "VERDURAS Y HORTALIZAS", "TUBERCULOS, RAICES Y PLATANOS"]
+        PRODUCTOS = cob[
+            cob["grupo"].isin(frescos)
+            & (cob["pct_meses"] >= 95)
+            & (cob["ultimo_mes"] == FIN_DATOS)            # que el último mes sea dato real
+            & ~cob["producto"].str.contains("importad", case=False, na=False)
+            & ~cob["producto"].isin(EXCLUIR)
+        ]["producto"].tolist()
+        print(len(PRODUCTOS), "productos seleccionados")
 
 METODOS_ML = {
     "Regresión Lineal": lambda: LinearRegression(),

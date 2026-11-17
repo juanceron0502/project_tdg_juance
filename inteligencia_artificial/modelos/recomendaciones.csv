@@ -1,4 +1,40 @@
 ﻿producto,mes_base,mes_estimado,precio_actual,precio_estimado,rango_bajo,rango_alto,cambio_esperado_pct,direccion,confianza,metodo,mejora_vs_ingenuo_pct,error_tipico_pct,vs_promedio_12m_pct,meses_altos,meses_bajos,meses_interpolados,p_valor,acierto_direccion_pct,n_senales_direccion
+Ajo importado,2024-12,2025-01,10207,10207,8974,11073,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,4.1,3.9,"[5, 4, 6]",[],0,,,0
+Ahuyama,2024-12,2025-01,1159,1159,1048,1339,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,3.6,-4.6,[],"[9, 8, 10]",0,,,0
+Arveja verde en vaina pastusa,2024-12,2025-01,4202,5053,3852,6207,20.3,Sube,Media,Random Forest,16.9,13.6,-2.4,[],"[11, 10, 9]",0,0.08578748088025559,72.0,18
+Pimentón,2024-12,2025-01,2500,2500,2068,3096,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,7.2,27.1,[],[],0,,,0
+Ulluco,2024-12,2025-01,1157,1157,806,1543,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,14.6,-25.8,"[8, 9, 6]","[1, 12, 2]",0,,,0
+Zanahoria,2024-12,2025-01,882,882,663,1256,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,12.5,-1.0,[],[],0,,,0
+Chócolo mazorca,2024-12,2025-01,959,959,870,1100,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,4.8,23.7,[],[],0,,,0
+Cilantro,2024-12,2025-01,4060,4060,3604,4795,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,7.8,16.4,[],[],0,,,0
+Cebolla junca pastusa,2024-12,2025-01,1343,1751,1425,2124,30.4,Sube,Media,Random Forest,10.4,9.2,-28.7,"[5, 7, 6]","[11, 10, 12]",0,0.2888424057501784,72.0,18
+Cebolla cabezona blanca pastusa,2024-12,2025-01,1609,1609,1073,2216,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,17.5,-14.6,[],[],0,,,0
+Guayaba pera,2024-12,2025-01,2945,2945,2521,3357,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,7.8,11.4,[],[],0,,,0
+Piña manzana,2024-12,2025-01,2418,2418,2127,2785,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,6.8,-10.7,[],[],0,,,0
+Tomate de árbol,2024-12,2025-01,2313,2253,1912,2834,-2.6,Estable,Media,Regresión Lineal,13.3,11.0,-3.4,"[6, 5, 7]","[12, 11, 1]",0,0.3362064001877346,73.0,22
+Pera importada,2024-12,2025-01,6310,6731,5825,7497,6.7,Sube,Media,Random Forest,18.7,5.4,-3.7,"[2, 1, 12]","[5, 4, 7]",0,0.3648855464995427,65.0,20
+Mora de Castilla,2024-12,2025-01,4858,4858,4282,5770,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,6.7,4.9,[],"[10, 9, 11]",0,,,0
+Papa criolla sucia,2024-12,2025-01,2170,2170,1634,2861,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,16.8,6.5,[],[],0,,,0
 Papa parda pastusa,2024-12,2025-01,2044,2229,1817,2889,9.0,Sube,Media,Regresión Lineal,3.6,10.3,-9.7,"[3, 5, 4]",[],0,0.712316411959755,80.0,15
+Papaya Maradol,2024-12,2025-01,1789,1789,1342,2190,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,10.7,13.8,"[3, 8, 2]",[],0,,,0
+Papa única,2024-12,2025-01,1711,1711,1303,2304,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,13.9,-10.1,[],[],0,,,0
+Manzana royal gala importada,2024-12,2025-01,7400,7899,7276,8590,6.7,Sube,Media,Random Forest,17.1,4.5,0.6,"[2, 3, 1]",[],0,0.25140273795390294,80.0,15
+Manzana verde importada,2024-12,2025-01,8239,8239,7738,8997,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,3.8,-2.8,"[2, 1, 3]","[5, 6, 4]",0,,,0
+Manzana roja importada,2024-12,2025-01,7391,7498,6837,8183,1.4,Estable,Media,Gradient Boosting,10.6,4.7,0.6,"[2, 3, 1]","[6, 7, 5]",0,0.29463040961653136,89.0,9
+Lulo,2024-12,2025-01,4860,4860,4230,5799,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,8.8,12.9,[],[],0,,,0
+Fríjol verde cargamanto,2024-12,2025-01,3980,3980,3461,4638,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,8.9,-5.4,"[5, 4, 10]","[8, 7, 1]",1,,,0
 Tomate larga vida,2024-12,2025-01,2689,2689,2253,3326,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,10.6,-10.3,[],[],1,,,0
+Guanábana,2024-12,2025-01,5089,5216,4878,5706,2.5,Estable,Media,Random Forest,16.3,4.3,4.7,"[10, 9, 11]","[7, 6, 8]",1,0.4132964948753753,58.0,12
+Kiwi,2024-12,2025-01,13650,13650,12104,16262,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,7.6,2.5,[],"[7, 6, 8]",1,,,0
+Lechuga Batavia,2024-12,2025-01,1102,1191,907,1694,8.1,Sube,Media,Regresión Lineal,4.4,16.3,-21.8,[],[],0,0.6763852330413797,58.0,12
+Maracuyá,2024-12,2025-01,4354,4383,3785,5191,0.7,Estable,Media,Random Forest,19.2,9.9,2.5,[],"[1, 12, 8]",0,0.2960606951909331,65.0,17
+Pepino cohombro,2024-12,2025-01,1063,1063,879,1298,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,7.4,4.2,[],[],0,,,0
+Granadilla,2024-12,2025-01,5702,6259,5315,7948,9.8,Sube,Alta,Gradient Boosting,30.2,10.9,-18.9,"[3, 7, 2]","[12, 11, 5]",1,0.021248615506907768,89.0,19
+Arracacha amarilla,2024-12,2025-01,1689,1689,1478,1948,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,4.9,-33.6,[],[],1,,,0
+Mandarina Arrayana,2024-12,2025-01,2780,2999,2487,3610,7.9,Sube,Media,Random Forest,15.5,9.0,-6.9,"[3, 4, 2]",[],3,0.29732689454152844,71.0,17
+Repollo blanco,2024-12,2025-01,667,700,535,944,4.9,Sube,Media,Regresión Lineal,16.3,12.1,-18.3,[],[],0,0.12581435426059492,83.0,18
 Habichuela,2024-12,2025-01,2130,2927,2071,4140,37.4,Sube,Alta,Regresión Lineal,30.0,21.1,-43.6,"[3, 1, 2]",[],0,0.044656601411726934,71.0,21
+Papa capira,2024-12,2025-01,1719,1826,1524,2282,6.2,Sube,Media,Regresión Lineal,7.9,8.8,-10.9,[],[],0,0.41574559789776844,58.0,19
+Uva Isabela,2024-12,2025-01,3660,3660,3269,4393,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,7.0,-11.9,"[3, 6, 7]","[12, 11, 4]",0,,,0
+Banano criollo,2024-12,2025-01,2271,2271,2173,2484,0.0,Sin señal,Baja,Ingenuo (mes anterior),0.0,3.4,18.3,[],[],1,,,0
+Patilla,2024-12,2025-01,2268,2356,2049,2824,3.9,Sube,Media,Gradient Boosting,3.6,6.9,-2.8,"[9, 8, 7]",[],1,0.6958149695063002,83.0,12

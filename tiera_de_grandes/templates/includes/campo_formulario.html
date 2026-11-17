@@ -1,0 +1,85 @@
+{% comment %}
+    Parcial: dibuja UN campo de un formulario Django.
+    Guárdalo en:  templates/includes/campo_formulario.html
+    Uso:          {% include 'includes/campo_formulario.html' with field=field %}
+{% endcomment %}
+
+{% if field.is_hidden %}
+
+    {{ field }}
+
+{% else %}
+
+    {% with wt=field.widget_type %}
+
+    <div class="pe-field{% if wt == 'textarea' or wt == 'clearablefile' or wt == 'file' or wt == 'radioselect' or wt == 'checkboxselectmultiple' %} pe-field--wide{% endif %}{% if wt == 'checkbox' %} pe-field--check{% endif %}">
+
+        {% if wt == 'checkbox' %}
+
+            <!-- Casilla como interruptor (por ejemplo "Activo") -->
+            <label class="pe-switch" for="{{ field.id_for_label }}">
+                {{ field }}
+                <span class="pe-switch-ui" aria-hidden="true"></span>
+                <span class="pe-switch-text">{{ field.label }}</span>
+            </label>
+
+        {% elif wt == 'clearablefile' or wt == 'file' %}
+
+            <!-- Imagen: se muestra la actual y un selector limpio -->
+            <label class="pe-label" for="{{ field.id_for_label }}">
+                {{ field.label }}{% if field.field.required %}<span class="pe-req" aria-hidden="true"> *</span>{% endif %}
+            </label>
+
+            <div class="pe-file">
+
+                {% if field.value.url %}
+                    <img src="{{ field.value.url }}"
+                         alt="Imagen actual"
+                         class="pe-current-img"
+                         data-current-image>
+                {% endif %}
+
+                <div class="pe-file-body">
+                    <input type="file"
+                           name="{{ field.html_name }}"
+                           id="{{ field.id_for_label }}"
+                           accept="image/*"
+                           class="pe-file-input">
+                    <p class="pe-file-hint">
+                        {% if field.value.url %}Elige una imagen nueva solo si quieres cambiar la actual.{% else %}Sube una foto clara de tu cosecha.{% endif %}
+                        Formatos JPG o PNG.
+                    </p>
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <label class="pe-label" for="{{ field.id_for_label }}">
+                {{ field.label }}{% if field.field.required %}<span class="pe-req" aria-hidden="true"> *</span>{% endif %}
+            </label>
+
+            {% if field.name == 'precio' %}
+                <div class="pe-affix-wrap">
+                    <span class="pe-affix" aria-hidden="true">$</span>
+                    {{ field }}
+                </div>
+            {% else %}
+                {{ field }}
+            {% endif %}
+
+        {% endif %}
+
+        {% if field.help_text %}
+            <p class="pe-help">{{ field.help_text }}</p>
+        {% endif %}
+
+        {% for error in field.errors %}
+            <p class="pe-error" role="alert"><span aria-hidden="true">⚠</span> {{ error }}</p>
+        {% endfor %}
+
+    </div>
+
+    {% endwith %}
+
+{% endif %}

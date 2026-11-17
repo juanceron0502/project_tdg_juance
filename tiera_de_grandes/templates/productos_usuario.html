@@ -2,12 +2,12 @@
 {% load static %}
 {% load humanize %}
 
-{% block titulo %}Mis cosechas | Tierra de Grandes{% endblock titulo %}
+{% block titulo %}Administrar mis cosechas | Tierra de Grandes{% endblock titulo %}
 
 {% block extra_css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/productos.css' %}">
     <link rel="stylesheet" href="{% static 'css/mis_productos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mis_productos_lista.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -15,84 +15,267 @@
 <main class="list-page">
     <div class="container">
 
-        <header class="list-header">
-            <span class="section-tag">🌱 Comercio justo</span>
-            <h1>Mis cosechas</h1>
-            <p>
-                <strong>{{ producto|length }}</strong>
-                {% if producto|length == 1 %}producto publicado{% else %}productos publicados{% endif %}
-            </p>
+        <!-- ENCABEZADO -->
+        <header class="lista-top">
+
+            <div>
+                <span class="section-tag">🌱 Panel del productor</span>
+                <h1>Administrar mis cosechas</h1>
+                <p>
+                    <strong>{{ producto|length }}</strong>
+                    {% if producto|length == 1 %}producto publicado{% else %}productos publicados{% endif %}
+                </p>
+            </div>
+
+            <a href="{% url 'agregar_producto' %}" class="btn-lista-publicar">
+                <span aria-hidden="true">＋</span> Publicar cosecha
+            </a>
+
         </header>
 
-        <section class="catalog">
 
-            <div class="catalog-grid">
+        {% if producto %}
 
-                {% for item in producto %}
+            <!-- BUSCADOR DE LA LISTA -->
+            <div class="lista-filter">
+                <label for="filtroLista" class="sr-only">Buscar en mis cosechas</label>
+                <span class="lista-filter-icon" aria-hidden="true">🔎</span>
+                <input type="search"
+                       id="filtroLista"
+                       placeholder="Buscar en mis cosechas..."
+                       autocomplete="off">
+            </div>
 
-                    <article class="product-card">
+            <p class="sr-only" id="filtroEstado" role="status" aria-live="polite"></p>
 
-                        <a href="{% url 'verproducto_usuario' item.pk %}" class="product-image-link">
 
-                            {% if item.image %}
-                                <img src="{{ item.image.url }}"
-                                     alt="{{ item.nombre }}"
-                                     class="product-image"
-                                     loading="lazy">
-                            {% else %}
-                                <img src="{% static 'images/image_5.jpg' %}"
-                                     alt="Imagen no disponible"
-                                     class="product-image"
-                                     loading="lazy">
-                            {% endif %}
+            <!-- LISTA -->
+            <div class="lista-wrapper">
 
-                            <span class="product-label">Fresco</span>
+                <table class="lista-table">
 
-                        </a>
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Me gusta</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
 
-                        <div class="product-info">
+                    <tbody id="listaBody">
 
-                            <time class="product-date"
-                                  datetime="{{ item.timestamp|date:'c' }}">
-                                🕒 {{ item.timestamp|naturaltime }}
-                            </time>
+                        {% for item in producto %}
 
-                            <h3>
-                                <a href="{% url 'verproducto_usuario' item.pk %}">{{ item.nombre }}</a>
-                            </h3>
+                            <tr data-nombre="{{ item.nombre }}">
 
-                            <div class="product-footer">
-                                <div>
-                                    <span class="price-label">Precio</span>
-                                    <span class="product-price">${{ item.precio|intcomma }}</span>
+                                <td data-label="Producto" class="lista-cell-product">
+                                    <div class="lista-product">
+
+                                        <a href="{% url 'verproducto_usuario' item.pk %}" class="lista-thumb" tabindex="-1" aria-hidden="true">
+                                            {% if item.image %}
+                                                <img src="{{ item.image.url }}"
+                                                     alt=""
+                                                     loading="lazy"
+                                                     onerror="this.onerror=null;this.src='{% static 'images/image_5.jpg' %}'">
+                                            {% else %}
+                                                <img src="{% static 'images/image_5.jpg' %}" alt="" loading="lazy">
+                                            {% endif %}
+                                        </a>
+
+                                        <div class="lista-product-text">
+                                            <a href="{% url 'verproducto_usuario' item.pk %}" class="lista-name">{{ item.nombre }}</a>
+                                            <time class="lista-date" datetime="{{ item.timestamp|date:'c' }}">
+                                                🕒 Publicado {{ item.timestamp|naturaltime }}
+                                            </time>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td data-label="Precio" class="lista-price">
+                                    ${{ item.precio|stringformat:".0f"|intcomma }}
+                                </td>
+
+                                <td data-label="Estado">
+                                    {% if item.stock <= 0 %}
+                                        <span class="lista-badge lista-badge-out">Agotado</span>
+                                    {% else %}
+                                        <span class="lista-badge lista-badge-ok">{{ item.stock|intcomma }} disponibles</span>
+                                    {% endif %}
+                                </td>
+
+                                <td data-label="Me gusta">
+                                    <span class="lista-likes"><span aria-hidden="true">♥</span> {{ item.likes.count|default:0 }}</span>
+                                </td>
+
+                                <td data-label="Acciones" class="lista-cell-actions">
+                                    <div class="lista-actions">
+
+                                        <a href="{% url 'verproducto_usuario' item.pk %}"
+                                           class="btn-row btn-row-view"
+                                           aria-label="Ver {{ item.nombre }}">
+                                            <span aria-hidden="true">👁️</span> Ver
+                                        </a>
+
+                                        <a href="{% url 'modificar_producto' item.pk %}"
+                                           class="btn-row btn-row-edit"
+                                           aria-label="Editar {{ item.nombre }}">
+                                            <span aria-hidden="true">✏️</span> Editar
+                                        </a>
+
+                                        <!-- IMPORTANTE: cambia 'eliminar_producto' por el nombre real de tu URL -->
+                                        <form method="post"
+                                              action="{% url 'eliminar_producto' item.pk %}"
+                                              class="lista-delete-form"
+                                              data-delete-form
+                                              data-nombre="{{ item.nombre }}">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                    class="btn-row btn-row-delete"
+                                                    aria-label="Eliminar {{ item.nombre }}">
+                                                <span aria-hidden="true">🗑️</span> Eliminar
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        <tr class="lista-no-results" id="listaSinResultados" hidden>
+                            <td colspan="5">
+                                <div class="lista-empty">
+                                    <span aria-hidden="true">🔎</span>
+                                    <p>Ninguna cosecha coincide con tu búsqueda.</p>
                                 </div>
+                            </td>
+                        </tr>
 
-                                <a href="{% url 'verproducto_usuario' item.pk %}"
-                                   class="btn-view-product"
-                                   aria-label="Ver detalle de {{ item.nombre }}">
-                                    Ver →
-                                </a>
-                            </div>
+                    </tbody>
 
-                        </div>
-
-                    </article>
-
-                {% empty %}
-
-                    <div class="empty-products">
-                        <div class="empty-icon" aria-hidden="true">🌾</div>
-                        <h3>Aún no hay cosechas</h3>
-                        <p>Cuando se publiquen productos aparecerán aquí.</p>
-                    </div>
-
-                {% endfor %}
+                </table>
 
             </div>
 
-        </section>
+        {% else %}
+
+            <div class="lista-empty lista-empty-card">
+                <span aria-hidden="true">🌾</span>
+                <h2>Aún no has publicado cosechas</h2>
+                <p>Publica tu primera cosecha para que los compradores puedan encontrarte.</p>
+                <a href="{% url 'agregar_producto' %}" class="btn-lista-publicar">
+                    <span aria-hidden="true">＋</span> Publicar cosecha
+                </a>
+            </div>
+
+        {% endif %}
 
     </div>
 </main>
+
+
+<!-- =========================================================
+     CONFIRMAR ELIMINACIÓN
+========================================================== -->
+<dialog id="confirmDialog" class="confirm-dialog" aria-labelledby="confirmTitle">
+    <form method="dialog">
+
+        <div class="confirm-icon" aria-hidden="true">🗑️</div>
+
+        <h2 id="confirmTitle">¿Eliminar esta cosecha?</h2>
+
+        <p>
+            Vas a eliminar <strong id="confirmName"></strong>.
+            Esta acción no se puede deshacer.
+        </p>
+
+        <div class="confirm-actions">
+            <button type="submit" value="cancel" class="btn-row btn-row-view">Cancelar</button>
+            <button type="submit" value="confirm" class="btn-row btn-row-danger-solid">Sí, eliminar</button>
+        </div>
+
+    </form>
+</dialog>
+
+
+<script>
+    (function () {
+
+        // ---------- Confirmación antes de eliminar ----------
+        const dialog = document.getElementById("confirmDialog");
+        const nameLabel = document.getElementById("confirmName");
+        let pendingForm = null;
+
+        document.querySelectorAll("[data-delete-form]").forEach(function (form) {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const nombre = form.dataset.nombre || "este producto";
+
+                // Navegadores antiguos sin <dialog>
+                if (!dialog || typeof dialog.showModal !== "function") {
+                    if (window.confirm("¿Eliminar \"" + nombre + "\"? Esta acción no se puede deshacer.")) {
+                        form.submit();
+                    }
+                    return;
+                }
+
+                pendingForm = form;
+                nameLabel.textContent = nombre;
+                dialog.returnValue = "";
+                dialog.showModal();
+            });
+        });
+
+        if (dialog) {
+            dialog.addEventListener("close", function () {
+                if (dialog.returnValue === "confirm" && pendingForm) {
+                    pendingForm.submit();
+                }
+                pendingForm = null;
+            });
+
+            // Clic fuera de la caja cierra el diálogo
+            dialog.addEventListener("click", function (event) {
+                if (event.target === dialog) dialog.close();
+            });
+        }
+
+
+        // ---------- Buscador de la lista ----------
+        const input = document.getElementById("filtroLista");
+        const rows = document.querySelectorAll("#listaBody tr[data-nombre]");
+        const noResults = document.getElementById("listaSinResultados");
+        const status = document.getElementById("filtroEstado");
+
+        function normalizar(texto) {
+            return (texto || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+        }
+
+        if (input) {
+            input.addEventListener("input", function () {
+                const consulta = normalizar(input.value.trim());
+                let visibles = 0;
+
+                rows.forEach(function (row) {
+                    const coincide = normalizar(row.dataset.nombre).includes(consulta);
+                    row.hidden = !coincide;
+                    if (coincide) visibles++;
+                });
+
+                if (noResults) noResults.hidden = visibles !== 0;
+                if (status) status.textContent = visibles + (visibles === 1 ? " cosecha encontrada" : " cosechas encontradas");
+            });
+        }
+
+    })();
+</script>
 
 {% endblock content %}

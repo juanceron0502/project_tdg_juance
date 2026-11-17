@@ -20,9 +20,18 @@ from productos.models import *
 from cuentas.models import *
 
 from .forms import *
-from ordenes_de_compra.models import *
+
 
 import requests
+from datetime import timedelta
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+from django.db.models.functions import TruncDate
+from django.shortcuts import render
+from django.utils import timezone
+
+# from .models import Producto, Like
 
 # Create your views here.
 
@@ -126,7 +135,7 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'La activacion es invalida')
         return redirect('registrar')
-
+"""
 @login_required(login_url='login')
 def tablero (request):
     orden = Orden.objects.order_by('-orden_creacion').filter(user_id =request.user.id, confirmacion_orden=True)
@@ -135,7 +144,86 @@ def tablero (request):
     context = {
         'orden_count':orden_count,
     }
-    return render(request, 'registracion/dashboard_usuario.html',context)
+    return render(request, 'registracion/dashboard_usuario.html',context)"""
+
+@login_required
+def tablero(request):
+
+    # ... tu código actual: total_ordenes, total_ventas, total_productos,
+    #     productos_bajo_stock, ordenes_recientes ...
+
+    # ----------------------------------------------------------
+    # A) ME GUSTA QUE RECIBEN MIS COSECHAS (estadísticas del agricultor)
+    # ----------------------------------------------------------
+    likes_recibidos = Like.objects.filter(producto__user=request.user)
+
+    total_likes_recibidos = likes_recibidos.count()
+
+    hoy = timezone.localdate()
+    hace_30_dias = timezone.now() - timedelta(days=30)
+    likes_30_dias = likes_recibidos.filter(fecha__gte=hace_30_dias).count()
+
+    # Mis productos ordenados por cantidad de me gusta (los 5 primeros)
+    top_productos = list(
+        Producto.objects.filter(user=request.user)
+        .annotate(total_likes=Count("likes"))
+        .order_by("-total_likes", "nombre")[:5]
+    )
+
+    maximo_likes = top_productos[0].total_likes if top_productos else 0
+    for p in top_productos:
+        # Porcentaje para la barra (el más gustado = 100%)
+        p.pct = round(p.total_likes * 100 / maximo_likes) if maximo_likes else 0
+
+    producto_estrella = top_productos[0] if maximo_likes > 0 else None
+
+    # Me gusta por día en los últimos 14 días (incluye los días con 0)
+    inicio = hoy - timedelta(days=13)
+
+    por_dia = (
+        likes_recibidos
+        .filter(fecha__date__gte=inicio)
+        .annotate(dia=TruncDate("fecha"))
+        .values("dia")
+        .annotate(total=Count("id"))
+    )
+    conteo = {fila["dia"]: fila["total"] for fila in por_dia}
+
+    likes_por_dia = [
+        {"fecha": inicio + timedelta(days=i), "total": conteo.get(inicio + timedelta(days=i), 0)}
+        for i in range(14)
+    ]
+
+    maximo_dia = max((d["total"] for d in likes_por_dia), default=0)
+    for d in likes_por_dia:
+        d["pct"] = round(d["total"] * 100 / maximo_dia) if maximo_dia else 0
+
+    likes_14_dias = sum(d["total"] for d in likes_por_dia)
+
+    # ----------------------------------------------------------
+    # B) PRODUCTOS A LOS QUE YO LE DI ME GUSTA (mis favoritos)
+    # ----------------------------------------------------------
+    mis_likes_qs = (
+        Like.objects.filter(user=request.user)
+        .select_related("producto", "producto__user")
+        .order_by("-fecha")
+    )
+    total_mis_likes = mis_likes_qs.count()
+    mis_likes = list(mis_likes_qs[:8])
+
+    context = {
+        # ... tu contexto actual ...
+        "total_likes_recibidos": total_likes_recibidos,
+        "likes_30_dias": likes_30_dias,
+        "top_productos": top_productos,
+        "producto_estrella": producto_estrella,
+        "likes_por_dia": likes_por_dia,
+        "likes_14_dias": likes_14_dias,
+        "mis_likes": mis_likes,
+        "total_mis_likes": total_mis_likes,
+    }
+
+    return render(request, "registracion/dashboard_usuario.html", context)   # usa el nombre real de tu plantilla
 
 def passwordolvidada(request):
     if request.method == 'POST':
@@ -290,9 +378,9 @@ def contactar(request):
 
 
 def mis_ordenes (request):
-    orden = Orden.objects.filter(user=request.user, confirmacion_orden=True).order_by('-orden_creacion')
+    #orden = Orden.objects.filter(user=request.user, confirmacion_orden=True).order_by('-orden_creacion')
     context = {
-        'orden':orden,
+        #'orden':orden,
     }
     return render(request, 'registracion/mis_ordenes.html', context)
     

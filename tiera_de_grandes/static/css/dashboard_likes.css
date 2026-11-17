@@ -1,0 +1,416 @@
+/* ============================================================
+   TIERRA DE GRANDES
+   dashboard_likes.css
+   Se carga DESPUÉS de dashboard-bi.css. Reutiliza sus clases
+   (bi-panel, bi-kpi-card, bi-empty...) y agrega lo nuevo.
+   Usa CSS Grid propio, no depende de Bootstrap.
+============================================================ */
+
+:root {
+    --like-red: #E53935;
+    --like-red-soft: #FFEBEE;
+}
+
+
+/* ============================================================
+   AVATAR SEGURO Y BOTÓN DE CERRAR SESIÓN
+============================================================ */
+
+.bi-avatar {
+    position: relative;
+}
+
+.bi-avatar-initial {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.bi-avatar img {
+    position: relative;
+    z-index: 1;
+}
+
+.bi-sidebar-bottom form {
+    margin: 0;
+}
+
+button.bi-logout {
+    width: 100%;
+    background: none;
+    border: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   ENCABEZADO DE SECCIÓN
+============================================================ */
+
+.bi-section-heading {
+    scroll-margin-top: 100px;
+}
+
+.bi-live-heart > span {
+    background: var(--like-red);
+}
+
+
+/* ============================================================
+   KPIs DE ME GUSTA
+============================================================ */
+
+.bi-like-kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.bi-icon-heart {
+    background: var(--like-red-soft);
+    color: var(--like-red);
+}
+
+.bi-kpi-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   RANKING Y GRÁFICO
+============================================================ */
+
+.bi-likes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.bi-likes-grid .bi-panel {
+    margin-bottom: 0;
+}
+
+/* Ranking */
+
+.bi-rank {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bi-rank-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.bi-rank-pos {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--green-soft);
+    border-radius: 50%;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.bi-rank-item:first-child .bi-rank-pos {
+    background: var(--yellow);
+    color: #263238;
+}
+
+.bi-rank-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.bi-rank-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.bi-rank-top a {
+    overflow: hidden;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bi-rank-top a:hover {
+    color: var(--green);
+    text-decoration: underline;
+}
+
+.bi-rank-top strong {
+    flex-shrink: 0;
+    color: var(--like-red);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.bi-rank-track {
+    height: 8px;
+    overflow: hidden;
+    background: #ECEFF1;
+    border-radius: 50px;
+}
+
+.bi-rank-bar {
+    min-width: 4px;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-light), var(--green));
+    border-radius: 50px;
+}
+
+/* Gráfico de barras por día */
+
+.bi-bars {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    height: 210px;
+}
+
+.bi-bar-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.bi-bar-value {
+    color: var(--text-light);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.bi-bar-track {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.bi-bar {
+    width: 100%;
+    max-width: 22px;
+    min-height: 3px;
+    background: linear-gradient(180deg, #EF5350, var(--like-red));
+    border-radius: 6px 6px 2px 2px;
+    transition: opacity .2s;
+}
+
+.bi-bar-col:hover .bi-bar {
+    opacity: .75;
+}
+
+.bi-bar-label {
+    color: var(--text-light);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   MIS FAVORITOS
+============================================================ */
+
+.bi-favorites {
+    margin-bottom: 24px;
+    scroll-margin-top: 100px;
+}
+
+.bi-fav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 18px;
+}
+
+.bi-fav-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: transform .25s, box-shadow .25s;
+}
+
+.bi-fav-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+
+.bi-fav-image {
+    display: block;
+    overflow: hidden;
+}
+
+.bi-fav-image img {
+    display: block;
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    transition: transform .4s;
+}
+
+.bi-fav-card:hover .bi-fav-image img {
+    transform: scale(1.05);
+}
+
+.bi-fav-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 14px;
+}
+
+.bi-fav-info h4 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.bi-fav-info h4 a {
+    color: var(--green-dark);
+}
+
+.bi-fav-info h4 a:hover {
+    color: var(--green);
+}
+
+.bi-fav-producer {
+    margin: 0 0 12px;
+    color: var(--text-light);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bi-fav-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.bi-fav-bottom strong {
+    color: var(--green);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.bi-fav-bottom time {
+    color: var(--like-red);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.bi-empty-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--green);
+    font-weight: 700;
+}
+
+.bi-empty-link:hover {
+    color: var(--green-dark);
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   ACCESIBILIDAD
+============================================================ */
+
+.bi-rank-top a:focus-visible,
+.bi-fav-image:focus-visible,
+.bi-fav-info h4 a:focus-visible,
+.bi-empty-link:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bi-bar,
+    .bi-fav-card,
+    .bi-fav-image img {
+        transition: none;
+    }
+
+    .bi-fav-card:hover,
+    .bi-fav-card:hover .bi-fav-image img {
+        transform: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1100px) {
+
+    .bi-likes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .bi-like-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .bi-bars {
+        height: 180px;
+        gap: 3px;
+    }
+
+    .bi-bar-value {
+        display: none;
+    }
+
+    .bi-fav-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .bi-fav-image img {
+        height: 110px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .bi-fav-grid {
+        grid-template-columns: 1fr;
+    }
+}
